@@ -14,7 +14,7 @@ enum SubjectStatus {
 }
 
 model User {
-  id              Int             @id @default(autoincrement())
+  id              String          @id @default(cuid())
   email           String          @unique
   emailVerified   DateTime?
   password        String
@@ -25,9 +25,9 @@ model User {
 }
 
 model Subject {
-  id          Int             @id @default(autoincrement())
+  id          String          @id @default(cuid())
   name        String
-  userId      Int
+  userId      String
   status      SubjectStatus   @default(IN_PROGRESS)
   examDate    DateTime?
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -37,9 +37,9 @@ model Subject {
 }
 
 model Question {
-  id           Int            @id @default(autoincrement())
+  id           String            @id @default(cuid())
   name         String
-  subjectId    Int
+  subjectId    String
   subject      Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
   answer       String?        @db.Text
   createdAt    DateTime       @default(now())

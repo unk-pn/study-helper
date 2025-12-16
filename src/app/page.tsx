@@ -3,7 +3,7 @@ import c from "./page.module.css";
 export default function Home() {
   return (
     <div className={c.page}>
-      Next clear page
+      <h1>What do you want to learn today?</h1>
     </div>
   );
 }
