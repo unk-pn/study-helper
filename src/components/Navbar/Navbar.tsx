@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import c from "./Navbar.module.css";
 import clsx from "clsx";
+import Link from "next/link";
 
 const navItems = [
   { title: "Home", link: "/" },
@@ -55,15 +56,21 @@ export const Navbar = () => {
       document.body.style.overflow = "unset";
     };
   }, [isMenuOpen]);
+
   return (
     <header className={c.navbar}>
+      <h1 className={c.title}>
+        <Link href="/" className={c.titleLink}>
+          Study helper
+        </Link>
+      </h1>
       <nav className={c.nav}>
         <ul className={c.navList}>
           {navItems.map((i, index) => (
             <li key={index} className={c.navItem}>
-              <a href={i.link} className={c.navLink}>
+              <Link href={i.link} className={c.navLink}>
                 {i.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -91,9 +98,13 @@ export const Navbar = () => {
         <ul className={c.mobileNavList}>
           {navItems.map((i, index) => (
             <li key={index} className={c.mobileNavItem}>
-              <a href={i.link} className={c.mobileNavLink} onClick={closeMenu}>
+              <Link
+                href={i.link}
+                className={c.mobileNavLink}
+                onClick={closeMenu}
+              >
                 {i.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
