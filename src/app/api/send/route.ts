@@ -11,7 +11,7 @@ export async function POST() {
       from: "unk <onboarding@resend.dev>", // ПОМЕНЯТЬ НА ПРОДАКШН
       to: ["unkpn.dev@gmail.com"],
       subject: "Example email",
-      react: EmailTemplate({ firstName: "EXAMPLE EMAIL" }),
+      react: EmailTemplate({ code: "EXAMPLE EMAIL" }),
     });
 
     if (error) {

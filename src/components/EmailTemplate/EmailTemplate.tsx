@@ -1,11 +1,11 @@
 interface EmailTemplateProps {
-  firstName: string;
+  code: string;
 }
 
-export function EmailTemplate({ firstName }: EmailTemplateProps) {
+export function EmailTemplate({ code }: EmailTemplateProps) {
   return (
     <div>
-      <h1>Welcome, {firstName}!</h1>
+      <h1>Код для регистрации: {code}.</h1>
     </div>
   );
 }
