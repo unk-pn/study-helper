@@ -13,6 +13,7 @@ const QuestionPage = () => {
   if (!subject) return;
   return (
     <div>
+      <a href={"/subjects"}>Back</a>
       <h1>Subject: {subject.name}</h1>
       <div>
         {questions.map((q) => (

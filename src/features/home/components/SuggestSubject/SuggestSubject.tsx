@@ -28,10 +28,10 @@ export const SuggestSubject = () => {
   }, []);
 
   return (
-    <div>
+    <h2>
       <a href={`/subjects/${curr.id}`} className={c.link}>
         {curr.name}
       </a>
-    </div>
+    </h2>
   );
 };
