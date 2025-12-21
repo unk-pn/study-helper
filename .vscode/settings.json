@@ -4,7 +4,7 @@
     "**/app/**/{page,layout,index}.{ts,tsx}": "(${dirname})/${filename}.${extname}",
     "**/index.{ts,tsx}": "${dirname}/index.${extname}",
     "**/route.{ts}": "${dirname}/route.${extname}",
-
+    "**/page.module.{css,scss,sass}": "${dirname}/page.${extname}",
   },
   "WillLuke.nextjs.addTypesOnSave": true,
   "WillLuke.nextjs.hasPrompted": true

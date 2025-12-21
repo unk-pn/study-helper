@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { mockSubjects } from "../../../../../mocks/mock-data";
 import c from "./SuggestSubject.module.css";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const subjects = mockSubjects.map((s) => ({
   id: s.id,
@@ -12,6 +14,7 @@ const subjects = mockSubjects.map((s) => ({
 type SubjectType = (typeof subjects)[0];
 
 export const SuggestSubject = () => {
+  const data = useSession()
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
   useEffect(() => {
     const changeSubject = setInterval(() => {
@@ -29,9 +32,15 @@ export const SuggestSubject = () => {
 
   return (
     <h2>
-      <a href={`/subjects/${curr.id}`} className={c.link}>
+      <Link href={`/subjects/${curr.id}`} className={c.link}>
         {curr.name}
-      </a>
+      </Link>
+      <p>auth: {data.status}</p>
+      {data.status === "authenticated" ? (
+        <button onClick={() => signOut()}>Sign out</button>
+      ) : (
+        <Link href="/auth/signIn">Sign in</Link>
+      )}
     </h2>
   );
 };
