@@ -1,3 +1,11 @@
 {
-  "prisma.pinToPrisma6": true
+  "prisma.pinToPrisma6": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/app/**/{page,layout,index}.{ts,tsx}": "(${dirname})/${filename}.${extname}",
+    "**/index.{ts,tsx}": "${dirname}/index.${extname}",
+    "**/route.{ts}": "${dirname}/route.${extname}",
+
+  },
+  "WillLuke.nextjs.addTypesOnSave": true,
+  "WillLuke.nextjs.hasPrompted": true
 }

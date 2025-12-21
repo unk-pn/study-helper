@@ -23,6 +23,8 @@ const handler = NextAuth({
 
           if (!user) return null;
 
+          if (!user.emailVerified) throw new Error("Email is not verified");
+
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
             user.password
@@ -43,10 +45,6 @@ const handler = NextAuth({
   ],
   pages: {
     signIn: "/auth/signIn",
-    signOut: "/auth/signOut",
-    error: "/auth/error",
-    verifyRequest: "/auth/verify-request",
-    newUser: "/auth/new-user",
   },
   session: {
     strategy: "jwt",
