@@ -14,6 +14,7 @@ const subjects = mockSubjects.map((s) => ({
 type SubjectType = (typeof subjects)[0];
 
 export const SuggestSubject = () => {
+  const { data: session } = useSession()
   const data = useSession()
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
   useEffect(() => {
@@ -35,7 +36,8 @@ export const SuggestSubject = () => {
       <Link href={`/subjects/${curr.id}`} className={c.link}>
         {curr.name}
       </Link>
-      <p>auth: {data.status}</p>
+      <p>name: {session?.user.name}</p>
+      <p>email: {session?.user.email}</p>
       {data.status === "authenticated" ? (
         <button onClick={() => signOut()}>Sign out</button>
       ) : (

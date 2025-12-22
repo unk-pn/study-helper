@@ -1,18 +1,11 @@
-import { Subject } from "@/features/subjects/components/Subject/Subject";
-import { mockSubjects } from "../../../mocks/mock-data";
+import { CreateSubject } from "@/features/subjects/components/CreateSubject/CreateSubject";
+import { SubjectsList } from "@/features/subjects/components/SubjectsList/SubjectsList";
 
 const SubjectsPage = () => {
   return (
     <div>
-      {mockSubjects.map((s) => (
-        <Subject
-          key={s.id}
-          id={s.id}
-          name={s.name}
-          status={s.status}
-          examDate={s.examDate}
-        />
-      ))}
+      <CreateSubject />
+      <SubjectsList />
     </div>
   );
 };
