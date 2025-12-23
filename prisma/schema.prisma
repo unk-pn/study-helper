@@ -37,7 +37,7 @@ model Subject {
 }
 
 model Question {
-  id           String            @id @default(cuid())
+  id           String         @id @default(cuid())
   name         String
   subjectId    String
   subject      Subject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
