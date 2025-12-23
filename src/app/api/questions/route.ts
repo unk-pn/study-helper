@@ -69,7 +69,7 @@ export async function DELETE(req: NextRequest) {
       );
 
     const question = await db.findUnique({
-      where: id,
+      where: { id: id },
     });
 
     if (!question)
@@ -79,7 +79,7 @@ export async function DELETE(req: NextRequest) {
       );
 
     await db.delete({
-      where: id,
+      where: { id: id },
     });
 
     return NextResponse.json(
@@ -105,7 +105,7 @@ export async function PATCH(req: NextRequest) {
       );
 
     const question = await db.findUnique({
-      where: id,
+      where: { id: id },
     });
 
     if (!question)
@@ -115,7 +115,7 @@ export async function PATCH(req: NextRequest) {
       );
 
     await db.update({
-      where: id,
+      where: { id: id },
       data: { answer },
     });
 

@@ -83,15 +83,15 @@ export async function DELETE(req: NextRequest) {
         { status: 400 }
       );
 
-    const question = await db.findUnique({
-      where: id,
+    const subject = await db.findUnique({
+      where: { id: id },
     });
 
-    if (!question)
+    if (!subject)
       return NextResponse.json({ error: "Subject not found" }, { status: 404 });
 
     await db.delete({
-      where: id,
+      where: { id: id },
     });
 
     return NextResponse.json(
@@ -116,15 +116,15 @@ export async function PATCH(req: NextRequest) {
         { status: 400 }
       );
 
-    const question = await db.findUnique({
-      where: id,
+    const subject = await db.findUnique({
+      where: { id: id },
     });
 
-    if (!question)
+    if (!subject)
       return NextResponse.json({ error: "Subject not found" }, { status: 404 });
 
     await db.update({
-      where: id,
+      where: { id: id },
       data: { status },
     });
 

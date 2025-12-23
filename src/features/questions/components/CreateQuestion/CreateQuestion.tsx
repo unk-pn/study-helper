@@ -13,7 +13,7 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
   const handleSubmit = () => {
     const load = async () => {
       try {
-        const res = await fetch("/api/question", {
+        const res = await fetch("/api/questions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -34,7 +34,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`/api/question?subjectId=${subjectId}`);
+        const res = await fetch(`/api/questions?subjectId=${subjectId}`);
         const data = await res.json();
         if (!res.ok) throw new Error("Failed to fetch questions useEffect")
         setQuestions(data);
