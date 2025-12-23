@@ -58,3 +58,76 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json();
+    if (!id)
+      return NextResponse.json(
+        { error: "Id is not provided" },
+        { status: 400 }
+      );
+
+    const question = await db.findUnique({
+      where: id,
+    });
+
+    if (!question)
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 }
+      );
+
+    await db.delete({
+      where: id,
+    });
+
+    return NextResponse.json(
+      { message: "Question deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Failed to delete question" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { id, answer } = await req.json();
+    if (!id || !answer)
+      return NextResponse.json(
+        { error: "Id or answer not provided" },
+        { status: 400 }
+      );
+
+    const question = await db.findUnique({
+      where: id,
+    });
+
+    if (!question)
+      return NextResponse.json(
+        { error: "Question not found" },
+        { status: 404 }
+      );
+
+    await db.update({
+      where: id,
+      data: { answer },
+    });
+
+    return NextResponse.json(
+      { message: "Question updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Failed to update question" },
+      { status: 500 }
+    );
+  }
+}

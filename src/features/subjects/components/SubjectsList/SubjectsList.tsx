@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { mockSubjects } from "../../../../../mocks/mock-data";
 import { Subject } from "../Subject/Subject";
 
 type SubjectType = {

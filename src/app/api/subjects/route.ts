@@ -73,3 +73,70 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { id } = await req.json();
+    if (!id)
+      return NextResponse.json(
+        { error: "Id is not provided" },
+        { status: 400 }
+      );
+
+    const question = await db.findUnique({
+      where: id,
+    });
+
+    if (!question)
+      return NextResponse.json({ error: "Subject not found" }, { status: 404 });
+
+    await db.delete({
+      where: id,
+    });
+
+    return NextResponse.json(
+      { message: "Subject deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Failed to delete subject" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { id, status } = await req.json();
+    if (!id || !status)
+      return NextResponse.json(
+        { error: "Id or status not provided" },
+        { status: 400 }
+      );
+
+    const question = await db.findUnique({
+      where: id,
+    });
+
+    if (!question)
+      return NextResponse.json({ error: "Subject not found" }, { status: 404 });
+
+    await db.update({
+      where: id,
+      data: { status },
+    });
+
+    return NextResponse.json(
+      { message: "Subject updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { error: "Failed to update subject" },
+      { status: 500 }
+    );
+  }
+}
