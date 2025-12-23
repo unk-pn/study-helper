@@ -1,22 +1,40 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
-import { mockSubjects } from "../../../../../mocks/mock-data";
 import c from "./SuggestSubject.module.css";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-const subjects = mockSubjects.map((s) => ({
-  id: s.id,
-  name: s.name,
-}));
-
-type SubjectType = (typeof subjects)[0];
+type SubjectType = {
+  id: string;
+  name: string;
+};
 
 export const SuggestSubject = () => {
-  const { data: session } = useSession()
-  const data = useSession()
+  const { data: session } = useSession();
+  const data = useSession();
+  const [subjects, setSubjects] = useState<SubjectType[]>([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/subjects");
+        const data = await res.json();
+        if (!res.ok) {
+          console.log("data fail: ", data.error);
+          return;
+        }
+        setSubjects(data);
+        setCurr(data[0])
+      } catch (error) {
+        console.log("failed to get subjects: ", error);
+      }
+    };
+    load();
+  }, []);
+
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
+
   useEffect(() => {
     const changeSubject = setInterval(() => {
       setCurr((prev) => {
@@ -29,7 +47,9 @@ export const SuggestSubject = () => {
     return () => {
       clearInterval(changeSubject);
     };
-  }, []);
+  }, [subjects]);
+
+  if (!curr) return null;
 
   return (
     <h2>
