@@ -20,6 +20,9 @@ export async function GET() {
       where: {
         userId: id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     if (!subjects)
       return NextResponse.json(

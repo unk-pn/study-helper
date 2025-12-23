@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import c from "./Question.module.css";
 
 interface QuestionProps {
@@ -8,6 +10,9 @@ interface QuestionProps {
 }
 
 export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
+  const [openInput, setOpenInput] = useState<boolean>(false);
+  const [answerVal, setAnswerVal] = useState<string>("");
+
   const handleDelete = async () => {
     try {
       const res = await fetch("/api/questions", {
@@ -28,11 +33,49 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
     }
   };
 
+  const handleAddAnswer = async () => {
+    try {
+      const res = await fetch("/api/questions", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          answer: answerVal,
+          id: id,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log("res not ok: ", data.error);
+        return;
+      }
+      window.location.reload();
+    } catch (error) {
+      console.log("error deleting question: ", error);
+    }
+  };
+
   return (
     <div className={c.question}>
       <h1>{name}</h1>
       <p>Answer: {answer ? answer : "No answer provided"}</p>
       <button onClick={handleDelete}>Удалить</button>
+      <br />
+      <button onClick={() => setOpenInput(!openInput)}>
+        {openInput ? "Закрыть" : "Добавить ответ"}
+      </button>
+      <br />
+      {openInput && (
+        <>
+          <textarea
+            value={answerVal}
+            onChange={(e) => setAnswerVal(e.target.value)}
+          />
+          <br />
+          <button onClick={handleAddAnswer}>Добавить ответ</button>
+        </>
+      )}
     </div>
   );
 };
