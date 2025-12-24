@@ -35,6 +35,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id.toString(),
             name: user.name,
+            email: user.email,
           };
         } catch (error) {
           console.log("Auth login: ", error);
@@ -57,13 +58,15 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.email = user.email;
       }
       return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
-        session.user.name = token.name;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
       }
       return session;
     },

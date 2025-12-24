@@ -49,7 +49,11 @@ export const SuggestSubject = () => {
     };
   }, [subjects]);
 
-  if (!curr) return null;
+  if (!curr) return (
+    <Link href="/auth/signIn">
+      Sign In
+    </Link>
+  );
 
   return (
     <h2>
