@@ -49,6 +49,8 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
     <div>
       <a href={"/subjects"}>Back</a>
       <br />
+      <a href={`/subjects/${subjectId}/cards`}>Cards</a>
+      <br />
       <CreateQuestion subjectId={subjectId} />
       <div>
         {questions.map((q) => (
