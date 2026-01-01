@@ -2,13 +2,14 @@
 
 import { useParams } from "next/navigation";
 import { QuestionsPage } from '../../../features/questions/components/QuestionsPage/QuestionsPage';
+import c from "./page.module.css";
 
 const QuestionPage = () => {
   const params = useParams();
   const { id } = params;
 
   return (
-    <div>
+    <div className={c.page}>
       <QuestionsPage subjectId={id as string} />
     </div>
   );

@@ -3,12 +3,14 @@
 import { FormEvent, useState } from "react";
 import c from "./page.module.css";
 import { signIn } from "next-auth/react";
+import { PinInput } from "@gravity-ui/uikit";
 
 const SignUpPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [code, setCode] = useState<string>("");
+  // const [code, setCode] = useState<string>("");
+  const [code, setCode] = useState<string[]>([]);
   const [codeSended, setCodeSended] = useState<boolean>(false);
 
   const onFirstSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -43,7 +45,10 @@ const SignUpPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, code }),
+        body: JSON.stringify({
+          email,
+          code: code.join(""),
+        }),
       });
 
       const data = await res.json();
@@ -64,7 +69,7 @@ const SignUpPage = () => {
         alert(
           "Verification successful, but login failed. Please sign in manually."
         );
-        
+
         window.location.href = "/auth/signIn";
         return;
       }
@@ -75,6 +80,7 @@ const SignUpPage = () => {
       alert("error checking code");
     }
   };
+
   return (
     <div className={c.wrapper}>
       <form className={c.form} onSubmit={onFirstSubmit}>
@@ -107,13 +113,14 @@ const SignUpPage = () => {
       </form>
       {codeSended && (
         <form className={c.codeWrapper} onSubmit={onCodeSubmit}>
-          <input
+          {/* <input
             type="text"
             maxLength={6}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
-          />
+          /> */}
+          <PinInput size="l" value={code} length={6} onUpdate={setCode} />
           <button className={c.button}>Register</button>
         </form>
       )}

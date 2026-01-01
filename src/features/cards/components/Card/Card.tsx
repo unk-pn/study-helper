@@ -2,6 +2,7 @@
 import { useState } from "react";
 import c from "./Card.module.css";
 import clsx from "clsx";
+import { Card as GCard } from "@gravity-ui/uikit";
 
 interface CardProps {
   question: string;
@@ -11,7 +12,7 @@ interface CardProps {
 export const Card = ({ question, answer }: CardProps) => {
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   return (
-    <div className={c.card}>
+    <GCard className={c.card}>
       <div className={c.question}>{question}</div>
       <button
         className={clsx(c.button, { [c.active]: showAnswer })}
@@ -22,6 +23,6 @@ export const Card = ({ question, answer }: CardProps) => {
       <div className={clsx(c.answer, { [c.hidden]: !showAnswer })}>
         {answer}
       </div>
-    </div>
+    </GCard>
   );
 };

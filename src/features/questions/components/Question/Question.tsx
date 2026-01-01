@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import c from "./Question.module.css";
+import { Accordion, Button, TextArea } from "@gravity-ui/uikit";
 
 interface QuestionProps {
   id: string;
@@ -57,25 +58,38 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
   };
 
   return (
-    <div className={c.question}>
-      <h1>{name}</h1>
-      <p>Answer: {answer ? answer : "No answer provided"}</p>
-      <button onClick={handleDelete}>Удалить</button>
-      <br />
-      <button onClick={() => setOpenInput(!openInput)}>
-        {openInput ? "Закрыть" : "Добавить ответ"}
-      </button>
-      <br />
-      {openInput && (
-        <>
-          <textarea
-            value={answerVal}
-            onChange={(e) => setAnswerVal(e.target.value)}
-          />
-          <br />
-          <button onClick={handleAddAnswer}>Добавить ответ</button>
-        </>
+    <Accordion.Item summary={name}>
+      {answer ? (
+        <div>
+          <p>{answer}</p>
+          <Button onClick={() => setOpenInput(true)}>Изменить ответ</Button>
+          <Button view="raised" onClick={handleDelete}>
+            Удалить
+          </Button>
+        </div>
+      ) : (
+        <div>
+          {!openInput ? (
+            <Button onClick={() => setOpenInput(true)}>Добавить ответ</Button>
+          ) : (
+            <div>
+              <TextArea
+                value={answerVal}
+                onChange={(e) => setAnswerVal(e.target.value)}
+                size="l"
+                minRows={3}
+                maxRows={6}
+                hasClear
+              />
+              <br />
+              <Button view="raised" onClick={handleAddAnswer}>
+                Добавить ответ
+              </Button>
+              <Button onClick={() => setOpenInput(false)}>Закрыть</Button>
+            </div>
+          )}
+        </div>
       )}
-    </div>
+    </Accordion.Item>
   );
 };

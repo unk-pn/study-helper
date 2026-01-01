@@ -2,11 +2,13 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { DatePicker } from "@gravity-ui/date-components";
+import { DateTime } from "@gravity-ui/date-utils";
 
 export const CreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [subjectName, setSubjectName] = useState<string>("");
-  const [subjectDate, setSubjectDate] = useState<string>("");
+  const [subjectDate, setSubjectDate] = useState<DateTime | null>(null);
   const { data: session } = useSession();
 
   const handleCreateSubject = async () => {
@@ -19,7 +21,7 @@ export const CreateSubject = () => {
           },
           body: JSON.stringify({
             name: subjectName,
-            date: subjectDate,
+            date: subjectDate?.format('YYYY-MM-DD'),
             userId: session?.user.id,
           }),
         });
@@ -27,7 +29,7 @@ export const CreateSubject = () => {
         const data = await res.json();
         if (!res.ok) console.log(data.error);
         setSubjectName("");
-        setSubjectDate("");
+        setSubjectDate(null);
       } catch (error) {
         console.log("error creating subject: ", error);
       }
@@ -47,11 +49,12 @@ export const CreateSubject = () => {
             value={subjectName}
             onChange={(e) => setSubjectName(e.target.value)}
           />
-          <input
+          {/* <input
             type="date"
             value={subjectDate}
             onChange={(e) => setSubjectDate(e.target.value)}
-          />
+          /> */}
+          <DatePicker size="l" value={subjectDate} onUpdate={setSubjectDate} format={"DD.MM.YYYY"}/>
           <button onClick={handleCreateSubject}>Создать</button>
         </div>
       )}

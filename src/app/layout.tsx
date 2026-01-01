@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import '@gravity-ui/uikit/styles/fonts.css';
+import '@gravity-ui/uikit/styles/styles.css';
 import { Navbar } from "@/components/Navbar/Navbar";
-import { Providers } from "@/components/Providers/Providers";
+import { Providers } from "@/components/Providers";
 // import { Geist, Geist_Mono } from "next/font/google";
 
 // const geistSans = Geist({

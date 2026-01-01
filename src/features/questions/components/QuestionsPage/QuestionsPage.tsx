@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Question } from "../Question/Question";
 import { CreateQuestion } from "../CreateQuestion/CreateQuestion";
+import { Accordion } from "@gravity-ui/uikit";
 
 interface Question {
   id: string;
@@ -13,18 +14,7 @@ interface Question {
   updatedAt: Date;
 }
 
-interface Subject {
-  id: string;
-  name: string;
-  status: string;
-  examDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 interface QuestionsPageProps {
-  // questions: Question[];
-  // subject: Subject;
   subjectId: string;
 }
 
@@ -52,7 +42,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       <a href={`/subjects/${subjectId}/cards`}>Cards</a>
       <br />
       <CreateQuestion subjectId={subjectId} />
-      <div>
+      <Accordion size="l">
         {questions.map((q) => (
           <Question
             key={q.id}
@@ -62,7 +52,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
             answer={q.answer}
           />
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 };
