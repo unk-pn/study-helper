@@ -43,24 +43,26 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const { name, userId, date } = await req.json();
-    if (!name || !userId || !date)
+    if (!name || !userId)
       return NextResponse.json(
-        { error: "Something is missing: name, date or userId" },
+        { error: "Something is missing: name or userId" },
         { status: 400 }
       );
 
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime()))
-      return NextResponse.json(
-        { error: "Invalid date format" },
-        { status: 400 }
-      );
+    if (date) {
+      const parsedDate = new Date(date);
+      if (isNaN(parsedDate.getTime()))
+        return NextResponse.json(
+          { error: "Invalid date format" },
+          { status: 400 }
+        );
+    }
 
     const createdSubject = await db.create({
       data: {
         name,
         userId,
-        examDate: parsedDate,
+        examDate: date ? new Date(date) : null,
       },
     });
 
@@ -112,7 +114,7 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { id, status } = await req.json();
+    const { id, status, name, date } = await req.json();
     if (!id || !status)
       return NextResponse.json(
         { error: "Id or status not provided" },
@@ -128,7 +130,7 @@ export async function PATCH(req: NextRequest) {
 
     await db.update({
       where: { id: id },
-      data: { status },
+      data: { status, name, examDate: date },
     });
 
     return NextResponse.json(

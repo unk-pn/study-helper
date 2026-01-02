@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { TextInput } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { DateTime } from "@gravity-ui/date-utils";
 
@@ -43,18 +44,20 @@ export const CreateSubject = () => {
       </button>
       {open && (
         <div>
-          <input
-            type="text"
+          <TextInput
+            size="l"
             placeholder="Название предмета"
             value={subjectName}
             onChange={(e) => setSubjectName(e.target.value)}
+            hasClear
+            label="*"
           />
-          {/* <input
-            type="date"
+          <DatePicker
+            size="l"
             value={subjectDate}
-            onChange={(e) => setSubjectDate(e.target.value)}
-          /> */}
-          <DatePicker size="l" value={subjectDate} onUpdate={setSubjectDate} format={"DD.MM.YYYY"}/>
+            onUpdate={setSubjectDate}
+            format={"DD.MM.YYYY"}
+          />
           <button onClick={handleCreateSubject}>Создать</button>
         </div>
       )}
