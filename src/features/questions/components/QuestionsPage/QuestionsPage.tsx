@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Question } from "../Question/Question";
 import { CreateQuestion } from "../CreateQuestion/CreateQuestion";
-import { Accordion } from "@gravity-ui/uikit";
+import { Accordion, Button } from "@gravity-ui/uikit";
 
 interface Question {
   id: string;
@@ -26,7 +26,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       try {
         const res = await fetch(`/api/questions?subjectId=${subjectId}`);
         const data = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch questions useEffect")
+        if (!res.ok) throw new Error("Failed to fetch questions useEffect");
         setQuestions(data);
       } catch (error) {
         console.log("error loading questions: ", error);
@@ -37,22 +37,24 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
 
   return (
     <div>
-      <a href={"/subjects"}>Back</a>
-      <br />
-      <a href={`/subjects/${subjectId}/cards`}>Cards</a>
-      <br />
+      <Button href={"/subjects"}>Back</Button>
+      <Button href={`/subjects/${subjectId}/cards`}>Cards</Button>
       <CreateQuestion subjectId={subjectId} />
-      <Accordion size="l">
-        {questions.map((q) => (
-          <Question
-            key={q.id}
-            id={q.id}
-            name={q.name}
-            subjectId={q.subjectId}
-            answer={q.answer}
-          />
-        ))}
-      </Accordion>
+      {questions.length ? (
+        <Accordion size="l">
+          {questions.map((q) => (
+            <Question
+              key={q.id}
+              id={q.id}
+              name={q.name}
+              subjectId={q.subjectId}
+              answer={q.answer}
+            />
+          ))}
+        </Accordion>
+      ) : (
+        <p>No questions yet</p>
+      )}
     </div>
   );
 };

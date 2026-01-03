@@ -1,5 +1,13 @@
 .question {
-  padding: 10px 20px;
-  margin: 10px;
-  border: 1px solid black;
+  margin-inline: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }

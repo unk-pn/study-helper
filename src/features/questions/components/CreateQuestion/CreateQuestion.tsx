@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, TextInput } from "@gravity-ui/uikit";
 import { useState } from "react";
 
 interface CreateQuestionProps {
@@ -29,6 +30,7 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
           return;
         }
         setVal("");
+        window.location.reload()
       } catch (error) {
         console.log("error creating question: ", error);
       }
@@ -37,17 +39,17 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
   };
   return (
     <>
-      <button onClick={() => setOpen(!open)}>
+      <Button onClick={() => setOpen(!open)}>
         {open ? "Отмена" : "Добавить вопрос"}
-      </button>
+      </Button>
       {open && (
         <form onSubmit={handleSubmit}>
-          <input
+          <TextInput
             type="text"
             value={val}
             onChange={(e) => setVal(e.target.value)}
           />
-          <button>Создать</button>
+          <Button onClick={handleSubmit}>Создать</Button>
         </form>
       )}
     </>
