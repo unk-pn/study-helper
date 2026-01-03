@@ -2,8 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import c from "./Subject.module.css";
-import { Card, TextInput, SegmentedRadioGroup } from "@gravity-ui/uikit";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import {
+  Card,
+  TextInput,
+  SegmentedRadioGroup,
+  Button,
+  Text,
+} from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { DateTime } from "@gravity-ui/date-utils";
 
@@ -92,18 +98,29 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
     }
   };
 
+  const cancelEdit = () => {
+    setEditState(false);
+    setStatusState(status);
+    setNameState(name);
+    setDateState(null);
+  };
+
   return (
     <Card className={c.subject} view={editState ? "outlined" : "filled"}>
       {!editState ? (
         <>
-          <h2>{name}</h2>
-          <p>Статус: {statusText(statusState)}</p>
-          <p>Дата: {formatDate(examDate)}</p>
-          <button onClick={() => router.push(`/subjects/${id}`)}>
-            Вопросы
-          </button>
-          <button onClick={handleDelete}>Удалить</button>
-          <button onClick={() => setEditState(true)}>Изменить</button>
+          <Text variant="header-2">{name}</Text>
+          <Text>Статус: {statusText(statusState)}</Text>
+          <Text>Дата: {formatDate(examDate)}</Text>
+          <div className={c.buttons}>
+            <Button onClick={() => router.push(`/subjects/${id}`)} view="outlined">
+              Вопросы
+            </Button>
+            <Button onClick={() => setEditState(true)} view="outlined-action">Изменить</Button>
+            <Button onClick={handleDelete} view="outlined-danger">
+              Удалить
+            </Button>
+          </div>
         </>
       ) : (
         <>
@@ -140,9 +157,14 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
             onUpdate={setDateState}
             format={"DD.MM.YYYY"}
           />
-
-          <button onClick={saveChanges}>Сохранить</button>
-          <button onClick={() => setEditState(false)}>Отмена</button>
+          <div className={c.buttons}>
+            <Button onClick={saveChanges} view="outlined">
+              Сохранить
+            </Button>
+            <Button onClick={cancelEdit} view="outlined-danger">
+              Отмена
+            </Button>
+          </div>
         </>
       )}
     </Card>

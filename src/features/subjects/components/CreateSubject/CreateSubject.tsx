@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { TextInput } from "@gravity-ui/uikit";
+import { Button, TextInput } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { DateTime } from "@gravity-ui/date-utils";
 
@@ -10,10 +10,15 @@ export const CreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [subjectName, setSubjectName] = useState<string>("");
   const [subjectDate, setSubjectDate] = useState<DateTime | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
   const { data: session } = useSession();
 
   const handleCreateSubject = async () => {
+    if (!subjectName) setError("Название предмета обязательно");
     const create = async () => {
+      setLoading(true)
       try {
         const res = await fetch("/api/subjects", {
           method: "POST",
@@ -31,17 +36,21 @@ export const CreateSubject = () => {
         if (!res.ok) console.log(data.error);
         setSubjectName("");
         setSubjectDate(null);
+        window.location.reload();
       } catch (error) {
         console.log("error creating subject: ", error);
+        setError("Ошибка при создании предмета");
+      } finally {
+        setLoading(false);
       }
     };
     create();
   };
   return (
     <>
-      <button onClick={() => setOpen(!open)}>
+      <Button onClick={() => setOpen(!open)}>
         {open ? "Отмена" : "Добавить предмет"}
-      </button>
+      </Button>
       {open && (
         <div>
           <TextInput
@@ -51,6 +60,7 @@ export const CreateSubject = () => {
             onChange={(e) => setSubjectName(e.target.value)}
             hasClear
             label="*"
+            validationState={error ? "invalid" : undefined}
           />
           <DatePicker
             size="l"
@@ -58,7 +68,7 @@ export const CreateSubject = () => {
             onUpdate={setSubjectDate}
             format={"DD.MM.YYYY"}
           />
-          <button onClick={handleCreateSubject}>Создать</button>
+          <Button onClick={handleCreateSubject}>Создать</Button>
         </div>
       )}
     </>
