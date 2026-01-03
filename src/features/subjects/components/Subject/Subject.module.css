@@ -13,3 +13,9 @@
   display: flex;
   gap: 10px;
 }
+
+.subject .g-popup,
+.subject [role="menu"] {
+  animation: none !important;
+  transform: none !important;
+}

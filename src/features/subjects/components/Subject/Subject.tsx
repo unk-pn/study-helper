@@ -9,6 +9,8 @@ import {
   SegmentedRadioGroup,
   Button,
   Text,
+  DropdownMenu,
+  Icon,
 } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { DateTime } from "@gravity-ui/date-utils";
@@ -113,14 +115,32 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
           <Text>Статус: {statusText(statusState)}</Text>
           <Text>Дата: {formatDate(examDate)}</Text>
           <div className={c.buttons}>
-            <Button onClick={() => router.push(`/subjects/${id}`)} view="outlined">
+            <Button
+              onClick={() => router.push(`/subjects/${id}`)}
+              view="outlined"
+            >
               Вопросы
             </Button>
-            <Button onClick={() => setEditState(true)} view="outlined-action">Изменить</Button>
+            {/* <Button onClick={() => setEditState(true)} view="outlined-action">
+              Изменить
+            </Button>
             <Button onClick={handleDelete} view="outlined-danger">
               Удалить
-            </Button>
+            </Button> */}
           </div>
+          <DropdownMenu
+            items={[
+              {
+                action: () => setEditState(true),
+                text: "Изменить",
+              },
+              {
+                action: () => handleDelete(),
+                text: "Удалить",
+                theme: "danger",
+              },
+            ]}
+          />
         </>
       ) : (
         <>
