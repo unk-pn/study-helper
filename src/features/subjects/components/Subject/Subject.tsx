@@ -10,7 +10,6 @@ import {
   Button,
   Text,
   DropdownMenu,
-  Icon,
 } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { DateTime } from "@gravity-ui/date-utils";
@@ -111,39 +110,35 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
     <Card className={c.subject} view={editState ? "outlined" : "filled"}>
       {!editState ? (
         <>
-          <Text variant="header-2">{name}</Text>
-          <Text>Статус: {statusText(statusState)}</Text>
-          <Text>Дата: {formatDate(examDate)}</Text>
-          <div className={c.buttons}>
+          <div className={c.info}>
+            <Text variant="header-2">{name}</Text>
+            <Text>Статус: {statusText(statusState)}</Text>
+            <Text>Дата: {formatDate(examDate)}</Text>
             <Button
               onClick={() => router.push(`/subjects/${id}`)}
               view="outlined"
             >
               Вопросы
             </Button>
-            {/* <Button onClick={() => setEditState(true)} view="outlined-action">
-              Изменить
-            </Button>
-            <Button onClick={handleDelete} view="outlined-danger">
-              Удалить
-            </Button> */}
           </div>
-          <DropdownMenu
-            items={[
-              {
-                action: () => setEditState(true),
-                text: "Изменить",
-              },
-              {
-                action: () => handleDelete(),
-                text: "Удалить",
-                theme: "danger",
-              },
-            ]}
-          />
+          <div className={c.dropdown}>
+            <DropdownMenu
+              items={[
+                {
+                  action: () => setEditState(true),
+                  text: "Изменить",
+                },
+                {
+                  action: () => handleDelete(),
+                  text: "Удалить",
+                  theme: "danger",
+                },
+              ]}
+            />
+          </div>
         </>
       ) : (
-        <>
+        <div className={c.editForm}>
           <TextInput
             size="m"
             value={nameState}
@@ -185,7 +180,7 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
               Отмена
             </Button>
           </div>
-        </>
+        </div>
       )}
     </Card>
   );

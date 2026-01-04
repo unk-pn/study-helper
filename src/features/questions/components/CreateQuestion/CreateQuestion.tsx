@@ -2,6 +2,7 @@
 
 import { Button, TextInput } from "@gravity-ui/uikit";
 import { useState } from "react";
+import c from "./CreateQuestion.module.css";
 
 interface CreateQuestionProps {
   subjectId: string;
@@ -37,13 +38,14 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
     };
     load();
   };
+
   return (
-    <>
+    <div>
       <Button onClick={() => setOpen(!open)}>
         {open ? "Отмена" : "Добавить вопрос"}
       </Button>
       {open && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={c.form}>
           <TextInput
             type="text"
             value={val}
@@ -52,6 +54,6 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
           <Button onClick={handleSubmit}>Создать</Button>
         </form>
       )}
-    </>
+    </div>
   );
 };

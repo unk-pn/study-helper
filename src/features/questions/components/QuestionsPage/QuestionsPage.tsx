@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Question } from "../Question/Question";
 import { CreateQuestion } from "../CreateQuestion/CreateQuestion";
 import { Accordion, Button } from "@gravity-ui/uikit";
+import c from "./QuestionsPage.module.css";
 
 interface Question {
   id: string;
@@ -37,9 +38,11 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
 
   return (
     <div>
-      <Button href={"/subjects"}>Back</Button>
-      <Button href={`/subjects/${subjectId}/cards`}>Cards</Button>
-      <CreateQuestion subjectId={subjectId} />
+      <div className={c.buttons}>
+        <Button href={"/subjects"}>Back</Button>
+        <Button href={`/subjects/${subjectId}/cards`} view="action">Cards</Button>
+        <CreateQuestion subjectId={subjectId} />
+      </div>
       {questions.length ? (
         <Accordion size="l">
           {questions.map((q) => (

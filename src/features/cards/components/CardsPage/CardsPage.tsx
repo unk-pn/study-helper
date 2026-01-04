@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import c from "./CardsPage.module.css";
 import { Card } from "../Card/Card";
 import { Nav } from "../Nav/Nav";
+import { Button } from "@gravity-ui/uikit";
 
 interface CardsPageProps {
   id: string;
@@ -75,36 +76,41 @@ export const CardsPage = ({ id }: CardsPageProps) => {
     return (
       <div className={c.container}>
         {cards.length === 0 ? (
-          <div>No cards available.</div>
+          <p className={c.noCards}>No cards available.</p>
         ) : cards.length > 0 &&
           correctAnswers === 0 &&
           incorrectAnswers === 0 ? (
-          <button className={c.startButton} onClick={handleStart}>
+          <Button size="l" className={c.startButton} onClick={handleStart}>
             Start
-          </button>
+          </Button>
         ) : (
-          <div>
-            <div>Session ended!</div>
-            <div>Correct answers: {correctAnswers}</div>
-            <div>Incorrect answers: {incorrectAnswers}</div>
-            <button className={c.startButton} onClick={handleStart}>
+          <div className={c.results}>
+            <h2 className={c.sessionEnded}>Session ended!</h2>
+            <h4 className={c.correctAnswers}>
+              Correct answers: {correctAnswers}
+            </h4>
+            <h4 className={c.incorrectAnswers}>
+              Incorrect answers: {incorrectAnswers}
+            </h4>
+            <Button size="l" className={c.startButton} onClick={handleStart}>
               Start Again
-            </button>
+            </Button>
+            <Button size="l" href={`/subjects/${id}`}>
+              Back to Questions
+            </Button>
           </div>
         )}
       </div>
     );
   }
   return (
-    <div>
-      <div>
-        <Card
-          key={cards[currentCardIndex].id}
-          question={cards[currentCardIndex].name}
-          answer={cards[currentCardIndex].answer}
-        />
-        <Nav onKnowClick={onKnowClick} onDontKnowClick={onDontKnowClick} />
-      </div>
+    <div className={c.container}>
+      <Card
+        key={cards[currentCardIndex].id}
+        question={cards[currentCardIndex].name}
+        answer={cards[currentCardIndex].answer}
+      />
+      <Nav onKnowClick={onKnowClick} onDontKnowClick={onDontKnowClick} />
     </div>
   );
 };
