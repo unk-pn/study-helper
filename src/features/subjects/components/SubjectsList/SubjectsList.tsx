@@ -13,6 +13,7 @@ type SubjectType = {
 
 export const SubjectsList = () => {
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
+  
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -27,9 +28,9 @@ export const SubjectsList = () => {
     };
     fetchSubjects();
   }, []);
+
   return (
     <div>
-      {/* {mockSubjects.map((s) => ( */}
       {subjects.map((s) => (
         <Subject
           key={s.id}

@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import c from "./Subject.module.css";
-import { useState } from "react";
 import {
   Card,
   TextInput,
@@ -12,7 +11,8 @@ import {
   DropdownMenu,
 } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
-import { DateTime } from "@gravity-ui/date-utils";
+import { formatDate } from "@/lib/formatDate";
+import { SubjectStatus, useSubject } from "../../hooks/useSubject";
 
 interface SubjectProps {
   id: string;
@@ -21,90 +21,22 @@ interface SubjectProps {
   examDate: string;
 }
 
-enum SubjectStatus {
-  IN_PROGRESS,
-  PASSED,
-  FAILED,
-}
-
-const formatDate = (date: string | null) => {
-  if (!date) return "Не указана";
-  const [year, month, day] = date.split("T")[0].split("-");
-  return `${day}.${month}.${year}`;
-};
-
 export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
-  const [editState, setEditState] = useState<boolean>(false);
-  const [statusState, setStatusState] = useState<string>(status);
-  const [nameState, setNameState] = useState<string>(name);
-  const [dateState, setDateState] = useState<DateTime | null>(null);
+  const {
+    editState,
+    setEditState,
+    statusState,
+    setStatusState,
+    nameState,
+    setNameState,
+    dateState,
+    setDateState,
+    statusText,
+    handleDelete,
+    saveChanges,
+    cancelEdit,
+  } = useSubject(id, status, name);
   const router = useRouter();
-
-  const statusText = (text: string) => {
-    switch (text) {
-      case SubjectStatus[SubjectStatus.IN_PROGRESS]:
-        return "В процессе";
-      case SubjectStatus[SubjectStatus.PASSED]:
-        return "Сдан";
-      case SubjectStatus[SubjectStatus.FAILED]:
-        return "Не сдан";
-      default:
-        return "Неизвестно";
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      const res = await fetch("/api/subjects", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
-      window.location.reload();
-    } catch (error) {
-      console.log("error deleting subject: ", error);
-    }
-  };
-
-  const saveChanges = async () => {
-    try {
-      const res = await fetch("/api/subjects", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          status: statusState,
-          name: nameState,
-          date: dateState,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
-      setEditState(false);
-      window.location.reload();
-    } catch (error) {
-      console.log("error deleting subject: ", error);
-    }
-  };
-
-  const cancelEdit = () => {
-    setEditState(false);
-    setStatusState(status);
-    setNameState(name);
-    setDateState(null);
-  };
 
   return (
     <Card className={c.subject} view={editState ? "outlined" : "filled"}>
