@@ -3,17 +3,30 @@
 import { FormEvent, useState } from "react";
 import c from "./page.module.css";
 import { signIn } from "next-auth/react";
-import { PinInput } from "@gravity-ui/uikit";
+import { Button, PinInput, TextInput } from "@gravity-ui/uikit";
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const SignUpPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [code, setCode] = useState<string[]>([]);
   const [codeSended, setCodeSended] = useState<boolean>(false);
+  const [emailValid, setEmailValid] = useState<boolean | null>(null);
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
 
-  const onFirstSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onFirstSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
+
+    if (password !== passwordConfirm) {
+      alert("passwords do not match");
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -36,7 +49,9 @@ const SignUpPage = () => {
     }
   };
 
-  const onCodeSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const onCodeSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement> | FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
     try {
       const res = await fetch("/api/verify-code", {
@@ -80,47 +95,78 @@ const SignUpPage = () => {
     }
   };
 
+  const handleEmailUpdate = (str: string) => {
+    setEmail(str);
+    setEmailValid(!str || emailRegex.test(str));
+  };
+
+  const handlePasswordsUpdate = (pass: string, confirmPass: string) => {
+    setPassword(pass);
+    setPasswordConfirm(confirmPass);
+    setPasswordsMatch(pass === confirmPass || (!pass && !confirmPass));
+  };
+
   return (
     <div className={c.wrapper}>
-      <form className={c.form} onSubmit={onFirstSubmit}>
-        <h1 className={c.title}>Sign Up</h1>
-        <input
-          type="text"
-          placeholder="name"
-          className={c.name}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="example@gmail.com"
-          className={c.email}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="password"
-          className={c.password}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className={c.button}>Send code</button>
-      </form>
-      {codeSended && (
-        <form className={c.codeWrapper} onSubmit={onCodeSubmit}>
-          {/* <input
+      {!codeSended ? (
+        <form
+          className={c.form}
+          // onSubmit={onFirstSubmit}
+        >
+          <h1 className={c.title}>Sign Up</h1>
+          <TextInput
             type="text"
-            maxLength={6}
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            required
-          /> */}
+            placeholder="name"
+            className={c.name}
+            value={name}
+            onUpdate={(val) => setName(val)}
+          />
+          <TextInput
+            type="email"
+            placeholder="example@gmail.com"
+            className={c.email}
+            value={email}
+            onUpdate={(val) => handleEmailUpdate(val)}
+            validationState={emailValid === false ? "invalid" : undefined}
+            errorMessage={
+              emailValid === false ? "Некорректный email" : undefined
+            }
+          />
+          <TextInput
+            type="password"
+            placeholder="password"
+            className={c.password}
+            value={password}
+            onUpdate={(val) => handlePasswordsUpdate(val, passwordConfirm)}
+            validationState={!passwordsMatch ? "invalid" : undefined}
+            errorMessage={!passwordsMatch ? "Пароли не совпадают" : undefined}
+          />
+          <TextInput
+            type="password"
+            placeholder="confirm password"
+            className={c.password}
+            value={passwordConfirm}
+            onUpdate={(val) => handlePasswordsUpdate(password, val)}
+            validationState={!passwordsMatch ? "invalid" : undefined}
+            errorMessage={!passwordsMatch ? "Пароли не совпадают" : undefined}
+          />
+          <Button
+            size="l"
+            className={c.button}
+            view="action"
+            onClick={onFirstSubmit}
+            disabled={!emailValid || !passwordsMatch || !name.trim()}
+          >
+            Send code
+          </Button>
+        </form>
+      ) : (
+        <form className={c.codeWrapper} onSubmit={onCodeSubmit}>
+          <h1>Код верификации был отправлен на {email}.</h1>
           <PinInput size="l" value={code} length={6} onUpdate={setCode} />
-          <button className={c.button}>Register</button>
+          <Button onClick={onCodeSubmit} className={c.button}>
+            Register
+          </Button>
         </form>
       )}
     </div>

@@ -25,7 +25,7 @@ export const SuggestSubject = () => {
           return;
         }
         setSubjects(data);
-        setCurr(data[0])
+        setCurr(data[0]);
       } catch (error) {
         console.log("failed to get subjects: ", error);
       }
@@ -49,17 +49,13 @@ export const SuggestSubject = () => {
     };
   }, [subjects]);
 
-  if (!curr) return (
-    <Link href="/auth/signIn">
-      Sign In
-    </Link>
-  );
-
   return (
     <h2>
-      <Link href={`/subjects/${curr.id}`} className={c.link}>
-        {curr.name}
-      </Link>
+      {curr && (
+        <Link href={`/subjects/${curr.id}`} className={c.link}>
+          {curr.name}
+        </Link>
+      )}
       <p>name: {session?.user.name}</p>
       <p>email: {session?.user.email}</p>
       {data.status === "authenticated" ? (
