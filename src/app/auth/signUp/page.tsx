@@ -9,7 +9,6 @@ const SignUpPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // const [code, setCode] = useState<string>("");
   const [code, setCode] = useState<string[]>([]);
   const [codeSended, setCodeSended] = useState<boolean>(false);
 
