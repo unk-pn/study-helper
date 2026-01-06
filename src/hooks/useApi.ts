@@ -15,7 +15,7 @@ interface useApiResult<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
-  execute?: (options: Partial<ApiOptions>) => Promise<T | void>;
+  execute: (options: Partial<ApiOptions>) => Promise<T | void>;
 }
 
 export const useApi = <T = unknown>(
