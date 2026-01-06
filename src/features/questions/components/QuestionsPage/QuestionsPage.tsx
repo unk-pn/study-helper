@@ -1,39 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Question, CreateQuestion } from "@/features/questions/components";
 import { Accordion, Button } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
-
-interface Question {
-  id: string;
-  name: string;
-  subjectId: string;
-  answer: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { useQuestionsPage } from "../../hooks/useQuestionsPage";
 
 interface QuestionsPageProps {
   subjectId: string;
 }
 
 export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
-  const [questions, setQuestions] = useState<Question[]>([]);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(`/api/questions?subjectId=${subjectId}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch questions useEffect");
-        setQuestions(data);
-      } catch (error) {
-        console.log("error loading questions: ", error);
-      }
-    };
-    load();
-  }, []);
+  const { questions } = useQuestionsPage(subjectId);
 
   return (
     <div>

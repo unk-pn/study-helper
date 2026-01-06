@@ -1,75 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import c from "./CardsPage.module.css";
 import { Card, Nav } from "@/features/cards/components";
 import { Button } from "@gravity-ui/uikit";
+import { useCardsPage } from "../../hooks/useCardsPage";
 
 interface CardsPageProps {
   id: string;
 }
 
-interface Card {
-  id: string;
-  name: string;
-  answer: string;
-  subjectId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-function randomArray<T>(arr: T[]) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
 export const CardsPage = ({ id }: CardsPageProps) => {
-  const [cards, setCards] = useState<Card[]>([]);
-  const [currentCardIndex, setCurrentCardIndex] = useState<number | null>(null);
-  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState<number>(0);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(`/api/questions?subjectId=${id}`);
-        const data = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch cards useEffect");
-        setCards(randomArray(data));
-      } catch (error) {
-        console.log("error loading cards: ", error);
-      }
-    };
-    load();
-  }, []);
-
-  const onDontKnowClick = () => {
-    setIncorrectAnswers((i) => i + 1);
-    setCurrentCardIndex((prev) => {
-      if (prev === null) return null;
-      if (prev >= cards.length - 1) return null;
-      return prev + 1;
-    });
-  };
-
-  const onKnowClick = () => {
-    setCorrectAnswers((c) => c + 1);
-    setCurrentCardIndex((prev) => {
-      if (prev === null) return null;
-      if (prev >= cards.length - 1) return null;
-      return prev + 1;
-    });
-  };
-
-  const handleStart = () => {
-    setCorrectAnswers(0);
-    setIncorrectAnswers(0);
-    setCurrentCardIndex(0);
-    setCurrentCardIndex(0);
-  };
+  const {
+    cards,
+    currentCardIndex,
+    correctAnswers,
+    incorrectAnswers,
+    onDontKnowClick,
+    onKnowClick,
+    handleStart,
+  } = useCardsPage(id);
 
   if (currentCardIndex === null) {
     return (

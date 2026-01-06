@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+
 import c from "./Question.module.css";
 import { Accordion, Button, TextArea } from "@gravity-ui/uikit";
+import { useQuestion } from "../../hooks/useQuestion";
 
 interface QuestionProps {
   id: string;
@@ -11,57 +12,15 @@ interface QuestionProps {
 }
 
 export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
-  const [openInput, setOpenInput] = useState<boolean>(false);
-  const [answerVal, setAnswerVal] = useState<string>("");
-
-  const handleDelete = async () => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
-      window.location.reload();
-    } catch (error) {
-      console.log("error deleting question: ", error);
-    }
-  };
-
-  const handleAddAnswer = async () => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          answer: answerVal,
-          id: id,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
-      setAnswerVal("");
-      window.location.reload();
-    } catch (error) {
-      console.log("error deleting question: ", error);
-    }
-  };
-
-  const handleChangeAnswer = () => {
-    setAnswerVal(answer || "");
-    setOpenInput(true);
-  };
+  const {
+    openInput,
+    setOpenInput,
+    answerVal,
+    setAnswerVal,
+    handleDelete,
+    handleAddAnswer,
+    handleChangeAnswer,
+  } = useQuestion(id, answer);
 
   return (
     <Accordion.Item summary={name}>
