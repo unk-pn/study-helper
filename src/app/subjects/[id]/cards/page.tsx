@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { CardsPage } from "@/features/cards/components/CardsPage/CardsPage";
+import { CardsPage } from "@/features/cards/components";
 import { useParams } from "next/navigation";
 
 const TestPage = () => {
@@ -10,7 +10,7 @@ const TestPage = () => {
     <div>
       <CardsPage id={id as string} />
     </div>
-  )
-}
+  );
+};
 
-export default TestPage
+export default TestPage;

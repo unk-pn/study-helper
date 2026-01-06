@@ -1,5 +1,5 @@
-import { CreateSubject } from "@/features/subjects/components/CreateSubject/CreateSubject";
-import { SubjectsList } from "@/features/subjects/components/SubjectsList/SubjectsList";
+import { CreateSubject, SubjectsList } from "@/features/subjects/components";
+
 
 const SubjectsPage = () => {
   return (

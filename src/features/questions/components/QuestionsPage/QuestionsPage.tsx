@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Question } from "../Question/Question";
-import { CreateQuestion } from "../CreateQuestion/CreateQuestion";
+import { Question, CreateQuestion } from "@/features/questions/components";
 import { Accordion, Button } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
 
@@ -40,7 +39,9 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
     <div>
       <div className={c.buttons}>
         <Button href={"/subjects"}>Back</Button>
-        <Button href={`/subjects/${subjectId}/cards`} view="action">Cards</Button>
+        <Button href={`/subjects/${subjectId}/cards`} view="action">
+          Cards
+        </Button>
         <CreateQuestion subjectId={subjectId} />
       </div>
       {questions.length ? (

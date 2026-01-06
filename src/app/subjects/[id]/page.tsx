@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { QuestionsPage } from '../../../features/questions/components/QuestionsPage/QuestionsPage';
+import { QuestionsPage } from "@/features/questions/components";
 import c from "./page.module.css";
 
 const QuestionPage = () => {

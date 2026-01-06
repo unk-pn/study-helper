@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import c from "./CardsPage.module.css";
-import { Card } from "../Card/Card";
-import { Nav } from "../Nav/Nav";
+import { Card, Nav } from "@/features/cards/components";
 import { Button } from "@gravity-ui/uikit";
 
 interface CardsPageProps {

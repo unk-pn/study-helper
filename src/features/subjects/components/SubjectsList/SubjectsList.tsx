@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Subject } from "../Subject/Subject";
+import { Subject } from "@/features/subjects/components";
 
 type SubjectType = {
   id: string;
@@ -13,7 +13,7 @@ type SubjectType = {
 
 export const SubjectsList = () => {
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
-  
+
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
