@@ -40,7 +40,12 @@ export const CardsPage = ({ id }: CardsPageProps) => {
             <h4 className={c.incorrectAnswers}>
               Incorrect answers: {incorrectAnswers}
             </h4>
-            <Button size="l" className={c.startButton} onClick={handleStart}>
+            <Button
+              size="l"
+              view="action"
+              className={c.startButton}
+              onClick={handleStart}
+            >
               Start Again
             </Button>
             <Button size="l" href={`/subjects/${id}`}>
