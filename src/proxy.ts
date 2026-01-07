@@ -7,12 +7,17 @@ export async function proxy(request: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
   });
 
-  if (!token)
+  const { pathname } = request.nextUrl;
+
+  if (token && pathname.startsWith("/auth"))
+    return NextResponse.redirect(new URL("/", request.url));
+
+  if (!token && pathname.startsWith("/subjects"))
     return NextResponse.redirect(new URL("/auth/signIn", request.url));
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/subjects/:path*"],
+  matcher: ["/subjects/:path*", "/auth/:path*"],
 };
