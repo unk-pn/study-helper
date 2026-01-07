@@ -9,6 +9,7 @@ import {
   Button,
   Text,
   DropdownMenu,
+  Label,
 } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { formatDate } from "@/lib/formatDate";
@@ -32,6 +33,7 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
     dateState,
     setDateState,
     statusText,
+    labelTheme,
     handleDelete,
     saveChanges,
     cancelEdit,
@@ -44,8 +46,16 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
         <>
           <div className={c.info}>
             <Text variant="header-2">{name}</Text>
-            <Text>Статус: {statusText(statusState)}</Text>
             <Text>Дата: {formatDate(examDate)}</Text>
+            {/* <Text>Статус: {statusText(statusState)}</Text> */}
+            <Label
+              width="auto"
+              className={c.label}
+              size="xs"
+              theme={labelTheme(statusState)}
+            >
+              {statusText(statusState)}
+            </Label>
             <Button
               onClick={() => router.push(`/subjects/${id}`)}
               view="outlined"

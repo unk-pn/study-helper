@@ -9,6 +9,10 @@
   gap: 10px;
 }
 
+.label * {
+  margin: 0 auto;
+}
+
 .info {
   display: flex;
   flex-direction: column;

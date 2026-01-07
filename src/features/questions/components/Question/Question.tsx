@@ -37,7 +37,7 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
                 hasClear
               />
               <div className={c.buttons}>
-                <Button onClick={handleAddAnswer}>Сохранить</Button>
+                <Button view="action" onClick={handleAddAnswer}>Сохранить</Button>
                 <Button onClick={() => setOpenInput(false)}>Отмена</Button>
               </div>
             </>
@@ -45,8 +45,8 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
             <>
               <pre>{answer}</pre>
               <div className={c.buttons}>
-                <Button onClick={handleChangeAnswer}>Изменить ответ</Button>
-                <Button view="raised" onClick={handleDelete}>
+                <Button view="outlined" onClick={handleChangeAnswer}>Изменить ответ</Button>
+                <Button view="outlined-danger" onClick={handleDelete}>
                   Удалить
                 </Button>
               </div>

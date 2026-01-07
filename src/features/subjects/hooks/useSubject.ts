@@ -26,6 +26,19 @@ export const useSubject = (id: string, status: string, name: string) => {
     }
   };
 
+  const labelTheme = (status: string) => {
+    switch (status) {
+      case SubjectStatus[SubjectStatus.PASSED]:
+        return "success";
+      case SubjectStatus[SubjectStatus.FAILED]:
+        return "danger";
+      case SubjectStatus[SubjectStatus.IN_PROGRESS]:
+        return "normal";
+      default:
+        return "normal";
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const res = await fetch("/api/subjects", {
@@ -89,6 +102,7 @@ export const useSubject = (id: string, status: string, name: string) => {
     dateState,
     setDateState,
     statusText,
+    labelTheme,
     handleDelete,
     saveChanges,
     cancelEdit,
