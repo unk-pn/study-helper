@@ -1,3 +1,13 @@
+:root {
+  --fs-h1: clamp(2rem, 5vw + 1rem, 4rem);
+  --fs-h2: clamp(1.75rem, 4.5vw + 0.75rem, 3rem);
+  --fs-h3: clamp(1.5rem, 4vw + 0.5rem, 2.5rem);
+  --fs-h4: clamp(1.25rem, 3.5vw + 0.5rem, 2rem);
+  --fs-h5: clamp(1.125rem, 3vw + 0.25rem, 1.75rem);
+  --fs-h6: clamp(1rem, 2.5vw + 0.25rem, 1.5rem);
+  --fs-p: clamp(1rem, 2vw + 0.25rem, 1.125rem);
+}
+
 * {
   margin: 0;
   padding: 0;

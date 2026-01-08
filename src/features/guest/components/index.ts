@@ -1,2 +1,3 @@
 export { GuestHome } from "./GuestHome/GuestHome";
-export { GuestSubjects } from "./GuestSubjects/GuestSubjects";
+export { GuestHero } from "./GuestHero/GuestHero";
+export { GuestFeatures } from "./GuestFeatures/GuestFeatures";
