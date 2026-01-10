@@ -7,6 +7,10 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { clsx } from "clsx";
 
+const note = (
+  <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>Forgot password?</Link>
+);
+
 export const SignInForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -50,6 +54,7 @@ export const SignInForm = () => {
           onUpdate={(val) => setPassword(val)}
           type="password"
           size="l"
+          note={note}
         />
         <Button
           type="submit"
