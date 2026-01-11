@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     });
 
     try {
-      await sendEmail(user.email, code.code);
+      await sendEmail("registration", user.email, code.code);
     } catch {
       await prisma.user.delete({
         where: { id: user.id },

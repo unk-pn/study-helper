@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     });
 
     try {
-      await sendEmail(user.email, code.code);
+      await sendEmail("passwordChange", user.email, code.code);
     } catch {
       await prisma.verificationCode.delete({
         where: { id: code.id },
