@@ -1,0 +1,17 @@
+.container {
+  margin-bottom: 32px;
+}
+
+.header {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8;
+  align-items: flex-start;
+}

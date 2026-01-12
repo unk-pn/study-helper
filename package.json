@@ -11,6 +11,7 @@
   "dependencies": {
     "@gravity-ui/date-components": "^3.4.1",
     "@gravity-ui/date-utils": "^2.6.0",
+    "@gravity-ui/icons": "^2.16.0",
     "@gravity-ui/uikit": "^7.29.0",
     "@prisma/client": "^6.0.0",
     "@react-email/render": "^2.0.0",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Subject } from "@/features/subjects/components";
+import c from "./SubjectsList.module.css";
 
 type SubjectType = {
   id: string;
@@ -9,6 +10,9 @@ type SubjectType = {
   userId: string;
   status: string;
   examDate: string;
+  _count: {
+    questions: number;
+  };
 };
 
 export const SubjectsList = () => {
@@ -30,7 +34,7 @@ export const SubjectsList = () => {
   }, []);
 
   return (
-    <div>
+    <div className={c.subjectsList}>
       {subjects.map((s) => (
         <Subject
           key={s.id}
@@ -38,6 +42,7 @@ export const SubjectsList = () => {
           name={s.name}
           status={s.status}
           examDate={s.examDate}
+          questions={s._count.questions}
         />
       ))}
       {!subjects.length && "Добавьте свой первый предмет!"}

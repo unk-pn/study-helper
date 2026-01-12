@@ -12,6 +12,7 @@ import {
   Label,
 } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
+import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { formatDate } from "@/lib/formatDate";
 import { SubjectStatus, useSubject } from "../../hooks/useSubject";
 
@@ -20,9 +21,10 @@ interface SubjectProps {
   name: string;
   status: string;
   examDate: string;
+  questions: number;
 }
 
-export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
+export const Subject = ({ id, name, status, examDate, questions }: SubjectProps) => {
   const {
     editState,
     setEditState,
@@ -41,13 +43,17 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
   const router = useRouter();
 
   return (
-    <Card className={c.subject} view={editState ? "outlined" : "filled"}>
+    <Card
+      className={c.subject}
+      view={editState ? "outlined" : "outlined"}
+      type="selection"
+      onClick={() => router.push(`/subjects/${id}`)}
+    >
       {!editState ? (
         <>
           <div className={c.info}>
             <Text variant="header-2">{name}</Text>
-            <Text>Дата: {formatDate(examDate)}</Text>
-            {/* <Text>Статус: {statusText(statusState)}</Text> */}
+            <Text>{questions} questions</Text>
             <Label
               width="auto"
               className={c.label}
@@ -56,31 +62,30 @@ export const Subject = ({ id, name, status, examDate }: SubjectProps) => {
             >
               {statusText(statusState)}
             </Label>
-            <Button
-              onClick={() => router.push(`/subjects/${id}`)}
-              view="outlined"
-            >
-              Вопросы
-            </Button>
           </div>
-          <div className={c.dropdown}>
+          <div className={c.dropdown} onClick={(e) => e.stopPropagation()}>
+            <Label width="auto" className={c.label} size="xs">
+              {formatDate(examDate)}
+            </Label>
             <DropdownMenu
               items={[
                 {
                   action: () => setEditState(true),
                   text: "Изменить",
+                  iconStart: <PencilToLine />,
                 },
                 {
                   action: () => handleDelete(),
                   text: "Удалить",
                   theme: "danger",
+                  iconStart: <TrashBin />,
                 },
               ]}
             />
           </div>
         </>
       ) : (
-        <div className={c.editForm}>
+        <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
           <TextInput
             size="m"
             value={nameState}

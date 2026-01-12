@@ -23,6 +23,13 @@ export async function GET() {
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        _count: {
+          select: {
+            questions: true
+          }
+        }
+      }
     });
     if (!subjects)
       return NextResponse.json(

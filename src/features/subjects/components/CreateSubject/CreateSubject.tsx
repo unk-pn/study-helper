@@ -3,6 +3,7 @@
 import { Button, TextInput } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { useCreateSubject } from "../../hooks/useCreateSubject";
+import c from "./CreateSubject.module.css";
 
 export const CreateSubject = () => {
   const {
@@ -18,12 +19,15 @@ export const CreateSubject = () => {
   } = useCreateSubject();
 
   return (
-    <>
-      <Button onClick={() => setOpen(!open)}>
-        {open ? "Отмена" : "Добавить предмет"}
-      </Button>
+    <div className={c.container}>
+      <div className={c.header}>
+        <h1 className={c.title}>Your Subjects</h1>
+        <Button onClick={() => setOpen(!open)} view="action" loading={loading}>
+          {open ? "Отмена" : "Добавить предмет"}
+        </Button>
+      </div>
       {open && (
-        <div>
+        <form className={c.form} onSubmit={handleCreateSubject}>
           <TextInput
             size="l"
             placeholder="Название предмета"
@@ -39,9 +43,11 @@ export const CreateSubject = () => {
             onUpdate={setSubjectDate}
             format={"DD.MM.YYYY"}
           />
-          <Button onClick={handleCreateSubject}>Создать</Button>
-        </div>
+          <Button type="submit" disabled={loading || !subjectName}>
+            Создать
+          </Button>
+        </form>
       )}
-    </>
+    </div>
   );
 };
