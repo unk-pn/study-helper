@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import c from "./Navbar.module.css";
 import clsx from "clsx";
 import Link from "next/link";
+import { Divider, User } from "@gravity-ui/uikit";
+import { useSession } from "next-auth/react";
 
 const navItems = [
   { title: "Home", link: "/" },
@@ -15,6 +17,7 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const mobileNavRef = useRef<HTMLElement>(null);
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
+  const { data: session } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -74,6 +77,13 @@ export const Navbar = () => {
             </li>
           ))}
         </ul>
+        <Divider className={c.divider} orientation="vertical" />
+        <User
+          avatar={{ text: session?.user?.name?.[0] || "U", theme: "brand" }}
+          size="m"
+          name={session?.user?.name}
+          description={session?.user?.email}
+        />
       </nav>
 
       <button

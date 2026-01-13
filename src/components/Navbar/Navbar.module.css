@@ -1,5 +1,5 @@
 .navbar {
-  background-color: rgb(255, 220, 220);
+  background-color: white;
   position: fixed;
   top: 0;
   width: 100%;
@@ -17,6 +17,13 @@
 .titleLink {
   color: inherit;
   text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 .navList {
@@ -38,6 +45,10 @@
 .navLink {
   text-decoration: none;
   color: inherit;
+}
+
+.divider {
+height: 30px;
 }
 
 .burgerButton {

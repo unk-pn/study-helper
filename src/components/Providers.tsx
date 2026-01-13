@@ -9,7 +9,7 @@ const theme: Theme = "light";
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <SessionProvider>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme} rootClassName="custom-root">{children}</ThemeProvider>
     </SessionProvider>
   );
 };
