@@ -1,3 +1,12 @@
+.modalContent {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 300px;
+  max-width: 90vw;
+}
+
 .container {
   margin-bottom: 32px;
 }
@@ -9,9 +18,12 @@
 }
 
 .form {
-  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 8;
   align-items: flex-start;
+}
+
+.input {
+  width: 100%;
 }

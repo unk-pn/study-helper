@@ -1,21 +1,16 @@
 import { useApi } from "@/hooks/useApi";
 import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useCreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [subjectName, setSubjectName] = useState<string>("");
   const [subjectDate, setSubjectDate] = useState<DateTime | null>(null);
-  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
 
-  const {
-    execute: createSubject,
-    loading,
-    error,
-  } = useApi("/api/subjects");
+  const { execute: createSubject, loading, error } = useApi("/api/subjects");
 
   const handleCreateSubject = useCallback(async () => {
     if (!subjectName.trim()) {
@@ -39,7 +34,20 @@ export const useCreateSubject = () => {
     } catch {
       // Ошибка уже обрабатывается в useApi
     }
-  }, [subjectName, subjectDate, session, createSubject, router]);
+  }, [subjectName, subjectDate, session, createSubject]);
+
+  const handleClear = () => {
+    setSubjectName("");
+    setSubjectDate(null);
+  };
+  const handleOpenModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    handleClear();
+  };
 
   return {
     open,
@@ -50,6 +58,9 @@ export const useCreateSubject = () => {
     setSubjectDate,
     loading,
     error,
+    inputRef,
     handleCreateSubject,
+    handleOpenModal,
+    handleCloseModal,
   };
 };
