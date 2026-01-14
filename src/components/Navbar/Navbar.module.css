@@ -48,7 +48,11 @@
 }
 
 .divider {
-height: 30px;
+  height: 30px;
+}
+
+.userAvatar {
+  cursor: pointer;
 }
 
 .burgerButton {
@@ -163,4 +167,18 @@ height: 30px;
   .burgerButton {
     display: flex;
   }
+}
+
+/* ==== Popover ==== */
+
+.popoverContent {
+  padding: 30px 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.signOutButton {
+  margin-top: 10px;
 }

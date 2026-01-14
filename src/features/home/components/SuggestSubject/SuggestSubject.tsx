@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import c from "./SuggestSubject.module.css";
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { Button } from "@gravity-ui/uikit";
 
 type SubjectType = {
   id: string;
@@ -12,7 +10,6 @@ type SubjectType = {
 };
 
 export const SuggestSubject = () => {
-  const { data: session } = useSession();
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
 
   useEffect(() => {
@@ -50,17 +47,16 @@ export const SuggestSubject = () => {
   }, [subjects]);
 
   return (
-    <h2>
-      {curr && (
-        <Link href={`/subjects/${curr.id}`} className={c.link}>
-          {curr.name}
-        </Link>
-      )}
-      <p>name: {session?.user.name}</p>
-      <p>email: {session?.user.email}</p>
-      <Button size="l" onClick={() => signOut()}>
-        Sign out
-      </Button>
-    </h2>
+    <div>
+      <h1>What do you want to learn today?</h1>
+
+      <h2>
+        {curr && (
+          <Link href={`/subjects/${curr.id}`} className={c.link}>
+            {curr.name}
+          </Link>
+        )}
+      </h2>
+    </div>
   );
 };

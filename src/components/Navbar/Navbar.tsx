@@ -4,14 +4,29 @@ import { useEffect, useRef, useState } from "react";
 import c from "./Navbar.module.css";
 import clsx from "clsx";
 import Link from "next/link";
-import { Divider, User } from "@gravity-ui/uikit";
-import { useSession } from "next-auth/react";
+import { Avatar, Button, Divider, Popover, User } from "@gravity-ui/uikit";
+import { signOut, useSession } from "next-auth/react";
 
 const navItems = [
   { title: "Home", link: "/" },
   { title: "Subjects", link: "/subjects" },
   { title: "About", link: "/about" },
 ];
+
+const PopoverContent = () => {
+  const { data: session } = useSession();
+
+  return (
+    <div className={c.popoverContent}>
+      <Avatar size="xl" text={session?.user?.name?.[0] || "U"} theme="brand" />
+      <h2>{session?.user?.name}</h2>
+
+      <Button size="l" onClick={() => signOut()} className={c.signOutButton}>
+        Sign out
+      </Button>
+    </div>
+  );
+};
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -78,12 +93,20 @@ export const Navbar = () => {
           ))}
         </ul>
         <Divider className={c.divider} orientation="vertical" />
-        <User
-          avatar={{ text: session?.user?.name?.[0] || "U", theme: "brand" }}
-          size="m"
-          name={session?.user?.name}
-          description={session?.user?.email}
-        />
+        <Popover
+          placement="bottom"
+          content={<PopoverContent />}
+          trigger="click"
+        >
+          <div className={c.userAvatar}>
+            <User
+              avatar={{ text: session?.user?.name?.[0] || "U", theme: "brand" }}
+              size="m"
+              name={session?.user?.name}
+              description={session?.user?.email}
+            />
+          </div>
+        </Popover>
       </nav>
 
       <button

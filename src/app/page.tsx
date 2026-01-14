@@ -10,7 +10,6 @@ export default async function Home() {
     <div className={c.page}>
       {session ? (
         <>
-          <h1>What do you want to learn today?</h1>
           <SuggestSubject />
         </>
       ) : (
