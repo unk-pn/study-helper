@@ -1,40 +1,19 @@
 "use client";
 
 import c from "./SignInForm.module.css";
-import { FormEvent, useState } from "react";
 import { Button, Card, TextInput } from "@gravity-ui/uikit";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { clsx } from "clsx";
+import { useSignInForm } from "../../hooks/useSignInForm";
 
 const note = (
-  <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>Forgot password?</Link>
+  <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>
+    Forgot password?
+  </Link>
 );
 
 export const SignInForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    try {
-      const res = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (res?.error) {
-        console.log(res?.error);
-        return;
-      }
-
-      window.location.href = "/";
-    } catch (error) {
-      console.log(error);
-      alert("error signing in");
-    }
-  };
+  const { email, setEmail, password, setPassword, handleSubmit } = useSignInForm();
 
   return (
     <Card className={c.card}>
