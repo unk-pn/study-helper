@@ -28,11 +28,30 @@ const PopoverContent = () => {
   );
 };
 
+const Account = () => {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <Button href="/auth/signIn">Log in</Button>
+  }
+  return (
+    <Popover placement="bottom" content={<PopoverContent />} trigger="click">
+      <div className={c.userAvatar}>
+        <User
+          avatar={{ text: session?.user?.name?.[0] || "U", theme: "brand" }}
+          size="m"
+          name={session?.user?.name}
+          description={session?.user?.email}
+        />
+      </div>
+    </Popover>
+  );
+};
+
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const mobileNavRef = useRef<HTMLElement>(null);
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
-  const { data: session } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -93,7 +112,7 @@ export const Navbar = () => {
           ))}
         </ul>
         <Divider className={c.divider} orientation="vertical" />
-        <Popover
+        {/* <Popover
           placement="bottom"
           content={<PopoverContent />}
           trigger="click"
@@ -106,7 +125,8 @@ export const Navbar = () => {
               description={session?.user?.email}
             />
           </div>
-        </Popover>
+        </Popover> */}
+        <Account />
       </nav>
 
       <button
