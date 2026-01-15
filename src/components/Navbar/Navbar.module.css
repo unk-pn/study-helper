@@ -1,5 +1,5 @@
 .navbar {
-  background-color: white;
+  background-color: var(--g-color-base-background);
   position: fixed;
   top: 0;
   width: 100%;
