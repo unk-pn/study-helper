@@ -3,17 +3,7 @@
 import { useEffect, useState } from "react";
 import { Subject } from "@/features/subjects/components";
 import c from "./SubjectsList.module.css";
-
-type SubjectType = {
-  id: string;
-  name: string;
-  userId: string;
-  status: string;
-  examDate: string;
-  _count: {
-    questions: number;
-  };
-};
+import { SubjectType } from "../../types/SubjectType";
 
 export const SubjectsList = () => {
   const [subjects, setSubjects] = useState<SubjectType[]>([]);

@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import settingsReducer from "./slices/settingSlice";
+import { questionsReducer, settingsReducer, subjectsReducer } from "./slices";
 
 const persistConfig = {
   key: "root",
@@ -11,6 +11,8 @@ const persistConfig = {
 
 const RootReducer = combineReducers({
   settings: settingsReducer,
+  subjects: subjectsReducer,
+  questions: questionsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, RootReducer);

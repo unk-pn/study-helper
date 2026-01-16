@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { Question } from "../types/Question";
+import { QuestionType } from "../types/QuestionType";
 
 export const useQuestionsPage = (subjectId: string) => {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<QuestionType[]>([]);
 
   const fetchQuestions = async () => {
     try {
