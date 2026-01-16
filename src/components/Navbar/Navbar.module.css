@@ -32,10 +32,6 @@
   gap: 20px;
 }
 
-.navItem {
-  color: black;
-}
-
 .navItem:hover {
   cursor: pointer;
   color: rgb(39, 38, 38);
@@ -49,10 +45,6 @@
 
 .divider {
   height: 30px;
-}
-
-.userAvatar {
-  cursor: pointer;
 }
 
 .burgerButton {
@@ -169,16 +161,3 @@
   }
 }
 
-/* ==== Popover ==== */
-
-.popoverContent {
-  padding: 30px 30px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.signOutButton {
-  margin-top: 10px;
-}
