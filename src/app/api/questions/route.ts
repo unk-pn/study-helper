@@ -49,10 +49,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      { message: "Question added successfully", question: newQuestion },
-      { status: 200 }
-    );
+    return NextResponse.json(newQuestion, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
@@ -117,15 +114,12 @@ export async function PATCH(req: NextRequest) {
         { status: 404 }
       );
 
-    await db.update({
+    const updatedQuestion = await db.update({
       where: { id: id },
       data: { answer },
     });
 
-    return NextResponse.json(
-      { message: "Question updated successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json(updatedQuestion, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

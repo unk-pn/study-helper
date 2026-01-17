@@ -37,7 +37,7 @@ export const CreateSubjectModal = () => {
           inputRef.current?.focus();
         }}
       >
-        <form className={c.form} onSubmit={handleCreateSubject}>
+        <form className={c.form} onSubmit={(e) => handleCreateSubject(e)}>
           <TextInput
             size="l"
             placeholder="Название предмета"

@@ -1,3 +1,5 @@
+import { useAppDispatch } from "@/hooks/redux";
+import { deleteSubject, updateSubject } from "@/store/slices/subjectsSlice";
 import { DateTime } from "@gravity-ui/date-utils";
 import { useState } from "react";
 
@@ -12,6 +14,7 @@ export const useSubject = (id: string, status: string, name: string) => {
   const [statusState, setStatusState] = useState<string>(status);
   const [nameState, setNameState] = useState<string>(name);
   const [dateState, setDateState] = useState<DateTime | null>(null);
+  const dispatch = useAppDispatch();
 
   const statusText = (text: string) => {
     switch (text) {
@@ -53,7 +56,7 @@ export const useSubject = (id: string, status: string, name: string) => {
         console.log("res not ok: ", data.error);
         return;
       }
-      window.location.reload();
+      dispatch(deleteSubject(id));
     } catch (error) {
       console.log("error deleting subject: ", error);
     }
@@ -79,7 +82,7 @@ export const useSubject = (id: string, status: string, name: string) => {
         return;
       }
       setEditState(false);
-      window.location.reload();
+      dispatch(updateSubject(data));
     } catch (error) {
       console.log("error deleting subject: ", error);
     }

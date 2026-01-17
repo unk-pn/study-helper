@@ -26,10 +26,10 @@ export async function GET() {
       include: {
         _count: {
           select: {
-            questions: true
-          }
-        }
-      }
+            questions: true,
+          },
+        },
+      },
     });
     if (!subjects)
       return NextResponse.json(
@@ -71,12 +71,16 @@ export async function POST(req: NextRequest) {
         userId,
         examDate: date ? new Date(date) : null,
       },
+      include: {
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
+      },
     });
 
-    return NextResponse.json(
-      { message: "Предмет успешно добавлен", subject: createdSubject },
-      { status: 200 }
-    );
+    return NextResponse.json(createdSubject, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
@@ -135,15 +139,12 @@ export async function PATCH(req: NextRequest) {
     if (!subject)
       return NextResponse.json({ error: "Subject not found" }, { status: 404 });
 
-    await db.update({
+    const updatedSubject = await db.update({
       where: { id: id },
       data: { status, name, examDate: date },
     });
 
-    return NextResponse.json(
-      { message: "Subject updated successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json(updatedSubject, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

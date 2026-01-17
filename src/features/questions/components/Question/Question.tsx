@@ -17,13 +17,16 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
     setOpenInput,
     answerVal,
     setAnswerVal,
+    inputRef,
     handleDelete,
     handleAddAnswer,
     handleChangeAnswer,
   } = useQuestion(id, answer);
 
   return (
-    <Accordion.Item summary={name}>
+    <Accordion.Item
+      summary={name}
+    >
       {answer ? (
         <div className={c.question}>
           {openInput ? (
@@ -33,11 +36,14 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
                 onChange={(e) => setAnswerVal(e.target.value)}
                 size="l"
                 minRows={3}
-                maxRows={6}
+                maxRows={Infinity}
                 hasClear
+                controlRef={inputRef}
               />
               <div className={c.buttons}>
-                <Button view="action" onClick={handleAddAnswer}>Сохранить</Button>
+                <Button view="action" onClick={handleAddAnswer}>
+                  Сохранить
+                </Button>
                 <Button onClick={() => setOpenInput(false)}>Отмена</Button>
               </div>
             </>
@@ -45,7 +51,9 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
             <>
               <pre>{answer}</pre>
               <div className={c.buttons}>
-                <Button view="outlined" onClick={handleChangeAnswer}>Изменить ответ</Button>
+                <Button view="outlined" onClick={handleChangeAnswer}>
+                  Изменить ответ
+                </Button>
                 <Button view="outlined-danger" onClick={handleDelete}>
                   Удалить
                 </Button>
@@ -56,7 +64,12 @@ export const Question = ({ id, name, subjectId, answer }: QuestionProps) => {
       ) : (
         <div>
           {!openInput ? (
-            <Button onClick={() => setOpenInput(true)}>Добавить ответ</Button>
+            <>
+              <Button onClick={() => setOpenInput(true)}>Добавить ответ</Button>
+              <Button view="outlined-danger" onClick={handleDelete}>
+                Удалить
+              </Button>
+            </>
           ) : (
             <div>
               <TextArea

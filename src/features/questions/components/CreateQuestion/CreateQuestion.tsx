@@ -9,7 +9,7 @@ interface CreateQuestionProps {
 }
 
 export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
-  const { val, setVal, open, setOpen, handleSubmit } =
+  const { val, setVal, open, setOpen, inputRef, handleSubmit } =
     useCreateQuestion(subjectId);
 
   return (
@@ -18,13 +18,13 @@ export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
         {open ? "Отмена" : "Добавить вопрос"}
       </Button>
       {open && (
-        <form onSubmit={handleSubmit} className={c.form}>
+        <form onSubmit={(e) => handleSubmit(e)} className={c.form}>
           <TextInput
             type="text"
             value={val}
             onChange={(e) => setVal(e.target.value)}
           />
-          <Button onClick={handleSubmit}>Создать</Button>
+          <Button type="submit">Создать</Button>
         </form>
       )}
     </div>

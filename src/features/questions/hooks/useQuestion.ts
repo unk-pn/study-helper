@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useAppDispatch } from "@/hooks/redux";
+import { deleteQuestion, updateQuestion } from "@/store/slices/questionsSlice";
+import { useEffect, useRef, useState } from "react";
 
 export const useQuestion = (id: string, answer: string | null) => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [answerVal, setAnswerVal] = useState<string>("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (openInput && inputRef.current) {
+      const textarea = inputRef.current;
+      textarea.focus();
+
+      const length = textarea.value.length;
+      textarea.setSelectionRange(length, length);
+
+      textarea.scrollTop = textarea.scrollHeight
+    }
+  }, [openInput]);
 
   const handleDelete = async () => {
     try {
@@ -18,7 +34,7 @@ export const useQuestion = (id: string, answer: string | null) => {
         console.log("res not ok: ", data.error);
         return;
       }
-      window.location.reload();
+      dispatch(deleteQuestion(id));
     } catch (error) {
       console.log("error deleting question: ", error);
     }
@@ -32,7 +48,7 @@ export const useQuestion = (id: string, answer: string | null) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          answer: answerVal,
+          answer: answerVal.trim(),
           id: id,
         }),
       });
@@ -41,8 +57,9 @@ export const useQuestion = (id: string, answer: string | null) => {
         console.log("res not ok: ", data.error);
         return;
       }
+      dispatch(updateQuestion(data));
       setAnswerVal("");
-      window.location.reload();
+      setOpenInput(false);
     } catch (error) {
       console.log("error deleting question: ", error);
     }
@@ -58,6 +75,7 @@ export const useQuestion = (id: string, answer: string | null) => {
     setOpenInput,
     answerVal,
     setAnswerVal,
+    inputRef,
     handleDelete,
     handleAddAnswer,
     handleChangeAnswer,
