@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Subject } from "@/features/subjects/components";
+import { EditSubjectModal, Subject } from "@/features/subjects/components";
 import c from "./SubjectsList.module.css";
-import { SubjectType } from "../../types/SubjectType";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   setError,
@@ -16,6 +15,7 @@ export const SubjectsList = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((s) => s.subjects.loading);
   const subjects = useAppSelector((s) => s.subjects.subjects);
+  const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -36,8 +36,9 @@ export const SubjectsList = () => {
         dispatch(setLoading(false));
       }
     };
+    
     fetchSubjects();
-  }, []);
+  }, [dispatch]);
 
   if (loading) return <Loader />;
 
@@ -51,9 +52,17 @@ export const SubjectsList = () => {
           status={s.status}
           examDate={s.examDate}
           questions={s._count.questions}
+          onEdit={() => setEditingSubjectId(s.id)}
         />
       ))}
       {!subjects.length && "Добавьте свой первый предмет!"}
+
+      {editingSubjectId && (
+        <EditSubjectModal
+          id={editingSubjectId}
+          onClose={() => setEditingSubjectId(null)}
+        />
+      )}
     </div>
   );
 };

@@ -1,14 +1,12 @@
-import { CreateSubject, CreateSubjectModal, SubjectsList } from "@/features/subjects/components";
+import { SubjectsPage } from "@/features/subjects/components";
 import c from "./page.module.css";
 
-const SubjectsPage = () => {
+const Subjects = () => {
   return (
     <div className={c.container}>
-      {/* <CreateSubject /> */}
-      <CreateSubjectModal />
-      <SubjectsList />
+      <SubjectsPage />
     </div>
   );
 };
 
-export default SubjectsPage;
+export default Subjects;

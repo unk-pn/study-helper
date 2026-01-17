@@ -19,12 +19,6 @@
   gap: 8px;
 }
 
-.editForm {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .dropdown {
   display: flex;
   gap: 16px;

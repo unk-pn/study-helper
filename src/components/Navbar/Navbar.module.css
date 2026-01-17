@@ -34,13 +34,18 @@
 
 .navItem:hover {
   cursor: pointer;
-  color: rgb(39, 38, 38);
+  /* color: var(--g-color-text-info-heavy) */
   text-decoration: underline;
 }
 
 .navLink {
   text-decoration: none;
   color: inherit;
+}
+
+.activeNavLink {
+  /* color: var(--g-color-text-info-heavy); */
+  text-decoration: underline;
 }
 
 .divider {
@@ -160,4 +165,3 @@
     display: flex;
   }
 }
-

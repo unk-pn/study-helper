@@ -13,7 +13,7 @@ export async function GET() {
     if (!id)
       return NextResponse.json(
         { error: "ID is not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const subjects = await db.findMany({
@@ -34,7 +34,7 @@ export async function GET() {
     if (!subjects)
       return NextResponse.json(
         { error: "Ошибка получения предметов" },
-        { status: 500 }
+        { status: 500 },
       );
 
     return NextResponse.json(subjects, { status: 200 });
@@ -42,7 +42,7 @@ export async function GET() {
     console.log(error);
     return NextResponse.json(
       { error: "Error fetching subjects" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     if (!name || !userId)
       return NextResponse.json(
         { error: "Something is missing: name or userId" },
-        { status: 400 }
+        { status: 400 },
       );
 
     if (date) {
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
       if (isNaN(parsedDate.getTime()))
         return NextResponse.json(
           { error: "Invalid date format" },
-          { status: 400 }
+          { status: 400 },
         );
     }
 
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
     console.log(error);
     return NextResponse.json(
       { error: "Error posting subjects" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -96,7 +96,7 @@ export async function DELETE(req: NextRequest) {
     if (!id)
       return NextResponse.json(
         { error: "Id is not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const subject = await db.findUnique({
@@ -112,13 +112,13 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Subject deleted successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to delete subject" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -129,7 +129,7 @@ export async function PATCH(req: NextRequest) {
     if (!id || !status)
       return NextResponse.json(
         { error: "Id or status not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const subject = await db.findUnique({
@@ -139,9 +139,29 @@ export async function PATCH(req: NextRequest) {
     if (!subject)
       return NextResponse.json({ error: "Subject not found" }, { status: 404 });
 
+    let parsedDate: Date | null = null;
+    if (date && typeof date === "string") {
+      const [year, month, day] = date.split("-").map(Number);
+      const tempDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+
+      if (!isNaN(tempDate.getTime())) {
+        parsedDate = tempDate;
+        console.log("Parsed date:", parsedDate);
+      } else {
+        console.log("Invalid date format:", date);
+      }
+    }
+
     const updatedSubject = await db.update({
       where: { id: id },
-      data: { status, name, examDate: date },
+      data: { status, name, examDate: parsedDate },
+      include: {
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(updatedSubject, { status: 200 });
@@ -149,7 +169,7 @@ export async function PATCH(req: NextRequest) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to update subject" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

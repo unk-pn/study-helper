@@ -8,7 +8,6 @@ import c from "../CreateSubject/CreateSubject.module.css";
 export const CreateSubjectModal = () => {
   const {
     open,
-    setOpen,
     subjectName,
     setSubjectName,
     subjectDate,

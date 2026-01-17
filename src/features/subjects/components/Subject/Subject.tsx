@@ -2,19 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import c from "./Subject.module.css";
-import {
-  Card,
-  TextInput,
-  SegmentedRadioGroup,
-  Button,
-  Text,
-  DropdownMenu,
-  Label,
-} from "@gravity-ui/uikit";
-import { DatePicker } from "@gravity-ui/date-components";
+import { Card, Text, DropdownMenu, Label } from "@gravity-ui/uikit";
 import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { formatDate } from "@/lib/formatDate";
-import { SubjectStatus, useSubject } from "../../hooks/useSubject";
+import { useSubject } from "../../hooks/useSubject";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 
 interface SubjectProps {
   id: string;
@@ -22,113 +14,60 @@ interface SubjectProps {
   status: string;
   examDate: string;
   questions: number;
+  onEdit?: () => void;
 }
 
-export const Subject = ({ id, name, status, examDate, questions }: SubjectProps) => {
-  const {
-    editState,
-    setEditState,
-    statusState,
-    setStatusState,
-    nameState,
-    setNameState,
-    dateState,
-    setDateState,
-    statusText,
-    labelTheme,
-    handleDelete,
-    saveChanges,
-    cancelEdit,
-  } = useSubject(id, status, name);
+export const Subject = ({ id, onEdit }: SubjectProps) => {
+  const { statusText, labelTheme, handleDelete } = useSubject(id);
   const router = useRouter();
+  const subject = useAppSelector((s) =>
+    s.subjects.subjects.find((subj) => subj.id === id),
+  );
+  const dispatch = useAppDispatch();
+
+  if (!subject) return null;
 
   return (
-    <Card
-      className={c.subject}
-      view={editState ? "outlined" : "outlined"}
-      type="selection"
-      onClick={() => router.push(`/subjects/${id}`)}
-    >
-      {!editState ? (
-        <>
-          <div className={c.info}>
-            <Text variant="header-2">{name}</Text>
-            <Text>{questions} questions</Text>
-            <Label
-              width="auto"
-              className={c.label}
-              size="xs"
-              theme={labelTheme(statusState)}
-            >
-              {statusText(statusState)}
-            </Label>
-          </div>
-          <div className={c.dropdown} onClick={(e) => e.stopPropagation()}>
-            <Label width="auto" className={c.label} size="xs">
-              {formatDate(examDate)}
-            </Label>
-            <DropdownMenu
-              items={[
-                {
-                  action: () => setEditState(true),
-                  text: "Изменить",
-                  iconStart: <PencilToLine />,
-                },
-                {
-                  action: () => handleDelete(),
-                  text: "Удалить",
-                  theme: "danger",
-                  iconStart: <TrashBin />,
-                },
-              ]}
-            />
-          </div>
-        </>
-      ) : (
-        <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
-          <TextInput
-            size="m"
-            value={nameState}
-            onChange={(e) => setNameState(e.target.value)}
-          />
-
-          <SegmentedRadioGroup
-            value={statusState}
-            onChange={(e) => setStatusState(e.target.value)}
+    <>
+      <Card
+        className={c.subject}
+        view="outlined"
+        type="selection"
+        onClick={() => router.push(`/subjects/${id}`)}
+      >
+        <div className={c.info}>
+          <Text variant="header-2">{subject.name}</Text>
+          <Text>{subject._count.questions} questions</Text>
+          <Label
+            width="auto"
+            className={c.label}
+            size="xs"
+            theme={labelTheme(subject.status)}
           >
-            <SegmentedRadioGroup.Option
-              value={SubjectStatus[SubjectStatus.IN_PROGRESS]}
-            >
-              В процессе
-            </SegmentedRadioGroup.Option>
-            <SegmentedRadioGroup.Option
-              value={SubjectStatus[SubjectStatus.PASSED]}
-            >
-              Сдан
-            </SegmentedRadioGroup.Option>
-            <SegmentedRadioGroup.Option
-              value={SubjectStatus[SubjectStatus.FAILED]}
-            >
-              Не сдан
-            </SegmentedRadioGroup.Option>
-          </SegmentedRadioGroup>
-
-          <DatePicker
-            size="m"
-            value={dateState}
-            onUpdate={setDateState}
-            format={"DD.MM.YYYY"}
-          />
-          <div className={c.buttons}>
-            <Button onClick={saveChanges} view="outlined">
-              Сохранить
-            </Button>
-            <Button onClick={cancelEdit} view="outlined-danger">
-              Отмена
-            </Button>
-          </div>
+            {statusText(subject.status)}
+          </Label>
         </div>
-      )}
-    </Card>
+        <div className={c.dropdown} onClick={(e) => e.stopPropagation()}>
+          <Label width="auto" className={c.label} size="xs">
+            {formatDate(subject.examDate)}
+          </Label>
+          <DropdownMenu
+            items={[
+              {
+                action: () => onEdit?.(),
+                text: "Изменить",
+                iconStart: <PencilToLine />,
+              },
+              {
+                action: () => handleDelete(),
+                text: "Удалить",
+                theme: "danger",
+                iconStart: <TrashBin />,
+              },
+            ]}
+          />
+        </div>
+      </Card>
+    </>
   );
 };

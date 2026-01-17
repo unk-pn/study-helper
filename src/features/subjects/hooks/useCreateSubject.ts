@@ -3,7 +3,7 @@ import { useApi } from "@/hooks/useApi";
 import { addSubject } from "@/store/slices/subjectsSlice";
 import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useRef, useState } from "react";
 import { SubjectType } from "../types/SubjectType";
 
 export const useCreateSubject = () => {

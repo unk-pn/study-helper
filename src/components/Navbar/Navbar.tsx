@@ -6,6 +6,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { Divider } from "@gravity-ui/uikit";
 import { Account } from "./Account/Account";
+import { usePathname } from "next/navigation";
 
 const navItems = [
   { title: "Home", link: "/" },
@@ -17,6 +18,7 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const mobileNavRef = useRef<HTMLElement>(null);
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -68,13 +70,19 @@ export const Navbar = () => {
       </h1>
       <nav className={c.nav}>
         <ul className={c.navList}>
-          {navItems.map((i, index) => (
-            <li key={index} className={c.navItem}>
-              <Link href={i.link} className={c.navLink}>
-                {i.title}
-              </Link>
-            </li>
-          ))}
+          {navItems.map((i, index) => {
+            const isActive =
+              pathname === i.link ||
+              (i.link !== "/" && pathname.startsWith(i.link));
+
+            return (
+              <li key={index} className={c.navItem}>
+                <Link href={i.link} className={clsx(c.navLink, isActive && c.activeNavLink)}>
+                  {i.title}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
 
         <Divider className={c.divider} orientation="vertical" />
