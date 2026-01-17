@@ -18,10 +18,15 @@
 }
 
 .form {
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 8;
-  align-items: flex-start;
+  gap: 10px;
+  align-items: center;
+}
+
+.modalTitle {
+  margin-bottom: 12px;
 }
 
 .input {

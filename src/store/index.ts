@@ -6,7 +6,7 @@ import { questionsReducer, settingsReducer, subjectsReducer } from "./slices";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["settings"],
+  whitelist: ["settings", "subjects"],
 };
 
 const RootReducer = combineReducers({

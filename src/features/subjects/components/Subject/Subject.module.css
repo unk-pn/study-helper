@@ -1,8 +1,6 @@
 .subject {
   padding: 20px;
-  border: 1px solid black;
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;

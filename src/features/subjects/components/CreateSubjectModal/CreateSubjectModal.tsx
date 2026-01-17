@@ -3,7 +3,7 @@
 import { Button, TextInput, Modal } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { useCreateSubject } from "../../hooks/useCreateSubject";
-import c from "../CreateSubject/CreateSubject.module.css";
+import c from "./CreateSubjectModal.module.css"
 
 export const CreateSubjectModal = () => {
   const {
@@ -37,6 +37,7 @@ export const CreateSubjectModal = () => {
         }}
       >
         <form className={c.form} onSubmit={(e) => handleCreateSubject(e)}>
+          <h1 className={c.modalTitle}>Creating subject</h1>
           <TextInput
             size="l"
             placeholder="Название предмета"

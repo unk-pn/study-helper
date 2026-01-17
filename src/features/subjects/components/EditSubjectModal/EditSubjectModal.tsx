@@ -60,15 +60,18 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
   return (
     <Modal open={true} onClose={onClose}>
       <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
+        <h1 className={c.title}>Editing Subject</h1>
         <TextInput
           size="m"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className={c.input}
         />
 
         <SegmentedRadioGroup
           value={status}
           onChange={(e) => setStatus(e.target.value)}
+          className={c.input}
         >
           <SegmentedRadioGroup.Option
             value={SubjectStatus[SubjectStatus.IN_PROGRESS]}
@@ -92,14 +95,13 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           value={date}
           onUpdate={setDate}
           format={"DD.MM.YYYY"}
+          className={c.input}
         />
         <div className={c.buttons}>
-          <Button onClick={handleSave} view="outlined">
+          <Button onClick={handleSave} view="action">
             Сохранить
           </Button>
-          <Button onClick={() => onClose()} view="outlined-danger">
-            Отмена
-          </Button>
+          <Button onClick={() => onClose()}>Отмена</Button>
         </div>
       </div>
     </Modal>

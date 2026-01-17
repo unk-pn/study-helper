@@ -6,7 +6,7 @@ import c from "./SubjectsPage.module.css";
 
 export const SubjectsPage = () => {
   return (
-    <Card className={c.card}>
+    <Card className={c.card} view="filled">
       <CreateSubjectModal />
       <SubjectsList />
     </Card>

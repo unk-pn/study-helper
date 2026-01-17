@@ -1,3 +1,4 @@
 export { CreateQuestion } from "./CreateQuestion/CreateQuestion";
-export { Question } from "./Question/Question";
+export { OldQuestion } from "./OldQuestion/OldQuestion";
 export { QuestionsPage } from "./QuestionsPage/QuestionsPage";
+export { QuestionsList } from "./QuestionsList/QuestionsList";

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
         subjectId: subjectId,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
 

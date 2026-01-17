@@ -1,12 +1,13 @@
 "use client";
 
-import { Question, CreateQuestion } from "@/features/questions/components";
-import { Accordion, Button } from "@gravity-ui/uikit";
+import { QuestionsList } from "..";
+import { Button, Card, Label } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setQuestions } from "@/store/slices/questionsSlice";
 import { useEffect } from "react";
 import { Loader } from "@/components";
+import { formatDate } from "../../../../lib/formatDate";
 
 interface QuestionsPageProps {
   subjectId: string;
@@ -16,37 +17,54 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const dispatch = useAppDispatch();
   const questions = useAppSelector((s) => s.questions.questions);
   const loading = useAppSelector((s) => s.questions.loading);
-
-  const fetchQuestions = async () => {
-    try {
-      const res = await fetch(`/api/questions?subjectId=${subjectId}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error("Failed to fetch questions useEffect");
-      dispatch(setQuestions(data));
-    } catch (error) {
-      console.log("error loading questions: ", error);
-    }
-  };
+  const subject = useAppSelector((s) =>
+    s.subjects.subjects.find((subj) => subj.id === subjectId),
+  );
 
   useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const res = await fetch(`/api/questions?subjectId=${subjectId}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error("Failed to fetch questions useEffect");
+        dispatch(setQuestions(data));
+      } catch (error) {
+        console.log("error loading questions: ", error);
+      }
+    };
+
     fetchQuestions();
-  }, [subjectId]);
+  }, [dispatch, subjectId]);
+
+  if (!subject) return null;
 
   if (loading) return <Loader />;
 
   return (
-    <div>
-      <div className={c.buttons}>
-        <Button href={"/subjects"}>Back</Button>
-        <Button href={`/subjects/${subjectId}/cards`} view="action">
-          Cards
-        </Button>
-        <CreateQuestion subjectId={subjectId} />
+    <Card className={c.container} view="filled">
+      <div className={c.header}>
+        <h1 className={c.title}>{subject?.name}</h1>
+        <Label size="xs" className={c.label}>
+          {formatDate(subject?.examDate)}
+        </Label>
       </div>
-      {questions.length ? (
+
+      <div className={c.buttons}>
+        <Button onClick={() => {}} size="l">
+          Export PDF
+        </Button>
+        <Button view="action" onClick={() => {}} size="l">
+          Add question
+        </Button>
+      </div>
+
+      <div className={c.questionsList}>
+        <QuestionsList questions={questions} />
+      </div>
+  {/* {questions.length ? (
         <Accordion size="l">
           {questions.map((q) => (
-            <Question
+            <OldQuestion
               key={q.id}
               id={q.id}
               name={q.name}
@@ -57,7 +75,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         </Accordion>
       ) : (
         <p>No questions yet</p>
-      )}
-    </div>
+      )} */}
+    </Card>
   );
 };
