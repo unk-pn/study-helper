@@ -66,6 +66,8 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className={c.input}
+          placeholder="Subject"
+          hasClear
         />
 
         <SegmentedRadioGroup
@@ -96,6 +98,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           onUpdate={setDate}
           format={"DD.MM.YYYY"}
           className={c.input}
+          placeholder="Date"
         />
         <div className={c.buttons}>
           <Button onClick={handleSave} view="action">

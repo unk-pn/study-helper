@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     if (!subjectId)
       return NextResponse.json(
         { error: "Subject id is not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const questions = await db.findMany({
@@ -27,37 +27,73 @@ export async function GET(req: NextRequest) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to fetch questions" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, subjectId } = await req.json();
+    const { questions, subjectId } = await req.json();
 
-    if (!name || !subjectId)
+    if (!questions || !Array.isArray(questions) || questions.length === 0)
       return NextResponse.json(
-        { error: "Name ans SubjectId is required" },
-        { status: 400 }
+        { error: "Questions array is required" },
+        { status: 400 },
       );
 
-    const newQuestion = await db.create({
-      data: {
-        name,
-        subjectId,
-      },
-    });
+    if (!subjectId)
+      return NextResponse.json(
+        { error: "SubjectId is required" },
+        { status: 400 },
+      );
 
-    return NextResponse.json(newQuestion, { status: 200 });
+    const createdQuestions = await Promise.all(
+      questions.map(q => db.create({
+        data: {
+          name: q.name,
+          answer: q.answer || null,
+          subjectId
+        }
+      }))
+    );
+
+    return NextResponse.json(createdQuestions, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to fetch questions" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
+
+// export async function POST(req: NextRequest) {
+//   try {
+//     const { name, subjectId } = await req.json();
+
+//     if (!name || !subjectId)
+//       return NextResponse.json(
+//         { error: "Name ans SubjectId is required" },
+//         { status: 400 }
+//       );
+
+//     const newQuestion = await db.create({
+//       data: {
+//         name,
+//         subjectId,
+//       },
+//     });
+
+//     return NextResponse.json(newQuestion, { status: 200 });
+//   } catch (error) {
+//     console.log(error);
+//     return NextResponse.json(
+//       { error: "Failed to fetch questions" },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 export async function DELETE(req: NextRequest) {
   try {
@@ -65,7 +101,7 @@ export async function DELETE(req: NextRequest) {
     if (!id)
       return NextResponse.json(
         { error: "Id is not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const question = await db.findUnique({
@@ -75,7 +111,7 @@ export async function DELETE(req: NextRequest) {
     if (!question)
       return NextResponse.json(
         { error: "Question not found" },
-        { status: 404 }
+        { status: 404 },
       );
 
     await db.delete({
@@ -84,13 +120,13 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Question deleted successfully" },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to delete question" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -101,7 +137,7 @@ export async function PATCH(req: NextRequest) {
     if (!id || !name || !answer)
       return NextResponse.json(
         { error: "Id, name or answer not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const question = await db.findUnique({
@@ -111,7 +147,7 @@ export async function PATCH(req: NextRequest) {
     if (!question)
       return NextResponse.json(
         { error: "Question not found" },
-        { status: 404 }
+        { status: 404 },
       );
 
     const updatedQuestion = await db.update({
@@ -124,7 +160,7 @@ export async function PATCH(req: NextRequest) {
     console.log(error);
     return NextResponse.json(
       { error: "Failed to update question" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

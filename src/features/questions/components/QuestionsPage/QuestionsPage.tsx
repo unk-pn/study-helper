@@ -70,7 +70,10 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       )}
 
       {open && (
-        <CreateQuestionModal onClose={() => setOpen(false)} />
+        <CreateQuestionModal
+          subjectId={subjectId}
+          onClose={() => setOpen(false)}
+        />
       )}
     </Card>
   );

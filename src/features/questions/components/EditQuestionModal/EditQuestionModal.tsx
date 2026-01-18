@@ -47,20 +47,25 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   };
 
   return (
-    <Modal open={true} onClose={onClose}>
+    <Modal open={true} onClose={onClose} disableBodyScrollLock={true}>
       <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
         <h1 className={c.title}>Editing Question</h1>
         <TextInput
           size="m"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className={c.input}
+          className={c.textInput}
+          placeholder="Question"
+          hasClear
         />
         <TextArea
           size="m"
           value={answer}
+          minRows={3}
           onChange={(e) => setAnswer(e.target.value)}
           className={c.input}
+          placeholder="Answer"
+          hasClear
         />
 
         <div className={c.buttons}>
