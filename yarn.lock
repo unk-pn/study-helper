@@ -1334,6 +1334,11 @@ color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
+colord@^2.9.3:
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/colord/-/colord-2.9.3.tgz#4f8ce919de456f1d5c1c368c307fe20f3e59fb43"
+  integrity sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==
+
 colors-named-hex@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/colors-named-hex/-/colors-named-hex-1.0.3.tgz#d9f54066cb8abebe0a73ae5f3b40b2ff2e700bdb"
@@ -3299,6 +3304,13 @@ source-map-js@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
+
+spoiled@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/spoiled/-/spoiled-0.4.0.tgz#061740a64aa2cf83e674d99eb06a91081aba5640"
+  integrity sha512-ruC8iDcgFRXjl0s1YvVweMcPpnByDJ+HS6NZ5/rHDHsnNwJr5GWZ5L1O5LKiOGKWmfruthFyXA/mKQXJWq4PdA==
+  dependencies:
+    colord "^2.9.3"
 
 stable-hash@^0.0.5:
   version "0.0.5"

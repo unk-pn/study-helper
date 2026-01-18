@@ -9,7 +9,7 @@ interface CreateQuestionProps {
 }
 
 export const CreateQuestion = ({ subjectId }: CreateQuestionProps) => {
-  const { val, setVal, open, setOpen, inputRef, handleSubmit } =
+  const { val, setVal, open, setOpen, handleSubmit } =
     useCreateQuestion(subjectId);
 
   return (

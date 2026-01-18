@@ -1,11 +1,11 @@
 "use client";
 
-import { QuestionsList } from "..";
+import { QuestionsList, CreateQuestionModal } from "..";
 import { Button, Card, Label } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setQuestions } from "@/store/slices/questionsSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Loader } from "@/components";
 import { formatDate } from "../../../../lib/formatDate";
 
@@ -20,6 +20,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === subjectId),
   );
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -53,7 +54,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         <Button onClick={() => {}} size="l">
           Export PDF
         </Button>
-        <Button view="action" onClick={() => {}} size="l">
+        <Button view="action" onClick={() => setOpen(true)} size="l">
           Add question
         </Button>
       </div>
@@ -61,21 +62,16 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       <div className={c.questionsList}>
         <QuestionsList questions={questions} />
       </div>
-  {/* {questions.length ? (
-        <Accordion size="l">
-          {questions.map((q) => (
-            <OldQuestion
-              key={q.id}
-              id={q.id}
-              name={q.name}
-              subjectId={q.subjectId}
-              answer={q.answer}
-            />
-          ))}
-        </Accordion>
-      ) : (
-        <p>No questions yet</p>
-      )} */}
+
+      {questions.length > 0 && (
+        <Button view="action" href={`/subjects/${subjectId}/cards`}>
+          Start studying
+        </Button>
+      )}
+
+      {open && (
+        <CreateQuestionModal onClose={() => setOpen(false)} />
+      )}
     </Card>
   );
 };

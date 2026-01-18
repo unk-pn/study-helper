@@ -97,10 +97,10 @@ export async function DELETE(req: NextRequest) {
 
 export async function PATCH(req: NextRequest) {
   try {
-    const { id, answer } = await req.json();
-    if (!id || !answer)
+    const { id, name, answer } = await req.json();
+    if (!id || !name || !answer)
       return NextResponse.json(
-        { error: "Id or answer not provided" },
+        { error: "Id, name or answer not provided" },
         { status: 400 }
       );
 
@@ -116,7 +116,7 @@ export async function PATCH(req: NextRequest) {
 
     const updatedQuestion = await db.update({
       where: { id: id },
-      data: { answer },
+      data: { name, answer },
     });
 
     return NextResponse.json(updatedQuestion, { status: 200 });
