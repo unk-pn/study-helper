@@ -1,6 +1,6 @@
 "use client";
 
-import { QuestionsList, CreateQuestionModal } from "..";
+import { QuestionsList, CreateQuestionModal, StartSessionModal } from "..";
 import { Button, Card, Label } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -20,7 +20,8 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === subjectId),
   );
-  const [open, setOpen] = useState(false);
+  const [createSubjectOpen, setCreateSubjectOpen] = useState(false);
+  const [startSessionOpen, setStartSessionOpen] = useState(false);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -54,7 +55,11 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         <Button onClick={() => {}} size="l">
           Export PDF
         </Button>
-        <Button view="action" onClick={() => setOpen(true)} size="l">
+        <Button
+          view="action"
+          onClick={() => setCreateSubjectOpen(true)}
+          size="l"
+        >
           Add question
         </Button>
       </div>
@@ -64,15 +69,26 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       </div>
 
       {questions.length > 0 && (
-        <Button view="action" href={`/subjects/${subjectId}/cards`}>
+        <Button
+          view="action"
+          onClick={() => setStartSessionOpen(true)}
+          disabled={questions.length === 0}
+        >
           Start studying
         </Button>
       )}
 
-      {open && (
+      {createSubjectOpen && (
         <CreateQuestionModal
           subjectId={subjectId}
-          onClose={() => setOpen(false)}
+          onClose={() => setCreateSubjectOpen(false)}
+        />
+      )}
+
+      {startSessionOpen && (
+        <StartSessionModal
+          subjectId={subjectId}
+          onClose={() => setStartSessionOpen(false)}
         />
       )}
     </Card>

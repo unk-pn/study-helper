@@ -4,6 +4,7 @@ import c from "./CardsPage.module.css";
 import { Card, Nav } from "@/features/cards/components";
 import { Button } from "@gravity-ui/uikit";
 import { useCardsPage } from "../../hooks/useCardsPage";
+import { Loader } from "@/components";
 
 interface CardsPageProps {
   id: string;
@@ -11,6 +12,7 @@ interface CardsPageProps {
 
 export const CardsPage = ({ id }: CardsPageProps) => {
   const {
+    loading,
     cards,
     currentCardIndex,
     correctAnswers,
@@ -24,13 +26,7 @@ export const CardsPage = ({ id }: CardsPageProps) => {
     return (
       <div className={c.container}>
         {cards.length === 0 ? (
-          <p className={c.noCards}>No cards available.</p>
-        ) : cards.length > 0 &&
-          correctAnswers === 0 &&
-          incorrectAnswers === 0 ? (
-          <Button size="l" className={c.startButton} onClick={handleStart}>
-            Start
-          </Button>
+          <Loader />
         ) : (
           <div className={c.results}>
             <h2 className={c.sessionEnded}>Session ended!</h2>
@@ -56,6 +52,7 @@ export const CardsPage = ({ id }: CardsPageProps) => {
       </div>
     );
   }
+
   return (
     <div className={c.container}>
       <Card

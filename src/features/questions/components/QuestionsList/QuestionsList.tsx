@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { QuestionType } from "../../types/QuestionType";
-import { Question } from "../Question/Question";
 import c from "./QuestionsList.module.css";
-import { EditQuestionModal } from "..";
+import { EditQuestionModal, Question } from "..";
 
 interface QuestionsListProps {
   questions: QuestionType[];

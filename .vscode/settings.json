@@ -9,5 +9,9 @@
   "WillLuke.nextjs.addTypesOnSave": true,
   "WillLuke.nextjs.hasPrompted": true,
   "typescript.tsserver.maxTsServerMemory": 4096,
-  "search.exclude": { "**/node_modules/**": true, "**/.next/**": true }
+  "search.exclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true
+  },
+  "cSpell.words": ["Dont"]
 }
