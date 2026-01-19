@@ -6,3 +6,30 @@
   height: 70vh;
   gap: 20px;
 }
+
+.results {
+  padding: 20px;
+}
+
+.resultsContent {
+  display: flex;
+  gap: 30px;
+}
+
+.resultsText {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.correctAnswers,
+.incorrectAnswers {
+  display: flex;
+  gap: 8px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}

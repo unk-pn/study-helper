@@ -34,6 +34,12 @@
   transform: rotateY(180deg);
 }
 
+.subjectName {
+  position: absolute;
+  top: 12px;
+  color: var(--g-color-text-secondary);
+}
+
 .cardFront,
 .cardBack {
   position: absolute;
