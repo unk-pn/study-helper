@@ -16,7 +16,7 @@ export const useRecoveryForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: email.trim() }),
       });
       const body = await res.json();
       if (!res.ok) {
@@ -38,7 +38,10 @@ export const useRecoveryForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, code: code.join("") }),
+        body: JSON.stringify({
+          email: email.trim(),
+          code: code.join(""),
+        }),
       });
       const body = await res.json();
       if (!res.ok) {
@@ -61,9 +64,9 @@ export const useRecoveryForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
+          email: email.trim(),
           code: code.join(""),
-          password: newPassword,
+          password: newPassword.trim(),
         }),
       });
       const body = await res.json();
@@ -81,7 +84,7 @@ export const useRecoveryForm = () => {
   const handlePasswordUpdate = (pass: string) => {
     setNewPassword(pass);
     setPasswordsMatch(
-      !pass || !newPasswordConfirm || pass === newPasswordConfirm
+      !pass || !newPasswordConfirm || pass === newPasswordConfirm,
     );
   };
 

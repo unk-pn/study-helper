@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const db = prisma.question;
 
 export async function GET(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.id;
+
+    if (!userId)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     const subjectId = await req.nextUrl.searchParams.get("subjectId");
 
     if (!subjectId)
@@ -12,6 +20,17 @@ export async function GET(req: NextRequest) {
         { error: "Subject id is not provided" },
         { status: 400 },
       );
+
+    const subject = await prisma.subject.findUnique({
+      where: { id: subjectId },
+      select: { userId: true },
+    });
+
+    if (!subject)
+      return NextResponse.json({ error: "Subject not found" }, { status: 404 });
+
+    if (userId !== subject.userId)
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
 
     const questions = await db.findMany({
       where: {
@@ -49,13 +68,15 @@ export async function POST(req: NextRequest) {
       );
 
     const createdQuestions = await Promise.all(
-      questions.map(q => db.create({
-        data: {
-          name: q.name,
-          answer: q.answer || null,
-          subjectId
-        }
-      }))
+      questions.map((q) =>
+        db.create({
+          data: {
+            name: q.name,
+            answer: q.answer || null,
+            subjectId,
+          },
+        }),
+      ),
     );
 
     return NextResponse.json(createdQuestions, { status: 200 });

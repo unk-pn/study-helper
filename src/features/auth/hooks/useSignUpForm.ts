@@ -31,7 +31,11 @@ export const useSignUpForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          password: password.trim(),
+        }),
       });
 
       const data = await res.json();
@@ -56,7 +60,7 @@ export const useSignUpForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
+          email: email.trim(),
           code: code.join(""),
         }),
       });
@@ -69,15 +73,15 @@ export const useSignUpForm = () => {
       }
 
       const signInRes = await signIn("credentials", {
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
         redirect: false,
       });
 
       if (signInRes?.error) {
         console.log(signInRes.error);
         alert(
-          "Verification successful, but login failed. Please sign in manually."
+          "Verification successful, but login failed. Please sign in manually.",
         );
 
         window.location.href = "/auth/signIn";

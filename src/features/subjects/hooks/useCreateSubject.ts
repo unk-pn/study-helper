@@ -52,7 +52,7 @@ export const useCreateSubject = () => {
         // Ошибка уже обрабатывается в useApi
       }
     },
-    [subjectName, subjectDate, session, createSubject]
+    [subjectName, subjectDate, session, createSubject, dispatch]
   );
 
   const handleClear = () => {

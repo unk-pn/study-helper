@@ -26,8 +26,8 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
         },
         body: JSON.stringify({
           id,
-          name,
-          answer,
+          name: name.trim(),
+          answer: answer.trim(),
         }),
       });
 

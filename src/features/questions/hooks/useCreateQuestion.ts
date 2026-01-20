@@ -17,7 +17,7 @@ export const useCreateQuestion = (subjectId: string) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: val,
+          name: val.trim(),
           subjectId,
         }),
       });

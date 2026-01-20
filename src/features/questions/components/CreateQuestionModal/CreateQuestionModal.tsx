@@ -55,7 +55,14 @@ export const CreateQuestionModal = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ questions, subjectId }),
+        body: JSON.stringify({
+          questions: questions.map((q) => ({
+            ...q,
+            name: q.name.trim(),
+            answer: q.answer.trim(),
+          })),
+          subjectId,
+        }),
       });
       const data = await res.json();
 

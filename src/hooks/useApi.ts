@@ -20,7 +20,7 @@ interface useApiResult<T> {
 
 export const useApi = <T = unknown>(
   url: string,
-  options: useApiOptions & { method?: ApiOptions["method"] } = {}
+  options: useApiOptions & { method?: ApiOptions["method"] } = {},
 ): useApiResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,7 +65,7 @@ export const useApi = <T = unknown>(
         if (!controller.signal.aborted) setLoading(false);
       }
     },
-    [url]
+    [url],
   );
 
   useEffect(() => () => abortControllerRef.current?.abort(), []);
@@ -80,7 +80,7 @@ export const useApi = <T = unknown>(
     if (refetchInterval) {
       const interval = setInterval(
         () => execute({ method: "GET" }),
-        refetchInterval
+        refetchInterval,
       );
       return () => clearInterval(interval);
     }

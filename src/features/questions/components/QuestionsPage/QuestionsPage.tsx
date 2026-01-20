@@ -8,6 +8,7 @@ import { setQuestions } from "@/store/slices/questionsSlice";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components";
 import { formatDate } from "../../../../lib/formatDate";
+import { useRouter } from "next/navigation";
 
 interface QuestionsPageProps {
   subjectId: string;
@@ -20,6 +21,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === subjectId),
   );
+  const router = useRouter()
   const [createSubjectOpen, setCreateSubjectOpen] = useState(false);
   const [startSessionOpen, setStartSessionOpen] = useState(false);
 
@@ -27,6 +29,12 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
     const fetchQuestions = async () => {
       try {
         const res = await fetch(`/api/questions?subjectId=${subjectId}`);
+
+        if ([403, 404].includes(res.status)) {
+          router.push("/subjects")
+          return
+        }
+
         const data = await res.json();
         if (!res.ok) throw new Error("Failed to fetch questions useEffect");
         dispatch(setQuestions(data));
@@ -36,7 +44,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
     };
 
     fetchQuestions();
-  }, [dispatch, subjectId]);
+  }, [dispatch, subjectId, router]);
 
   if (!subject) return null;
 

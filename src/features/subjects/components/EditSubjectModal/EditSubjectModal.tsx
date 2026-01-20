@@ -37,7 +37,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
         },
         body: JSON.stringify({
           id,
-          name,
+          name: name.trim(),
           status,
           date: date?.format("YYYY-MM-DD"),
         }),

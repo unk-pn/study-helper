@@ -9,8 +9,8 @@ export const useSignInForm = () => {
     e.preventDefault();
     try {
       const res = await signIn("credentials", {
-        email,
-        password,
+        email: email.trim(),
+        password: password.trim(),
         redirect: false,
       });
 

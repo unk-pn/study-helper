@@ -4,8 +4,8 @@ export interface EmailTemplateProps {
 }
 
 export function EmailTemplate({ type, code }: EmailTemplateProps) {
-  const texts: Record<EmailTemplateProps["type"], string | string[]> = {
-    registration: "Код для регистрации",
+  const texts: Record<EmailTemplateProps["type"], string[]> = {
+    registration: ["Код для регистрации"],
     passwordChange: [
       "Код для смены пароля",
       "Если вы не запрашивали смену пароля, просто проигнорируйте это письмо.",
