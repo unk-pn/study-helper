@@ -1,10 +1,11 @@
 "use client";
 
 import c from "./SignUpForm.module.css";
-import { Button, Card, PinInput, TextInput } from "@gravity-ui/uikit";
+import { Button, Card, Icon, PinInput, TextInput } from "@gravity-ui/uikit";
 import Link from "next/link";
 import clsx from "clsx";
 import { useSignUpForm } from "../../hooks/useSignUpForm";
+import { Eye, EyeSlash } from "@gravity-ui/icons";
 
 export const SignUpForm = () => {
   const {
@@ -22,6 +23,10 @@ export const SignUpForm = () => {
     emailValid,
     passwordsMatch,
     passwordStrong,
+    showPassword,
+    setShowPassword,
+    showPasswordConfirm,
+    setShowPasswordConfirm,
     handleSubmit,
     handleCodeSubmit,
   } = useSignUpForm();
@@ -55,27 +60,51 @@ export const SignUpForm = () => {
             className={clsx(c.input, c.password)}
             placeholder="••••••••"
             value={password}
-            type="password"
+            type={!showPassword ? "password" : "text"}
             size="l"
             onUpdate={(val) => handlePasswordUpdate(val)}
             validationState={!passwordStrong ? "invalid" : undefined}
             errorPlacement="inside"
             errorMessage={
               !passwordStrong
-                ? "Пароль должен содержать: минимум 8 символов, заглавные и строчные буквы, цифры и спецсимволы"
+                ? "Пароль должен содержать: минимум 8 символов, заглавные и строчные буквы, цифры и спецсимволы (.@$!%*?&)"
                 : undefined
+            }
+            endContent={
+              <Button
+                onClick={() => setShowPassword(!showPassword)}
+                size="s"
+                view="flat-secondary"
+              >
+                <Icon
+                  data={showPassword ? Eye : EyeSlash}
+                  style={{ cursor: "pointer" }}
+                />
+              </Button>
             }
           />
           <TextInput
             className={clsx(c.input, c.passwordConfirm)}
             placeholder="••••••••"
             value={passwordConfirm}
-            type="password"
+            type={!showPasswordConfirm ? "password" : "text"}
             size="l"
             errorPlacement="inside"
             onUpdate={(val) => handlePasswordConfirmUpdate(val)}
             validationState={!passwordsMatch ? "invalid" : undefined}
             errorMessage={!passwordsMatch ? "Пароли не совпадают" : undefined}
+            endContent={
+              <Button
+                onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                size="s"
+                view="flat-secondary"
+              >
+                <Icon
+                  data={showPasswordConfirm ? Eye : EyeSlash}
+                  style={{ cursor: "pointer" }}
+                />
+              </Button>
+            }
           />
           <Button
             type="submit"

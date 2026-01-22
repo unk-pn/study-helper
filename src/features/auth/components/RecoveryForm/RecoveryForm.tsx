@@ -1,10 +1,11 @@
 "use client";
 
 import c from "./RecoveryForm.module.css";
-import { Button, Card, PinInput, TextInput } from "@gravity-ui/uikit";
+import { Button, Card, PinInput, TextInput, Icon } from "@gravity-ui/uikit";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRecoveryForm } from "../../hooks/useRecoveryForm";
+import { Eye, EyeSlash } from "@gravity-ui/icons";
 
 export const RecoveryForm = () => {
   const {
@@ -16,6 +17,10 @@ export const RecoveryForm = () => {
     newPasswordConfirm,
     passwordsMatch,
     step,
+    showPassword,
+    setShowPassword,
+    showPasswordConfirm,
+    setShowPasswordConfirm,
     handleEmailSubmit,
     handleCodeSubmit,
     handlePasswordSubmit,
@@ -94,32 +99,62 @@ export const RecoveryForm = () => {
               className={clsx(c.input, c.password)}
               placeholder="••••••••"
               value={newPassword}
-              type="password"
+              type={!showPassword ? "password" : "text"}
               size="l"
               onUpdate={(val) => handlePasswordUpdate(val)}
               errorPlacement="inside"
+              endContent={
+                <Button
+                  onClick={() => setShowPassword(!showPassword)}
+                  size="s"
+                  view="flat-secondary"
+                >
+                  <Icon
+                    data={showPassword ? Eye : EyeSlash}
+                    style={{ cursor: "pointer" }}
+                  />
+                </Button>
+              }
             />
-            <TextInput
-              className={clsx(c.input, c.passwordConfirm)}
-              placeholder="••••••••"
-              value={newPasswordConfirm}
-              type="password"
-              size="l"
-              errorPlacement="inside"
-              onUpdate={(val) => handlePasswordConfirmUpdate(val)}
-              validationState={!passwordsMatch ? "invalid" : undefined}
-              errorMessage={!passwordsMatch ? "Пароли не совпадают" : undefined}
-            />
-            <Button
-              disabled={!newPassword || !newPasswordConfirm || !passwordsMatch}
-              type="submit"
-              view="action"
-              size="l"
-              className={c.button}
-              width="max"
-            >
-              Reset Password
-            </Button>
+            <>
+              <TextInput
+                className={clsx(c.input, c.passwordConfirm)}
+                placeholder="••••••••"
+                value={newPasswordConfirm}
+                type={!showPasswordConfirm ? "password" : "text"}
+                size="l"
+                errorPlacement="inside"
+                onUpdate={(val) => handlePasswordConfirmUpdate(val)}
+                validationState={!passwordsMatch ? "invalid" : undefined}
+                errorMessage={
+                  !passwordsMatch ? "Пароли не совпадают" : undefined
+                }
+                endContent={
+                  <Button
+                    onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
+                    size="s"
+                    view="flat-secondary"
+                  >
+                    <Icon
+                      data={showPasswordConfirm ? Eye : EyeSlash}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Button>
+                }
+              />
+              <Button
+                disabled={
+                  !newPassword || !newPasswordConfirm || !passwordsMatch
+                }
+                type="submit"
+                view="action"
+                size="l"
+                className={c.button}
+                width="max"
+              >
+                Reset Password
+              </Button>
+            </>
           </form>
         </>
       )}

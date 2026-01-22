@@ -1,10 +1,11 @@
 "use client";
 
 import c from "./SignInForm.module.css";
-import { Button, Card, TextInput } from "@gravity-ui/uikit";
+import { Button, Card, Icon, TextInput } from "@gravity-ui/uikit";
 import Link from "next/link";
 import { clsx } from "clsx";
 import { useSignInForm } from "../../hooks/useSignInForm";
+import { Eye, EyeSlash } from "@gravity-ui/icons";
 
 const note = (
   <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>
@@ -13,7 +14,15 @@ const note = (
 );
 
 export const SignInForm = () => {
-  const { email, setEmail, password, setPassword, handleSubmit } = useSignInForm();
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    showPassword,
+    setShowPassword,
+    handleSubmit,
+  } = useSignInForm();
 
   return (
     <Card className={c.card}>
@@ -31,9 +40,21 @@ export const SignInForm = () => {
           placeholder="••••••••"
           value={password}
           onUpdate={(val) => setPassword(val)}
-          type="password"
+          type={!showPassword ? "password" : "text"}
           size="l"
           note={note}
+          endContent={
+            <Button
+              onClick={() => setShowPassword(!showPassword)}
+              size="s"
+              view="flat-secondary"
+            >
+              <Icon
+                data={showPassword ? Eye : EyeSlash}
+                style={{ cursor: "pointer" }}
+              />
+            </Button>
+          }
         />
         <Button
           type="submit"

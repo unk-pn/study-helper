@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 export const useSignInForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -31,6 +32,8 @@ export const useSignInForm = () => {
     setEmail,
     password,
     setPassword,
+    showPassword,
+    setShowPassword,
     handleSubmit,
   };
 };

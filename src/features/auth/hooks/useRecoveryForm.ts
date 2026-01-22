@@ -6,6 +6,8 @@ export const useRecoveryForm = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   const handleEmailSubmit = async (e: FormEvent) => {
@@ -102,6 +104,10 @@ export const useRecoveryForm = () => {
     newPasswordConfirm,
     passwordsMatch,
     step,
+    showPassword,
+    setShowPassword,
+    showPasswordConfirm,
+    setShowPasswordConfirm,
     handleEmailSubmit,
     handleCodeSubmit,
     handlePasswordSubmit,

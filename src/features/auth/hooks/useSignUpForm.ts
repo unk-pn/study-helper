@@ -16,6 +16,8 @@ export const useSignUpForm = () => {
   const [emailValid, setEmailValid] = useState<boolean | null>(null);
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
   const [passwordStrong, setPasswordStrong] = useState<boolean>(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -126,6 +128,10 @@ export const useSignUpForm = () => {
     emailValid,
     passwordsMatch,
     passwordStrong,
+    showPassword,
+    setShowPassword,
+    showPasswordConfirm,
+    setShowPasswordConfirm,
     handleSubmit,
     handleCodeSubmit,
   };
