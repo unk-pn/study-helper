@@ -13,5 +13,5 @@
     "**/node_modules/**": true,
     "**/.next/**": true
   },
-  "cSpell.words": ["Dont"]
+  "cSpell.words": ["Dont", "languagedetector"]
 }

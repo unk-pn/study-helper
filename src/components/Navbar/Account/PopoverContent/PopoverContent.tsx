@@ -6,6 +6,7 @@ import { Avatar, Button, Switch } from "@gravity-ui/uikit";
 import { Session } from "next-auth";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setLanguage, setTheme } from "@/store/slices/settingSlice";
+import { useTranslation } from "react-i18next";
 
 interface PopoverContentProps {
   session: Session | null;
@@ -14,14 +15,18 @@ interface PopoverContentProps {
 export const PopoverContent = ({ session }: PopoverContentProps) => {
   const theme = useAppSelector((s) => s.settings.theme); // light | dark
   const language = useAppSelector((s) => s.settings.language); // en | ru
+  const { t, i18n } = useTranslation();
 
   const dispatch = useAppDispatch();
 
   const handleThemeChange = () =>
     dispatch(setTheme(theme === "dark" ? "light" : "dark"));
 
-  const handleLanguageChange = () =>
-    dispatch(setLanguage(language === "en" ? "ru" : "en"));
+  const handleLanguageChange = () => {
+    const newLang = language === "en" ? "ru" : "en";
+    dispatch(setLanguage(newLang));
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <div className={c.popoverContent}>

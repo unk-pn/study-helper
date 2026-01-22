@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import c from "./SuggestSubject.module.css";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 type SubjectType = {
   id: string;
@@ -11,6 +12,7 @@ type SubjectType = {
 
 export const SuggestSubject = () => {
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
+  const { t } = useTranslation()
 
   useEffect(() => {
     const load = async () => {
@@ -48,7 +50,8 @@ export const SuggestSubject = () => {
 
   return (
     <div>
-      <h1>What do you want to learn today?</h1>
+      {/* <h1>What do you want to learn today?</h1> */}
+      <h1>{t("home.title")}</h1>
 
       <h2>
         {curr && (
