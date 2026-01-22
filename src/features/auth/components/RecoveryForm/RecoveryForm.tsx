@@ -6,6 +6,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useRecoveryForm } from "../../hooks/useRecoveryForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
+import { useTranslation } from "react-i18next";
 
 export const RecoveryForm = () => {
   const {
@@ -28,17 +29,15 @@ export const RecoveryForm = () => {
     handlePasswordConfirmUpdate,
     setStep,
   } = useRecoveryForm();
+  const { t } = useTranslation();
 
   return (
     <Card className={c.card}>
       {step === 1 && (
         <>
           <form onSubmit={(e) => handleEmailSubmit(e)} className={c.form}>
-            <h1 className={c.title}>Forgot Password?</h1>
-            <p className={c.subtitle}>
-              Enter your email address and we&apos;ll send you a verification
-              code
-            </p>
+            <h1 className={c.title}>{t("auth.forgotPasswordTitle")}</h1>
+            <p className={c.subtitle}>{t("auth.forgotPasswordDescription")}</p>
             <TextInput
               className={clsx(c.input, c.email)}
               value={email}
@@ -55,10 +54,10 @@ export const RecoveryForm = () => {
               className={c.button}
               width="max"
             >
-              Send Code
+              {t("auth.sendCode")}
             </Button>
             <Link href="/auth/signIn" className={c.link}>
-              Back to Sign In
+              {t("auth.backToSignIn")}
             </Link>
           </form>
         </>
@@ -66,8 +65,10 @@ export const RecoveryForm = () => {
       {step === 2 && (
         <>
           <form onSubmit={(e) => handleCodeSubmit(e)} className={c.form}>
-            <h1 className={c.title}>Enter Verification Code</h1>
-            <p className={c.subtitle}>We sent a 6-digit code to {email}</p>
+            <h1 className={c.title}>{t("auth.enterCodeTitle")}</h1>
+            <p className={c.subtitle}>
+              {t("auth.enterCodeDescription", { email })}
+            </p>
             <PinInput
               size="l"
               value={code}
@@ -83,10 +84,10 @@ export const RecoveryForm = () => {
               className={c.button}
               width="max"
             >
-              Verify Code
+              {t("auth.verifyCode")}
             </Button>
             <Button view="flat" onClick={() => setStep(1)} className={c.link}>
-              Change email
+              {t("auth.changeEmail")}
             </Button>
           </form>
         </>
@@ -94,7 +95,7 @@ export const RecoveryForm = () => {
       {step === 3 && (
         <>
           <form onSubmit={(e) => handlePasswordSubmit(e)} className={c.form}>
-            <h1 className={c.title}>Create New Password</h1>
+            <h1 className={c.title}>{t("auth.createNewPassword")}</h1>
             <TextInput
               className={clsx(c.input, c.password)}
               placeholder="••••••••"
@@ -127,7 +128,7 @@ export const RecoveryForm = () => {
                 onUpdate={(val) => handlePasswordConfirmUpdate(val)}
                 validationState={!passwordsMatch ? "invalid" : undefined}
                 errorMessage={
-                  !passwordsMatch ? "Пароли не совпадают" : undefined
+                  !passwordsMatch ? t("auth.passwordsDontMatch") : undefined
                 }
                 endContent={
                   <Button
@@ -152,7 +153,7 @@ export const RecoveryForm = () => {
                 className={c.button}
                 width="max"
               >
-                Reset Password
+                {t("auth.resetPassword")}
               </Button>
             </>
           </form>

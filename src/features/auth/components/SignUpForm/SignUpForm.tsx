@@ -6,6 +6,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import { useSignUpForm } from "../../hooks/useSignUpForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
+import { useTranslation } from "react-i18next";
 
 export const SignUpForm = () => {
   const {
@@ -30,17 +31,18 @@ export const SignUpForm = () => {
     handleSubmit,
     handleCodeSubmit,
   } = useSignUpForm();
-
+  const {t} = useTranslation()
+ 
   return (
     <Card className={c.card}>
       {!codeSended ? (
         <form onSubmit={handleSubmit} className={c.form}>
-          <h1 className={c.title}>Sign Up</h1>
+          <h1 className={c.title}>{t("auth.signUp")}</h1>
           <TextInput
             className={clsx(c.input, c.name)}
             value={name}
             onUpdate={(val) => setName(val)}
-            placeholder="Name"
+            placeholder={t("auth.name")}
             size="l"
           />
 
@@ -53,7 +55,7 @@ export const SignUpForm = () => {
             onUpdate={(val) => handleEmailUpdate(val)}
             validationState={emailValid === false ? "invalid" : undefined}
             errorMessage={
-              emailValid === false ? "Некорректный email" : undefined
+              emailValid === false ? t("auth.incorrectEmail") : undefined
             }
           />
           <TextInput
@@ -66,9 +68,7 @@ export const SignUpForm = () => {
             validationState={!passwordStrong ? "invalid" : undefined}
             errorPlacement="inside"
             errorMessage={
-              !passwordStrong
-                ? "Пароль должен содержать: минимум 8 символов, заглавные и строчные буквы, цифры и спецсимволы (.@$!%*?&)"
-                : undefined
+              !passwordStrong ? t("auth.notStrongPassword") : undefined
             }
             endContent={
               <Button
@@ -92,7 +92,9 @@ export const SignUpForm = () => {
             errorPlacement="inside"
             onUpdate={(val) => handlePasswordConfirmUpdate(val)}
             validationState={!passwordsMatch ? "invalid" : undefined}
-            errorMessage={!passwordsMatch ? "Пароли не совпадают" : undefined}
+            errorMessage={
+              !passwordsMatch ? t("auth.passwordsDontMatch") : undefined
+            }
             endContent={
               <Button
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
@@ -120,18 +122,18 @@ export const SignUpForm = () => {
               !password.trim()
             }
           >
-            Sign Up
+            {t("auth.signUp")}
           </Button>
           <p className={c.text}>
-            Already have an account?{" "}
+            {t("auth.haveAccount")}
             <Link href="/auth/signIn" className={c.link}>
-              Sign in
+              {t("auth.signIn")}
             </Link>
           </p>
         </form>
       ) : (
         <form onSubmit={handleCodeSubmit} className={c.form}>
-          <h1 className={c.title}>Verify Code</h1>
+          <h1 className={c.title}>{t("auth.verifyCodeTitle")}</h1>
           <PinInput
             size="l"
             value={code}
@@ -140,7 +142,7 @@ export const SignUpForm = () => {
             className={c.pinInput}
           />
           <Button type="submit" view="action" size="l" className={c.button}>
-            Verify Code
+            {t("auth.verifyCode")}
           </Button>
         </form>
       )}

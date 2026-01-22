@@ -7,18 +7,20 @@ import Link from "next/link";
 import { Divider } from "@gravity-ui/uikit";
 import { Account } from "./Account/Account";
 import { usePathname } from "next/navigation";
-
-const navItems = [
-  { title: "Home", link: "/" },
-  { title: "Subjects", link: "/subjects" },
-  { title: "About", link: "/about" },
-];
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const mobileNavRef = useRef<HTMLElement>(null);
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const { t } = useTranslation();
+
+  const navItems = [
+    { title: t("nav.item1"), link: "/" },
+    { title: t("nav.item2"), link: "/subjects" },
+    { title: t("nav.item3"), link: "/about" },
+  ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -77,7 +79,10 @@ export const Navbar = () => {
 
             return (
               <li key={index} className={c.navItem}>
-                <Link href={i.link} className={clsx(c.navLink, isActive && c.activeNavLink)}>
+                <Link
+                  href={i.link}
+                  className={clsx(c.navLink, isActive && c.activeNavLink)}
+                >
                   {i.title}
                 </Link>
               </li>

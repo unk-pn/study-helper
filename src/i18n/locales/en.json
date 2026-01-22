@@ -1,4 +1,33 @@
 {
+  "nav": {
+    "item1": "Home",
+    "item2": "Subjects",
+    "item3": "About"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signUp": "Sign up",
+    "forgot": "Forgot password?",
+    "noAccount": "Don't have an account? ",
+    "haveAccount": "Already have an account? ",
+    "noAccountLink": "Create it!",
+    "name": "Name",
+    "incorrectEmail": "Invalid email",
+    "notStrongPassword": "Password must contain: at least 8 characters, uppercase and lowercase letters, numbers, and special symbols (.@$!%*?&)",
+    "passwordsDontMatch": "Passwords do not match",
+    "verifyCodeTitle": "Verification Code",
+    "verifyCode": "Verify code",
+    "forgotPasswordTitle": "Forgot Password?",
+    "forgotPasswordDescription": "Enter your email address and we'll send you a verification code",
+    "sendCode": "Send code",
+    "backToSignIn": "Back to Sign In",
+    "enterCodeTitle": "Enter Verification Code",
+    "enterCodeDescription": "We sent a 6-digit code to {{email}}",
+    "changeEmail": "Change email",
+    "createNewPassword": "Create New Password",
+    "resetPassword": "Save"
+  },
   "home": {
     "title": "What do you want to learn today?"
   }

@@ -6,12 +6,7 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import { useSignInForm } from "../../hooks/useSignInForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-
-const note = (
-  <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>
-    Forgot password?
-  </Link>
-);
+import { useTranslation } from "react-i18next";
 
 export const SignInForm = () => {
   const {
@@ -23,11 +18,18 @@ export const SignInForm = () => {
     setShowPassword,
     handleSubmit,
   } = useSignInForm();
+  const { t } = useTranslation();
+
+  const note = (
+    <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>
+      {t("auth.forgot")}
+    </Link>
+  );
 
   return (
     <Card className={c.card}>
       <form onSubmit={handleSubmit} className={c.form}>
-        <h1 className={c.title}>Sign In</h1>
+        <h1 className={c.title}>{t("auth.signIn")}</h1>
         <TextInput
           className={clsx(c.input, c.email)}
           value={email}
@@ -64,12 +66,12 @@ export const SignInForm = () => {
           width="max"
           disabled={!email || !password}
         >
-          Sign In
+          {t("auth.signIn")}
         </Button>
         <p className={c.text}>
-          Don&apos;t have an account?{" "}
+          {t("auth.noAccount")}
           <Link href="/auth/signUp" className={c.link}>
-            Sign up
+            {t("auth.noAccountLink")}
           </Link>
         </p>
       </form>

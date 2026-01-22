@@ -47,7 +47,7 @@ export const PopoverContent = ({ session }: PopoverContentProps) => {
       </div>
 
       <Button size="l" onClick={() => signOut()} className={c.signOutButton}>
-        Sign out
+        {t("auth.signOut")}
       </Button>
     </div>
   );

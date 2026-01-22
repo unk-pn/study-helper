@@ -1,5 +1,34 @@
 {
+  "nav": {
+    "item1": "Домашняя страница",
+    "item2": "Предметы",
+    "item3": "О нас"
+  },
+  "auth": {
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "signUp": "Создать аккаунт",
+    "forgot": "Забыли пароль?",
+    "noAccount": "Нет аккаунта? ",
+    "noAccountLink": "Создайте его!",
+    "haveAccount": "Уже есть аккаунт? ",
+    "name": "Имя",
+    "incorrectEmail": "Некорректный email",
+    "notStrongPassword": "Пароль должен содержать: минимум 8 символов, заглавные и строчные буквы, цифры и спецсимволы (.@$!%*?&)",
+    "passwordsDontMatch": "Пароли не совпадают",
+    "verifyCodeTitle": "Код подтверждения",
+    "verifyCode": "Подтвердить",
+    "forgotPasswordTitle": "Забыли пароль?",
+    "forgotPasswordDescription": "Введите свой адрес электронной почты и мы пришлем вам код подтверждения",
+    "sendCode": "Отправить код",
+    "backToSignIn": "Назад",
+    "enterCodeTitle": "Введите код подтверждения",
+    "enterCodeDescription": "Мы отправили 6-значный код на {{email}}",
+    "changeEmail": "Сменить почту",
+    "createNewPassword": "Создайте новый пароль",
+    "resetPassword": "Сохранить"
+  },
   "home": {
-    "title": "Что вы хотите изучать сегодня?"
+    "title": "Что хотите изучать сегодня?"
   }
 }

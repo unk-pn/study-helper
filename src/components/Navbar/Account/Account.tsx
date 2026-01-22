@@ -3,12 +3,14 @@
 import { Button, Popover, User } from "@gravity-ui/uikit";
 import { useSession } from "next-auth/react";
 import { PopoverContent } from "./PopoverContent/PopoverContent";
+import { useTranslation } from "react-i18next";
 
 export const Account = () => {
   const { data: session } = useSession();
+  const { t } = useTranslation();
 
   if (!session) {
-    return <Button href="/auth/signIn">Log in</Button>;
+    return <Button href="/auth/signIn">{t("auth.signIn")}</Button>;
   }
   return (
     <Popover
