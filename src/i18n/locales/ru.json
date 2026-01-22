@@ -1,4 +1,12 @@
 {
+  "utils": {
+    "edit": "Изменить",
+    "delete": "Удалить",
+    "save": "Сохранить",
+    "cancel": "Отменить",
+    "add": "Создать",
+    "start": "Начать"
+  },
   "nav": {
     "item1": "Домашняя страница",
     "item2": "Предметы",
@@ -30,5 +38,42 @@
   },
   "home": {
     "title": "Что хотите изучать сегодня?"
-  }
+  },
+  "subjects": {
+    "status": {
+      "inProgress": "В процессе",
+      "passed": "Сдан",
+      "failed": "Не сдан"
+    },
+    "subject": "Предмет",
+    "questions": "вопросов",
+    "date": "Дата",
+    "subjectsTitle": "Ваши предметы",
+    "noSubjects": "Добавьте свой первый предмет!",
+    "editSubject": "Редактирование предмет",
+    "addSubject": "Добавить предмет",
+    "subjectName": "Название предмета",
+    "creatingSubject": "Создание предмета"
+  },
+  "questions": {
+    "studySession": "Учебная сессия",
+    "numberOfCards": "Количество карточек",
+    "miniInstructions": "Краткие инструкции",
+    "instructions": {
+      "instruction1": "Посмотрите на вопрос на карточке",
+      "instruction2": "Попробуйте вспомнить ответ",
+      "instruction3": "Переверните карточку, чтобы проверить себя",
+      "instruction4": "Оцените, насколько хорошо вы запомнили ответ"
+    },
+    "exportPDF": "Экспорт в PDF",
+    "addQuestion": "Добавить вопрос",
+    "startStudying": "Начать учить",
+    "question": "Вопрос",
+    "answer": "Ответ",
+    "createQuestion": "Создание вопроса",
+    "editingQuestion": "Редактирование вопроса",
+    "noAnswer": "Нет ответа"
+  },
+  "cards": {},
+  "about": {}
 }

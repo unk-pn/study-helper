@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks/redux";
 import { deleteSubject } from "@/store/slices/subjectsSlice";
+import { useTranslation } from "react-i18next";
 
 export enum SubjectStatus {
   IN_PROGRESS,
@@ -9,17 +10,18 @@ export enum SubjectStatus {
 
 export const useSubject = (id: string) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const statusText = (text: string) => {
     switch (text) {
       case SubjectStatus[SubjectStatus.IN_PROGRESS]:
-        return "В процессе";
+        return t("subjects.status.inProgress");
       case SubjectStatus[SubjectStatus.PASSED]:
-        return "Сдан";
+        return t("subjects.status.passed");
       case SubjectStatus[SubjectStatus.FAILED]:
-        return "Не сдан";
+        return t("subjects.status.failed");
       default:
-        return "Неизвестно";
+        return t("subjects.status.inProgress");
     }
   };
 

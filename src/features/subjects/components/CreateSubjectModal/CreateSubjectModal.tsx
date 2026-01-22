@@ -3,7 +3,8 @@
 import { Button, TextInput, Modal } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { useCreateSubject } from "../../hooks/useCreateSubject";
-import c from "./CreateSubjectModal.module.css"
+import c from "./CreateSubjectModal.module.css";
+import { useTranslation } from "react-i18next";
 
 export const CreateSubjectModal = () => {
   const {
@@ -19,12 +20,14 @@ export const CreateSubjectModal = () => {
     handleOpenModal,
     handleCloseModal,
   } = useCreateSubject();
+  const { t } = useTranslation();
+
   return (
     <div className={c.container}>
       <div className={c.header}>
-        <h1 className={c.title}>Your Subjects</h1>
+        <h1 className={c.title}>{t("subjects.subjectsTitle")}</h1>
         <Button onClick={handleOpenModal} view="action" loading={loading}>
-          Добавить предмет
+          {t("subjects.addSubject")}
         </Button>
       </div>
 
@@ -37,10 +40,10 @@ export const CreateSubjectModal = () => {
         }}
       >
         <form className={c.form} onSubmit={(e) => handleCreateSubject(e)}>
-          <h1 className={c.modalTitle}>Creating subject</h1>
+          <h1 className={c.modalTitle}>{t("subjects.creatingSubject")}</h1>
           <TextInput
             size="l"
-            placeholder="Название предмета"
+            placeholder={t("subjects.subjectName")}
             value={subjectName}
             onChange={(e) => setSubjectName(e.target.value)}
             validationState={error ? "invalid" : undefined}
@@ -54,6 +57,7 @@ export const CreateSubjectModal = () => {
             onUpdate={setSubjectDate}
             format={"DD.MM.YYYY"}
             className={c.input}
+            placeholder={t("subjects.date")}
           />
           <Button
             width="max"
@@ -61,7 +65,7 @@ export const CreateSubjectModal = () => {
             type="submit"
             disabled={loading || !subjectName}
           >
-            Создать
+            {t("utils.add")}
           </Button>
         </form>
       </Modal>

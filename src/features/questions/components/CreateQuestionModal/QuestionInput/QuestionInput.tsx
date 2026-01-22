@@ -3,6 +3,7 @@
 import { TrashBin } from "@gravity-ui/icons";
 import { Button, Card, Icon, TextArea, TextInput } from "@gravity-ui/uikit";
 import c from "./QuestionInput.module.css";
+import { useTranslation } from "react-i18next";
 
 interface QuestionInputProps {
   index: number;
@@ -22,11 +23,13 @@ export const QuestionInput = ({
   onDelete,
 }: QuestionInputProps) => {
   const i = index.toString();
+  const { t } = useTranslation();
+
   return (
     <Card className={c.card}>
       <div className={c.inputs}>
         <TextInput
-          placeholder="Question"
+          placeholder={t("questions.question")}
           label={`${i}.`}
           value={name}
           onUpdate={onNameUpdate}
@@ -34,7 +37,7 @@ export const QuestionInput = ({
           hasClear
         />
         <TextArea
-          placeholder="Answer"
+          placeholder={t("questions.answer")}
           value={answer}
           onUpdate={onAnswerUpdate}
           minRows={3}

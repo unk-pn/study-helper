@@ -3,6 +3,7 @@ import c from "./EditQuestionModal.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useState } from "react";
 import { updateQuestion } from "@/store/slices/questionsSlice";
+import { useTranslation } from "react-i18next";
 
 interface EditQuestionModalProps {
   id: string;
@@ -16,6 +17,7 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   );
   const [name, setName] = useState(question?.name || "");
   const [answer, setAnswer] = useState(question?.answer || "");
+  const { t } = useTranslation();
 
   const handleSave = async () => {
     try {
@@ -49,13 +51,13 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   return (
     <Modal open={true} onClose={onClose} disableBodyScrollLock={true}>
       <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
-        <h1 className={c.title}>Editing Question</h1>
+        <h1 className={c.title}>{t("questions.editingQuestion")}</h1>
         <TextInput
           size="m"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className={c.textInput}
-          placeholder="Question"
+          placeholder={t("questions.question")}
           hasClear
         />
         <TextArea
@@ -64,15 +66,15 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
           minRows={3}
           onChange={(e) => setAnswer(e.target.value)}
           className={c.input}
-          placeholder="Answer"
+          placeholder={t("questions.answer")}
           hasClear
         />
 
         <div className={c.buttons}>
           <Button onClick={handleSave} view="action">
-            Сохранить
+            {t("utils.save")}
           </Button>
-          <Button onClick={() => onClose()}>Отмена</Button>
+          <Button onClick={() => onClose()}>{t("utils.cancel")}</Button>
         </div>
       </div>
     </Modal>

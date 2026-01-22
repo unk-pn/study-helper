@@ -10,12 +10,14 @@ import {
   setSubjects,
 } from "@/store/slices/subjectsSlice";
 import { Loader } from "@/components";
+import { useTranslation } from "react-i18next";
 
 export const SubjectsList = () => {
   const dispatch = useAppDispatch();
   const loading = useAppSelector((s) => s.subjects.loading);
   const subjects = useAppSelector((s) => s.subjects.subjects);
   const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -36,7 +38,7 @@ export const SubjectsList = () => {
         dispatch(setLoading(false));
       }
     };
-    
+
     fetchSubjects();
   }, [dispatch]);
 
@@ -55,7 +57,7 @@ export const SubjectsList = () => {
           onEdit={() => setEditingSubjectId(s.id)}
         />
       ))}
-      {!subjects.length && "Добавьте свой первый предмет!"}
+      {!subjects.length && t("subjects.noSubjects")}
 
       {editingSubjectId && (
         <EditSubjectModal

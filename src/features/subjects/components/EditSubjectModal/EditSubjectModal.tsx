@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useState } from "react";
 import { DateTime } from "@gravity-ui/date-utils";
 import { updateSubject } from "@/store/slices/subjectsSlice";
+import { useTranslation } from "react-i18next";
 
 interface EditSubjectModalProps {
   id: string;
@@ -27,6 +28,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
   const [name, setName] = useState(subject?.name || "");
   const [status, setStatus] = useState(subject?.status || "");
   const [date, setDate] = useState<DateTime | null>(null);
+  const { t } = useTranslation();
 
   const handleSave = async () => {
     try {
@@ -60,13 +62,13 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
   return (
     <Modal open={true} onClose={onClose}>
       <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
-        <h1 className={c.title}>Editing Subject</h1>
+        <h1 className={c.title}>{t("subjects.editSubject")}</h1>
         <TextInput
           size="m"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className={c.input}
-          placeholder="Subject"
+          placeholder={t("subjects.subject")}
           hasClear
         />
 
@@ -78,17 +80,17 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           <SegmentedRadioGroup.Option
             value={SubjectStatus[SubjectStatus.IN_PROGRESS]}
           >
-            В процессе
+            {t("subjects.status.inProgress")}
           </SegmentedRadioGroup.Option>
           <SegmentedRadioGroup.Option
             value={SubjectStatus[SubjectStatus.PASSED]}
           >
-            Сдан
+            {t("subjects.status.passed")}
           </SegmentedRadioGroup.Option>
           <SegmentedRadioGroup.Option
             value={SubjectStatus[SubjectStatus.FAILED]}
           >
-            Не сдан
+            {t("subjects.status.failed")}
           </SegmentedRadioGroup.Option>
         </SegmentedRadioGroup>
 
@@ -98,13 +100,13 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           onUpdate={setDate}
           format={"DD.MM.YYYY"}
           className={c.input}
-          placeholder="Date"
+          placeholder={t("subjects.date")}
         />
         <div className={c.buttons}>
           <Button onClick={handleSave} view="action">
-            Сохранить
+            {t("utils.save")}
           </Button>
-          <Button onClick={() => onClose()}>Отмена</Button>
+          <Button onClick={() => onClose()}>{t("utils.cancel")}</Button>
         </div>
       </div>
     </Modal>

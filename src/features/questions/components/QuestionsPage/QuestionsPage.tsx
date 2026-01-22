@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "@/components";
 import { formatDate } from "../../../../lib/formatDate";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface QuestionsPageProps {
   subjectId: string;
@@ -21,9 +22,10 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === subjectId),
   );
-  const router = useRouter()
+  const router = useRouter();
   const [createSubjectOpen, setCreateSubjectOpen] = useState(false);
   const [startSessionOpen, setStartSessionOpen] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -31,8 +33,8 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         const res = await fetch(`/api/questions?subjectId=${subjectId}`);
 
         if ([403, 404].includes(res.status)) {
-          router.push("/subjects")
-          return
+          router.push("/subjects");
+          return;
         }
 
         const data = await res.json();
@@ -61,14 +63,14 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
 
       <div className={c.buttons}>
         <Button onClick={() => {}} size="l">
-          Export PDF
+          {t("questions.exportPDF")}
         </Button>
         <Button
           view="action"
           onClick={() => setCreateSubjectOpen(true)}
           size="l"
         >
-          Add question
+          {t("questions.addQuestion")}
         </Button>
       </div>
 
@@ -82,7 +84,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
           onClick={() => setStartSessionOpen(true)}
           disabled={questions.length === 0}
         >
-          Start studying
+          {t("questions.startStudying")}
         </Button>
       )}
 

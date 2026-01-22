@@ -6,6 +6,7 @@ import { useState } from "react";
 import { QuestionInput } from "./QuestionInput/QuestionInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice";
+import { useTranslation } from "react-i18next";
 
 interface CreateQuestionModalProps {
   subjectId: string;
@@ -27,6 +28,7 @@ export const CreateQuestionModal = ({
   ]);
   const dispatch = useAppDispatch();
   const reduxQuestions = useAppSelector((q) => q.questions.questions);
+  const { t } = useTranslation();
 
   const handleAddQuestion = () => {
     setQuestions([
@@ -84,7 +86,7 @@ export const CreateQuestionModal = ({
   return (
     <Modal open={true} onClose={onClose}>
       <div className={c.container}>
-        <h1 className={c.title}>Create Questions</h1>
+        <h1 className={c.title}>{t("questions.createQuestion")}</h1>
 
         <div className={c.questionsList}>
           {questions.map((q, index) => (
@@ -104,7 +106,9 @@ export const CreateQuestionModal = ({
           ))}
         </div>
 
-        <Button onClick={handleAddQuestion}>Добавить вопрос</Button>
+        <Button onClick={handleAddQuestion}>
+          {t("questions.addQuestion")}
+        </Button>
 
         <div className={c.buttons}>
           <Button
@@ -112,9 +116,9 @@ export const CreateQuestionModal = ({
             onClick={handleSave}
             disabled={hasEmptyQuestions}
           >
-            Сохранить
+            {t("utils.save")}
           </Button>
-          <Button onClick={onClose}>Отмена</Button>
+          <Button onClick={onClose}>{t("utils.cancel")}</Button>
         </div>
       </div>
     </Modal>

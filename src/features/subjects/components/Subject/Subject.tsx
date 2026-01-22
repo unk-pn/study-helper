@@ -6,7 +6,8 @@ import { Card, Text, DropdownMenu, Label } from "@gravity-ui/uikit";
 import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { formatDate } from "@/lib/formatDate";
 import { useSubject } from "../../hooks/useSubject";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/hooks/redux";
+import { useTranslation } from "react-i18next";
 
 interface SubjectProps {
   id: string;
@@ -23,7 +24,7 @@ export const Subject = ({ id, onEdit }: SubjectProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === id),
   );
-  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   if (!subject) return null;
 
@@ -37,7 +38,9 @@ export const Subject = ({ id, onEdit }: SubjectProps) => {
       >
         <div className={c.info}>
           <Text variant="header-2">{subject.name}</Text>
-          <Text>{subject._count.questions} questions</Text>
+          <Text>
+            {subject._count.questions} {t("subjects.questions")}
+          </Text>
           <Label
             width="auto"
             className={c.label}
@@ -55,12 +58,12 @@ export const Subject = ({ id, onEdit }: SubjectProps) => {
             items={[
               {
                 action: () => onEdit?.(),
-                text: "Изменить",
+                text: t("utils.edit"),
                 iconStart: <PencilToLine />,
               },
               {
                 action: () => handleDelete(),
-                text: "Удалить",
+                text: t("utils.delete"),
                 theme: "danger",
                 iconStart: <TrashBin />,
               },

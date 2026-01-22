@@ -4,6 +4,7 @@ import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { useQuestion } from "../../hooks/useQuestion";
 import { Spoiler } from "spoiled";
 import { useAppSelector } from "@/hooks/redux";
+import { useTranslation } from "react-i18next";
 
 interface QuestionProps {
   id: string;
@@ -23,6 +24,7 @@ export const Question = ({
   const indx = index !== undefined ? index + 1 : "";
   const { handleDelete } = useQuestion(id, answer);
   const theme = useAppSelector((s) => s.settings.theme);
+  const { t } = useTranslation();
 
   return (
     <Card className={c.question}>
@@ -31,21 +33,19 @@ export const Question = ({
           {indx}. {name}
         </h2>
         <Spoiler revealOn="click" theme={theme}>
-          <pre className={c.answer}>
-            {answer || "Нет ответа"}
-          </pre>
+          <pre className={c.answer}>{answer || t("questions.noAnswer")}</pre>
         </Spoiler>
       </div>
       <DropdownMenu
         items={[
           {
             action: () => onEdit?.(),
-            text: "Изменить",
+            text: t("utils.edit"),
             iconStart: <PencilToLine />,
           },
           {
             action: () => handleDelete(),
-            text: "Удалить",
+            text: t("utils.delete"),
             theme: "danger",
             iconStart: <TrashBin />,
           },

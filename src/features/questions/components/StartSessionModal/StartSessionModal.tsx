@@ -3,6 +3,7 @@
 import { Button, Label, Modal } from "@gravity-ui/uikit";
 import c from "./StartSessionModal.module.css";
 import { useAppSelector } from "@/hooks/redux";
+import { useTranslation } from "react-i18next";
 
 interface StartSessionModalProps {
   subjectId: string;
@@ -16,6 +17,7 @@ export const StartSessionModal = ({
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subject) => subject.id === subjectId),
   );
+  const { t } = useTranslation();
 
   if (!subject) return null;
 
@@ -25,29 +27,39 @@ export const StartSessionModal = ({
         <div className={c.info}>
           <div className={c.titleWrapper}>
             <h1 className={c.title}>{subject.name}</h1>
-            <p className={c.subtitle}>Study session</p>
+            <p className={c.subtitle}>{t("questions.studySession")}</p>
           </div>
           <div className={c.stats}>
-            <h3 className={c.statsTitle}>Number of cards</h3>
+            <h3 className={c.statsTitle}>{t("questions.numberOfCards")}</h3>
             <Label>{subject._count.questions}</Label>
           </div>
 
           <div className={c.instructions}>
-            <h3 className={c.instructionsTitle}>Mini instructions</h3>
+            <h3 className={c.instructionsTitle}>
+              {t("questions.miniInstructions")}
+            </h3>
             <ul className={c.instructionsList}>
-              <li className={c.instructionsItem}>View the question on the card</li>
-              <li className={c.instructionsItem}>Try to remember the answer</li>
-              <li className={c.instructionsItem}>Flip the card over to check yourself</li>
-              <li className={c.instructionsItem}>Note how well you remember the answer</li>
+              <li className={c.instructionsItem}>
+                {t("questions.instructions.instruction1")}
+              </li>
+              <li className={c.instructionsItem}>
+                {t("questions.instructions.instruction2")}
+              </li>
+              <li className={c.instructionsItem}>
+                {t("questions.instructions.instruction3")}
+              </li>
+              <li className={c.instructionsItem}>
+                {t("questions.instructions.instruction4")}
+              </li>
             </ul>
           </div>
         </div>
 
         <div className={c.buttons}>
           <Button href={`/subjects/${subjectId}/cards`} view="action">
-            Start
+            {t("utils.start")}
           </Button>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>{t("utils.cancel")}</Button>
         </div>
       </div>
     </Modal>

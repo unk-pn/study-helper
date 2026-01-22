@@ -1,4 +1,12 @@
 {
+  "utils": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "add": "Add",
+    "start": "Start"
+  },
   "nav": {
     "item1": "Home",
     "item2": "Subjects",
@@ -30,5 +38,42 @@
   },
   "home": {
     "title": "What do you want to learn today?"
-  }
+  },
+  "subjects": {
+    "status": {
+      "inProgress": "In progress",
+      "passed": "Passed",
+      "failed": "Failed"
+    },
+    "subject": "Subject",
+    "questions": "questions",
+    "date": "Date",
+    "subjectsTitle": "Your subjects",
+    "noSubjects": "Add your first subject!",
+    "editSubject": "Editing subject",
+    "addSubject": "Add subject",
+    "subjectName": "Subject name",
+    "creatingSubject": "Creating subject"
+  },
+  "questions": {
+    "studySession": "Study session",
+    "numberOfCards": "Number of cards",
+    "miniInstructions": "Mini instructions",
+    "instructions": {
+      "instruction1": "View the question on the card",
+      "instruction2": "Try to remember the answer",
+      "instruction3": "Flip the card over to check yourself",
+      "instruction4": "Note how well you remember the answer"
+    },
+    "exportPDF": "Export PDF",
+    "addQuestion": "Add question",
+    "startStudying": "Start studying",
+    "question": "Question",
+    "answer": "Answer",
+    "createQuestion": "Create Question",
+    "editingQuestion": "Editing question",
+    "noAnswer": "No answer"
+  },
+  "cards": {},
+  "about": {}
 }
