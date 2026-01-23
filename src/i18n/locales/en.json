@@ -48,6 +48,7 @@
     "subject": "Subject",
     "questions": "questions",
     "date": "Date",
+    "noDate": "No date specified",
     "subjectsTitle": "Your subjects",
     "noSubjects": "Add your first subject!",
     "editSubject": "Editing subject",
@@ -74,6 +75,14 @@
     "editingQuestion": "Editing question",
     "noAnswer": "No answer"
   },
-  "cards": {},
+  "cards": {
+    "know": "Got it",
+    "dontKnow": "Still learning",
+    "startAgain": "Start again",
+    "backToQuestions": "Back to Questions",
+    "sessionEnded": "Session ended!",
+    "alreadyKnow": "Already know: ",
+    "dontKnowYet": "Don’t know yet: "
+  },
   "about": {}
 }

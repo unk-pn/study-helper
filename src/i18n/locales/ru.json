@@ -48,6 +48,7 @@
     "subject": "Предмет",
     "questions": "вопросов",
     "date": "Дата",
+    "noDate": "Дата не указана",
     "subjectsTitle": "Ваши предметы",
     "noSubjects": "Добавьте свой первый предмет!",
     "editSubject": "Редактирование предмет",
@@ -74,6 +75,14 @@
     "editingQuestion": "Редактирование вопроса",
     "noAnswer": "Нет ответа"
   },
-  "cards": {},
+  "cards": {
+    "know": "Знаю",
+    "dontKnow": "Не знаю",
+    "startAgain": "Начать заново",
+    "backToQuestions": "Вернуться к вопросам",
+    "sessionEnded": "Сессия закончена!",
+    "alreadyKnow": "Уже выучили: ",
+    "dontKnowYet": "Еще не выучили: "
+  },
   "about": {}
 }

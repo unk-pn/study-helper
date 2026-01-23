@@ -7,6 +7,7 @@ import { useCardsPage } from "../../hooks/useCardsPage";
 import { Loader } from "@/components";
 import { useAppSelector } from "@/hooks/redux";
 import { CircleProgress } from "./CircleProgress/CircleProgress";
+import { useTranslation } from "react-i18next";
 
 interface CardsPageProps {
   id: string;
@@ -26,6 +27,7 @@ export const CardsPage = ({ id }: CardsPageProps) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === id),
   );
+  const { t } = useTranslation();
 
   if (currentCardIndex === null) {
     return (
@@ -36,19 +38,21 @@ export const CardsPage = ({ id }: CardsPageProps) => {
           <GCard className={c.results}>
             <div className={c.resultsContent}>
               <div className={c.resultsText}>
-                <h1 className={c.sessionEnded}>Session ended!</h1>
+                <h1 className={c.sessionEnded}>{t("cards.sessionEnded")}</h1>
                 <div className={c.correctAnswers}>
-                  <h4>Already know: </h4>
+                  <h4>{t("cards.alreadyKnow")}</h4>
                   <Label theme="success">{correctAnswers}</Label>
                 </div>
                 <div className={c.incorrectAnswers}>
-                  <h4>Don’t know yet: </h4>
+                  <h4>{t("cards.dontKnowYet")}</h4>
                   <Label theme="warning">{incorrectAnswers}</Label>
                 </div>
               </div>
 
               <div className={c.resultsStats}>
-                <CircleProgress progress={(correctAnswers / cards.length) * 100}/>
+                <CircleProgress
+                  progress={(correctAnswers / cards.length) * 100}
+                />
               </div>
             </div>
 
@@ -59,10 +63,10 @@ export const CardsPage = ({ id }: CardsPageProps) => {
                 className={c.startButton}
                 onClick={handleStart}
               >
-                Start Again
+                {t("cards.startAgain")}
               </Button>
               <Button size="l" href={`/subjects/${id}`}>
-                Back to Questions
+                {t("cards.backToQuestions")}
               </Button>
             </div>
           </GCard>
