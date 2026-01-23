@@ -15,6 +15,7 @@
     "@gravity-ui/uikit": "^7.29.0",
     "@prisma/client": "^6.0.0",
     "@react-email/render": "^2.0.0",
+    "@react-pdf/renderer": "^4.3.2",
     "@reduxjs/toolkit": "^2.11.2",
     "@types/bcryptjs": "^3.0.0",
     "bcryptjs": "^3.0.3",

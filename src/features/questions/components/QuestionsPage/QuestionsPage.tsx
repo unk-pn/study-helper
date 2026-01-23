@@ -1,6 +1,11 @@
 "use client";
 
-import { QuestionsList, CreateQuestionModal, StartSessionModal } from "..";
+import {
+  QuestionsList,
+  CreateQuestionModal,
+  StartSessionModal,
+  ExportPDFButton,
+} from "..";
 import { Button, Card, Label } from "@gravity-ui/uikit";
 import c from "./QuestionsPage.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -57,9 +62,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
       </div>
 
       <div className={c.buttons}>
-        <Button onClick={() => {}} size="l">
-          {t("questions.exportPDF")}
-        </Button>
+        <ExportPDFButton subjectId={subjectId} />
         <Button
           view="action"
           onClick={() => setCreateSubjectOpen(true)}

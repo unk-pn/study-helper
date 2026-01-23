@@ -84,5 +84,8 @@
     "alreadyKnow": "Уже выучили: ",
     "dontKnowYet": "Еще не выучили: "
   },
-  "about": {}
+  "about": {},
+  "pdf": {
+    "name": "{{ name }} вопросы"
+  }
 }

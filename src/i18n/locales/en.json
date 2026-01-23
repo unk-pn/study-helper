@@ -31,7 +31,7 @@
     "sendCode": "Send code",
     "backToSignIn": "Back to Sign In",
     "enterCodeTitle": "Enter Verification Code",
-    "enterCodeDescription": "We sent a 6-digit code to {{email}}",
+    "enterCodeDescription": "We sent a 6-digit code to {{ email }}",
     "changeEmail": "Change email",
     "createNewPassword": "Create New Password",
     "resetPassword": "Save"
@@ -84,5 +84,8 @@
     "alreadyKnow": "Already know: ",
     "dontKnowYet": "Don’t know yet: "
   },
-  "about": {}
+  "about": {},
+  "pdf": {
+    "name": "{{ name }} questions"
+  }
 }
