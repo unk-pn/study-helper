@@ -13,11 +13,9 @@ export const useCreateSubject = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const {
-    execute: createSubject,
-    loading,
-    error,
-  } = useApi<SubjectType>("/api/subjects");
+  const { execute, loading, error } = useApi<SubjectType>("/api/subjects", {
+    refetchOnMount: false,
+  });
 
   const handleCreateSubject = useCallback(
     async (e: FormEvent) => {
@@ -27,39 +25,35 @@ export const useCreateSubject = () => {
         return;
       }
 
-      try {
-        const res = await createSubject({
-          method: "POST",
-          body: {
-            name: subjectName.trim(),
-            date: subjectDate?.format("YYYY-MM-DD"),
-            userId: session?.user.id,
-          },
-        });
+      const data = await execute({
+        method: "POST",
+        body: {
+          name: subjectName.trim(),
+          date: subjectDate?.format("YYYY-MM-DD"),
+          userId: session?.user.id,
+        },
+      });
 
-        if (res) {
-          const subjectWithCount = {
-            ...res,
-            _count: { questions: 0 },
-          };
-          dispatch(addSubject(subjectWithCount));
-        }
+      if (data) {
+        const subjectWithCount = {
+          ...data,
+          _count: { questions: 0 },
+        };
+        dispatch(addSubject(subjectWithCount));
 
         setSubjectName("");
         setSubjectDate(null);
         setOpen(false);
-      } catch {
-        // Ошибка уже обрабатывается в useApi
       }
     },
-    [subjectName, subjectDate, session, createSubject, dispatch]
+    [subjectName, subjectDate, session, execute, dispatch],
   );
 
   const handleClear = () => {
     setSubjectName("");
     setSubjectDate(null);
   };
-  
+
   const handleOpenModal = () => {
     setOpen(true);
   };

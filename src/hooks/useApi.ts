@@ -9,6 +9,7 @@ interface ApiOptions<T = unknown> {
 interface useApiOptions {
   refetchOnMount?: boolean;
   refetchInterval?: number;
+  responseType?: "json" | "text" | "blob";
 }
 
 interface useApiResult<T> {
@@ -16,6 +17,7 @@ interface useApiResult<T> {
   loading: boolean;
   error: string | null;
   execute: (options: Partial<ApiOptions>) => Promise<T | void>;
+  statusCode: number | null;
 }
 
 export const useApi = <T = unknown>(
@@ -25,6 +27,7 @@ export const useApi = <T = unknown>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [statusCode, setStatusCode] = useState<number | null>(null)
   const abortControllerRef = useRef<AbortController | null>(null);
   const { refetchOnMount, refetchInterval } = options;
 
@@ -52,8 +55,19 @@ export const useApi = <T = unknown>(
         }
 
         const res = await fetch(url, fetchOptions);
+        setStatusCode(res.status)
         if (!res.ok) throw new Error(`HTTP status ${res.status}`);
-        const data = await res.json();
+
+        let data;
+
+        if (options.responseType === "blob") {
+          data = await res.blob();
+        } else if (options.responseType === "text") {
+          data = await res.text();
+        } else {
+          data = await res.json();
+        }
+
         setData(data as T);
         return data;
       } catch (error) {
@@ -65,7 +79,7 @@ export const useApi = <T = unknown>(
         if (!controller.signal.aborted) setLoading(false);
       }
     },
-    [url],
+    [url, options.responseType],
   );
 
   useEffect(() => () => abortControllerRef.current?.abort(), []);
@@ -86,5 +100,5 @@ export const useApi = <T = unknown>(
     }
   }, [refetchInterval, execute]);
 
-  return { data, error, loading, execute };
+  return { data, error, loading, execute, statusCode };
 };

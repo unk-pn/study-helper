@@ -7,6 +7,7 @@ import { QuestionInput } from "./QuestionInput/QuestionInput";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice";
 import { useTranslation } from "react-i18next";
+import { useApi } from "@/hooks/useApi";
 
 interface CreateQuestionModalProps {
   subjectId: string;
@@ -29,6 +30,9 @@ export const CreateQuestionModal = ({
   const dispatch = useAppDispatch();
   const reduxQuestions = useAppSelector((q) => q.questions.questions);
   const { t } = useTranslation();
+  const { execute, loading, error } = useApi("/api/questions", {
+    refetchOnMount: false,
+  });
 
   const handleAddQuestion = () => {
     setQuestions([
@@ -51,35 +55,21 @@ export const CreateQuestionModal = ({
   const hasEmptyQuestions = questions.some((q) => !q.name.trim());
 
   const handleSave = async () => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          questions: questions.map((q) => ({
-            ...q,
-            name: q.name.trim(),
-            answer: q.answer.trim(),
-          })),
-          subjectId,
-        }),
-      });
-      const data = await res.json();
+    const data = await execute({
+      method: "POST",
+      body: {
+        questions: questions.map((q) => ({
+          ...q,
+          name: q.name.trim(),
+          answer: q.answer.trim(),
+        })),
+        subjectId,
+      },
+    });
 
-      if (!res.ok) {
-        throw new Error("Failed to update question: " + data.message);
-      }
-
+    if (data && Array.isArray(data)) {
       dispatch(setReduxQuestions([...reduxQuestions, ...data]));
       onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error adding questions: ", error);
-      } else {
-        console.log("Unknown error: ", error);
-      }
     }
   };
 

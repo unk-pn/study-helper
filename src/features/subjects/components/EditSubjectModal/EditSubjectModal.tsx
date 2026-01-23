@@ -14,6 +14,8 @@ import { useState } from "react";
 import { DateTime } from "@gravity-ui/date-utils";
 import { updateSubject } from "@/store/slices/subjectsSlice";
 import { useTranslation } from "react-i18next";
+import { useApi } from "@/hooks/useApi";
+import { SubjectType } from "../../types/SubjectType";
 
 interface EditSubjectModalProps {
   id: string;
@@ -29,33 +31,24 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
   const [status, setStatus] = useState(subject?.status || "");
   const [date, setDate] = useState<DateTime | null>(null);
   const { t } = useTranslation();
+  const { execute, loading, error } = useApi<SubjectType>("/api/subjects", {
+    refetchOnMount: false,
+  });
 
   const handleSave = async () => {
-    try {
-      const res = await fetch("/api/subjects", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          name: name.trim(),
-          status,
-          date: date?.format("YYYY-MM-DD"),
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error("Failed to update subject: " + data.message);
-      }
+    const data = await execute({
+      method: "PATCH",
+      body: {
+        id,
+        name: name.trim(),
+        status,
+        date: date?.format("YYYY-MM-DD"),
+      },
+    });
+
+    if (data) {
       dispatch(updateSubject(data));
       onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error updating subject: ", error);
-      } else {
-        console.log("Unknown error: ", error);
-      }
     }
   };
 
@@ -103,7 +96,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
           placeholder={t("subjects.date")}
         />
         <div className={c.buttons}>
-          <Button onClick={handleSave} view="action">
+          <Button onClick={handleSave} view="action" loading={loading}>
             {t("utils.save")}
           </Button>
           <Button onClick={() => onClose()}>{t("utils.cancel")}</Button>

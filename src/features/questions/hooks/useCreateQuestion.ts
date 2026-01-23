@@ -1,38 +1,32 @@
 import { useAppDispatch } from "@/hooks/redux";
+import { useApi } from "@/hooks/useApi";
 import { addQuestion } from "@/store/slices/questionsSlice";
 import { FormEvent, useRef, useState } from "react";
+import { QuestionType } from "../types/QuestionType";
 
 export const useCreateQuestion = (subjectId: string) => {
   const [val, setVal] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
+  const { execute, loading, error } = useApi<QuestionType>("/api/questions", {
+    refetchOnMount: false,
+  });
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await fetch("/api/questions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: val.trim(),
-          subjectId,
-        }),
-      });
+    const data = await execute({
+      method: "POST",
+      body: {
+        name: val.trim(),
+        subjectId,
+      },
+    });
 
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
-
+    if (data) {
       dispatch(addQuestion(data));
       setVal("");
       setOpen(false);
-    } catch (error) {
-      console.log("error creating question: ", error);
     }
   };
 
@@ -42,6 +36,8 @@ export const useCreateQuestion = (subjectId: string) => {
     open,
     setOpen,
     inputRef,
+    loading,
+    error,
     handleSubmit,
   };
 };

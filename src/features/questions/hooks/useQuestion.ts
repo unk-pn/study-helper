@@ -1,12 +1,17 @@
 import { useAppDispatch } from "@/hooks/redux";
+import { useApi } from "@/hooks/useApi";
 import { deleteQuestion, updateQuestion } from "@/store/slices/questionsSlice";
 import { useEffect, useRef, useState } from "react";
+import { QuestionType } from "../types/QuestionType";
 
 export const useQuestion = (id: string, answer: string | null) => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [answerVal, setAnswerVal] = useState<string>("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useAppDispatch();
+  const { execute, loading, error } = useApi<QuestionType>("/api/questions", {
+    refetchOnMount: false,
+  });
 
   useEffect(() => {
     if (openInput && inputRef.current) {
@@ -16,52 +21,34 @@ export const useQuestion = (id: string, answer: string | null) => {
       const length = textarea.value.length;
       textarea.setSelectionRange(length, length);
 
-      textarea.scrollTop = textarea.scrollHeight
+      textarea.scrollTop = textarea.scrollHeight;
     }
   }, [openInput]);
 
   const handleDelete = async () => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
+    const data = await execute({
+      method: "DELETE",
+      body: { id },
+    });
+
+    if (data) {
       dispatch(deleteQuestion(id));
-    } catch (error) {
-      console.log("error deleting question: ", error);
     }
   };
 
   const handleAddAnswer = async () => {
-    try {
-      const res = await fetch("/api/questions", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          answer: answerVal.trim(),
-          id: id,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
+    const data = await execute({
+      method: "PATCH",
+      body: {
+        answer: answerVal.trim(),
+        id: id,
+      },
+    });
+
+    if (data) {
       dispatch(updateQuestion(data));
       setAnswerVal("");
       setOpenInput(false);
-    } catch (error) {
-      console.log("error deleting question: ", error);
     }
   };
 
@@ -76,6 +63,8 @@ export const useQuestion = (id: string, answer: string | null) => {
     answerVal,
     setAnswerVal,
     inputRef,
+    loading,
+    error,
     handleDelete,
     handleAddAnswer,
     handleChangeAnswer,

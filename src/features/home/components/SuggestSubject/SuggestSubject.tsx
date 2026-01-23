@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import c from "./SuggestSubject.module.css";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { useApi } from "@/hooks/useApi";
 
 type SubjectType = {
   id: string;
@@ -12,25 +13,15 @@ type SubjectType = {
 
 export const SuggestSubject = () => {
   const [subjects, setSubjects] = useState<SubjectType[]>([]);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+  const { data, loading, error } = useApi("/api/subjects");
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch("/api/subjects");
-        const data = await res.json();
-        if (!res.ok) {
-          console.log("data fail: ", data.error);
-          return;
-        }
-        setSubjects(data);
-        setCurr(data[0]);
-      } catch (error) {
-        console.log("failed to get subjects: ", error);
-      }
-    };
-    load();
-  }, []);
+    if (data && Array.isArray(data)) {
+      setSubjects(data);
+      setCurr(data[0]);
+    }
+  }, [data]);
 
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
 
@@ -50,7 +41,6 @@ export const SuggestSubject = () => {
 
   return (
     <div>
-      {/* <h1>What do you want to learn today?</h1> */}
       <h1>{t("home.title")}</h1>
 
       <h2>

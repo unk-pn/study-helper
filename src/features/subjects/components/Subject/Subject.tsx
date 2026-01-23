@@ -19,7 +19,8 @@ interface SubjectProps {
 }
 
 export const Subject = ({ id, onEdit }: SubjectProps) => {
-  const { statusText, labelTheme, handleDelete } = useSubject(id);
+  const { loading, error, statusText, labelTheme, handleDelete } =
+    useSubject(id);
   const router = useRouter();
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === id),

@@ -10,6 +10,7 @@ import { Loader } from "@/components";
 import { formatDate } from "../../../../lib/formatDate";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useApi } from "@/hooks/useApi";
 
 interface QuestionsPageProps {
   subjectId: string;
@@ -18,7 +19,6 @@ interface QuestionsPageProps {
 export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const dispatch = useAppDispatch();
   const questions = useAppSelector((s) => s.questions.questions);
-  const loading = useAppSelector((s) => s.questions.loading);
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === subjectId),
   );
@@ -26,27 +26,22 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const [createSubjectOpen, setCreateSubjectOpen] = useState(false);
   const [startSessionOpen, setStartSessionOpen] = useState(false);
   const { t } = useTranslation();
+  const { data, loading, error, statusCode } = useApi(
+    `/api/questions?subjectId=${subjectId}`,
+  );
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const res = await fetch(`/api/questions?subjectId=${subjectId}`);
+    if ([403, 404].includes(statusCode || 0)) {
+      router.push("/subjects");
+      return;
+    }
+  }, [router, statusCode]);
 
-        if ([403, 404].includes(res.status)) {
-          router.push("/subjects");
-          return;
-        }
-
-        const data = await res.json();
-        if (!res.ok) throw new Error("Failed to fetch questions useEffect");
-        dispatch(setQuestions(data));
-      } catch (error) {
-        console.log("error loading questions: ", error);
-      }
-    };
-
-    fetchQuestions();
-  }, [dispatch, subjectId, router]);
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      dispatch(setQuestions(data));
+    }
+  }, [dispatch, data]);
 
   if (!subject) return null;
 

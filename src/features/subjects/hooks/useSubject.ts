@@ -1,4 +1,5 @@
 import { useAppDispatch } from "@/hooks/redux";
+import { useApi } from "@/hooks/useApi";
 import { deleteSubject } from "@/store/slices/subjectsSlice";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +12,7 @@ export enum SubjectStatus {
 export const useSubject = (id: string) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+  const { execute, loading, error } = useApi("/api/subjects");
 
   const statusText = (text: string) => {
     switch (text) {
@@ -39,26 +41,19 @@ export const useSubject = (id: string) => {
   };
 
   const handleDelete = async () => {
-    try {
-      const res = await fetch("/api/subjects", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        console.log("res not ok: ", data.error);
-        return;
-      }
+    const data = await execute({
+      method: "DELETE",
+      body: { id },
+    });
+
+    if (data) {
       dispatch(deleteSubject(id));
-    } catch (error) {
-      console.log("error deleting subject: ", error);
     }
   };
 
   return {
+    loading,
+    error,
     statusText,
     labelTheme,
     handleDelete,

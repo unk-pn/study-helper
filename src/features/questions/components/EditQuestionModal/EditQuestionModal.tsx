@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useState } from "react";
 import { updateQuestion } from "@/store/slices/questionsSlice";
 import { useTranslation } from "react-i18next";
+import { useApi } from "@/hooks/useApi";
+import { QuestionType } from "../../types/QuestionType";
 
 interface EditQuestionModalProps {
   id: string;
@@ -18,33 +20,23 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   const [name, setName] = useState(question?.name || "");
   const [answer, setAnswer] = useState(question?.answer || "");
   const { t } = useTranslation();
+  const { execute, loading, error } = useApi<QuestionType>("/api/questions/", {
+    refetchOnMount: false,
+  });
 
   const handleSave = async () => {
-    try {
-      const res = await fetch("/api/questions/", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          name: name.trim(),
-          answer: answer.trim(),
-        }),
-      });
+    const data = await execute({
+      method: "PATCH",
+      body: {
+        id,
+        name: name.trim(),
+        answer: answer.trim(),
+      },
+    });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error("Failed to update question: " + data.message);
-      }
+    if (data) {
       dispatch(updateQuestion(data));
       onClose();
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log("Error updating question: ", error);
-      } else {
-        console.log("Unknown error: ", error);
-      }
     }
   };
 
