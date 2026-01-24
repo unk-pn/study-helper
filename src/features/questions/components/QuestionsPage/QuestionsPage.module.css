@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 48px 40px;
+  padding: 48px 24px;
   min-height: 85vh;
+  margin: 12px 24px;
 }
 
 .header {

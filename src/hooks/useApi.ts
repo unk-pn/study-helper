@@ -27,7 +27,7 @@ export const useApi = <T = unknown>(
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [statusCode, setStatusCode] = useState<number | null>(null)
+  const [statusCode, setStatusCode] = useState<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const { refetchOnMount, refetchInterval } = options;
 
@@ -50,12 +50,13 @@ export const useApi = <T = unknown>(
             ...headers,
           },
         };
-        if (method !== "GET" && method !== "DELETE" && body !== undefined) {
+        // if (method !== "GET" && method !== "DELETE" && body !== undefined) {
+        if (method !== "GET" && body !== undefined) {
           fetchOptions.body = JSON.stringify(body);
         }
 
         const res = await fetch(url, fetchOptions);
-        setStatusCode(res.status)
+        setStatusCode(res.status);
         if (!res.ok) throw new Error(`HTTP status ${res.status}`);
 
         let data;

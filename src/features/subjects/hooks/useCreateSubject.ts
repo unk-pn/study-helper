@@ -5,6 +5,8 @@ import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import { SubjectType } from "../types/SubjectType";
+import { useToaster } from "@gravity-ui/uikit";
+import { useTranslation } from "react-i18next";
 
 export const useCreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -16,12 +18,19 @@ export const useCreateSubject = () => {
   const { execute, loading, error } = useApi<SubjectType>("/api/subjects", {
     refetchOnMount: false,
   });
+  const { t } = useTranslation();
+  const { add } = useToaster();
 
   const handleCreateSubject = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
 
       if (!subjectName.trim()) {
+        add({
+          name: "toast-warning",
+          content: "Subject name is required",
+          theme: "warning",
+        });
         return;
       }
 
@@ -44,9 +53,20 @@ export const useCreateSubject = () => {
         setSubjectName("");
         setSubjectDate(null);
         setOpen(false);
+        add({
+          name: "toast-success",
+          content: "Subject added successfully",
+          theme: "success",
+        });
+      } else {
+        add({
+          name: "toast-error",
+          content: "Error adding subject",
+          theme: "danger",
+        });
       }
     },
-    [subjectName, subjectDate, session, execute, dispatch],
+    [subjectName, subjectDate, session, execute, dispatch, add],
   );
 
   const handleClear = () => {
@@ -64,6 +84,7 @@ export const useCreateSubject = () => {
   };
 
   return {
+    t,
     open,
     setOpen,
     subjectName,

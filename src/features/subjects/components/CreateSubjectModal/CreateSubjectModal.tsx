@@ -4,10 +4,10 @@ import { Button, TextInput, Modal } from "@gravity-ui/uikit";
 import { DatePicker } from "@gravity-ui/date-components";
 import { useCreateSubject } from "../../hooks/useCreateSubject";
 import c from "./CreateSubjectModal.module.css";
-import { useTranslation } from "react-i18next";
 
 export const CreateSubjectModal = () => {
   const {
+    t,
     open,
     subjectName,
     setSubjectName,
@@ -20,13 +20,12 @@ export const CreateSubjectModal = () => {
     handleOpenModal,
     handleCloseModal,
   } = useCreateSubject();
-  const { t } = useTranslation();
 
   return (
     <div className={c.container}>
       <div className={c.header}>
         <h1 className={c.title}>{t("subjects.subjectsTitle")}</h1>
-        <Button onClick={handleOpenModal} view="action" loading={loading}>
+        <Button onClick={handleOpenModal} view="action">
           {t("subjects.addSubject")}
         </Button>
       </div>
@@ -63,7 +62,7 @@ export const CreateSubjectModal = () => {
             width="max"
             view="action"
             type="submit"
-            disabled={loading || !subjectName}
+            disabled={!subjectName}
           >
             {t("utils.add")}
           </Button>

@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { ThemeWrapper } from "./ThemeWrapper";
 import { persistor, store } from "@/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { Loader } from "../Loader";
+import { Loader } from "..";
 
 const loader = <Loader />;
 
