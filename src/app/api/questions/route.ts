@@ -89,33 +89,6 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     const { name, subjectId } = await req.json();
-
-//     if (!name || !subjectId)
-//       return NextResponse.json(
-//         { error: "Name ans SubjectId is required" },
-//         { status: 400 }
-//       );
-
-//     const newQuestion = await db.create({
-//       data: {
-//         name,
-//         subjectId,
-//       },
-//     });
-
-//     return NextResponse.json(newQuestion, { status: 200 });
-//   } catch (error) {
-//     console.log(error);
-//     return NextResponse.json(
-//       { error: "Failed to fetch questions" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 export async function DELETE(req: NextRequest) {
   try {
     const { id } = await req.json();

@@ -1,0 +1,12 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.settingsItem {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}

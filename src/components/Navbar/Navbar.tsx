@@ -4,10 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import c from "./Navbar.module.css";
 import clsx from "clsx";
 import Link from "next/link";
-import { Divider } from "@gravity-ui/uikit";
+import { Button, Divider } from "@gravity-ui/uikit";
 import { Account } from "./Account/Account";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { Settings } from "./Settings/Settings";
+import { signOut } from "next-auth/react";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -92,7 +94,7 @@ export const Navbar = () => {
 
         <Divider className={c.divider} orientation="vertical" />
 
-        <Account />
+        <Account type="desktop" />
       </nav>
 
       <button
@@ -114,19 +116,34 @@ export const Navbar = () => {
         ref={mobileNavRef}
         className={clsx(c.mobileNav, isMenuOpen && c.mobileNavOpen)}
       >
-        <ul className={c.mobileNavList}>
-          {navItems.map((i, index) => (
-            <li key={index} className={c.mobileNavItem}>
-              <Link
-                href={i.link}
-                className={c.mobileNavLink}
-                onClick={closeMenu}
-              >
-                {i.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className={c.mobileNavTop}>
+
+          <Account type="mobile" />
+          <Divider orientation="horizontal" className={c.divider} />
+
+          <ul className={c.mobileNavList}>
+            {navItems.map((i, index) => (
+              <li key={index}>
+                <Link
+                  href={i.link}
+                  className={c.mobileNavLink}
+                  onClick={closeMenu}
+                >
+                  {i.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className={c.mobileNavBottom}>
+          <Divider orientation="horizontal" className={c.divider}/>
+
+          <Settings />
+
+          <Button size="l" onClick={() => signOut()} className={c.signOutButton}>
+            {t("auth.signOut")}
+          </Button>
+        </div>
       </nav>
     </header>
   );

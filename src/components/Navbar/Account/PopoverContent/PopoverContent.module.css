@@ -6,19 +6,6 @@
   gap: 8px;
 }
 
-.settings {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.settingsItem {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-}
-
 .signOutButton {
   margin-top: 10px;
 }

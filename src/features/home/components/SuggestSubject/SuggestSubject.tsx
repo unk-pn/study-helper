@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import c from "./SuggestSubject.module.css";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { useApi } from "@/hooks/useApi";
+import { useAppSelector } from "@/hooks/redux";
 
 type SubjectType = {
   id: string;
@@ -12,16 +12,9 @@ type SubjectType = {
 };
 
 export const SuggestSubject = () => {
-  const [subjects, setSubjects] = useState<SubjectType[]>([]);
   const { t } = useTranslation();
-  const { data, loading, error } = useApi("/api/subjects");
 
-  useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setSubjects(data);
-      setCurr(data[0]);
-    }
-  }, [data]);
+  const subjects = useAppSelector(s => s.subjects.subjects)
 
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
 
