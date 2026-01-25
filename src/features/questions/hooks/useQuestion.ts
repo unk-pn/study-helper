@@ -1,10 +1,11 @@
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useApi } from "@/hooks/useApi";
-import { deleteQuestion, updateQuestion } from "@/store/slices/questionsSlice";
+import { deleteQuestion } from "@/store/slices/questionsSlice";
 import { useEffect, useRef, useState } from "react";
 import { QuestionType } from "../types/QuestionType";
+import { useTranslation } from "react-i18next";
 
-export const useQuestion = (id: string, answer: string | null) => {
+export const useQuestion = (id: string) => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [answerVal, setAnswerVal] = useState<string>("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -12,6 +13,8 @@ export const useQuestion = (id: string, answer: string | null) => {
   const { execute, loading, error } = useApi<QuestionType>("/api/questions", {
     refetchOnMount: false,
   });
+  const theme = useAppSelector((s) => s.settings.theme);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (openInput && inputRef.current) {
@@ -36,28 +39,9 @@ export const useQuestion = (id: string, answer: string | null) => {
     }
   };
 
-  const handleAddAnswer = async () => {
-    const data = await execute({
-      method: "PATCH",
-      body: {
-        answer: answerVal.trim(),
-        id: id,
-      },
-    });
-
-    if (data) {
-      dispatch(updateQuestion(data));
-      setAnswerVal("");
-      setOpenInput(false);
-    }
-  };
-
-  const handleChangeAnswer = () => {
-    setAnswerVal(answer || "");
-    setOpenInput(true);
-  };
-
   return {
+    t,
+    theme,
     openInput,
     setOpenInput,
     answerVal,
@@ -66,7 +50,5 @@ export const useQuestion = (id: string, answer: string | null) => {
     loading,
     error,
     handleDelete,
-    handleAddAnswer,
-    handleChangeAnswer,
   };
 };

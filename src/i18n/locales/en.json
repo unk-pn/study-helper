@@ -1,5 +1,9 @@
 {
   "utils": {
+    "toast": {
+      "errorDescription": "Error status {{ code }}",
+      "unknownError": "Неизвестная ошибка"
+    },
     "edit": "Edit",
     "delete": "Delete",
     "save": "Save",
@@ -13,6 +17,16 @@
     "item3": "About"
   },
   "auth": {
+    "toast": {
+      "signIn": "Successfully logged as {{ email }}",
+      "signInError": "Sign in error",
+      "signUpError": "Sign up error",
+      "codeError": "Verification code error",
+      "signUpResError": "Verification successful, but login failed. Please sign in manually",
+      "userNotFound": "User not found",
+      "passwordResetSuccess": "Password changed",
+      "passwordResetSuccessDescription": "Password for account {{ email }} has been successfully changed"
+    },
     "signIn": "Sign in",
     "signOut": "Sign out",
     "signUp": "Sign up",
@@ -40,6 +54,16 @@
     "title": "What do you want to learn today?"
   },
   "subjects": {
+    "toast": {
+      "errorDescription": "Error status {{ code }}",
+      "create": "Subject \"{{ name }}\" added",
+      "createError": "Error adding subject",
+      "createWarning": "Subject name is required",
+      "update": "Subject \"{{ name }}\" updated",
+      "updateError": "Error updating subject",
+      "delete": "Subject \"{{ name }}\" deleted",
+      "deleteError": "Error deleting subject"
+    },
     "status": {
       "inProgress": "In progress",
       "passed": "Passed",

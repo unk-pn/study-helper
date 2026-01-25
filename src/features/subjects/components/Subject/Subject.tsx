@@ -1,13 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import c from "./Subject.module.css";
 import { Card, Text, DropdownMenu, Label } from "@gravity-ui/uikit";
 import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { formatDate } from "@/lib/formatDate";
 import { useSubject } from "../../hooks/useSubject";
-import { useAppSelector } from "@/hooks/redux";
-import { useTranslation } from "react-i18next";
 
 interface SubjectProps {
   id: string;
@@ -19,13 +16,16 @@ interface SubjectProps {
 }
 
 export const Subject = ({ id, onEdit }: SubjectProps) => {
-  const { loading, error, statusText, labelTheme, handleDelete } =
-    useSubject(id);
-  const router = useRouter();
-  const subject = useAppSelector((s) =>
-    s.subjects.subjects.find((subj) => subj.id === id),
-  );
-  const { t } = useTranslation();
+  const {
+    t,
+    loading,
+    error,
+    router,
+    subject,
+    statusText,
+    labelTheme,
+    handleDelete,
+  } = useSubject(id);
 
   if (!subject) return null;
 

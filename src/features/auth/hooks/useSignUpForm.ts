@@ -1,7 +1,9 @@
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
+import { toast } from "@/lib/toast";
+import { useTranslation } from "react-i18next";
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const strongPasswordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/;
@@ -18,14 +20,10 @@ export const useSignUpForm = () => {
   const [passwordStrong, setPasswordStrong] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
-    if (password !== passwordConfirm) {
-      alert("passwords do not match");
-      return;
-    }
 
     try {
       const res = await fetch("/api/register", {
@@ -43,13 +41,17 @@ export const useSignUpForm = () => {
       const data = await res.json();
       if (!res.ok) {
         console.log(data.error);
+        toast.danger(t("auth.toast.signUpError"), data.error);
         return;
       }
 
       setCodeSended(true);
     } catch (error) {
       console.log(error);
-      alert("error signing up");
+      toast.danger(
+        t("auth.toast.signUpError"),
+        t("utils.toast.errorDescription", { code: "CHANGE ME" }),
+      );
     }
   };
 
@@ -71,6 +73,7 @@ export const useSignUpForm = () => {
 
       if (!res.ok) {
         console.log(data.error);
+        toast.danger(t("auth.toast.codeError"), data.error);
         return;
       }
 
@@ -82,9 +85,7 @@ export const useSignUpForm = () => {
 
       if (signInRes?.error) {
         console.log(signInRes.error);
-        alert(
-          "Verification successful, but login failed. Please sign in manually.",
-        );
+        toast.warning(t("auth.toast.signUpResError"));
 
         window.location.href = "/auth/signIn";
         return;
@@ -114,6 +115,7 @@ export const useSignUpForm = () => {
   };
 
   return {
+    t,
     name,
     setName,
     email,

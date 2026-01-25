@@ -16,6 +16,7 @@ import { updateSubject } from "@/store/slices/subjectsSlice";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
 import { SubjectType } from "../../types/SubjectType";
+import { toast } from "@/lib/toast";
 
 interface EditSubjectModalProps {
   id: string;
@@ -31,7 +32,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
   const [status, setStatus] = useState(subject?.status || "");
   const [date, setDate] = useState<DateTime | null>(null);
   const { t } = useTranslation();
-  const { execute, loading, error } = useApi<SubjectType>("/api/subjects", {
+  const { execute, loading, statusCode } = useApi<SubjectType>("/api/subjects", {
     refetchOnMount: false,
   });
 
@@ -49,6 +50,12 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
     if (data) {
       dispatch(updateSubject(data));
       onClose();
+      toast.success(t("subjects.toast.update", { name }));
+    } else {
+      toast.danger(
+        t("subjects.toast.updateError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
     }
   };
 

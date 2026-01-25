@@ -1,6 +1,8 @@
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useApi } from "@/hooks/useApi";
+import { toast } from "@/lib/toast";
 import { deleteSubject } from "@/store/slices/subjectsSlice";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
 export enum SubjectStatus {
@@ -10,9 +12,13 @@ export enum SubjectStatus {
 }
 
 export const useSubject = (id: string) => {
+  const subject = useAppSelector((s) =>
+    s.subjects.subjects.find((subj) => subj.id === id),
+  );
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { t } = useTranslation();
-  const { execute, loading, error } = useApi("/api/subjects");
+  const { execute, loading, error, statusCode } = useApi("/api/subjects");
 
   const statusText = (text: string) => {
     switch (text) {
@@ -48,12 +54,21 @@ export const useSubject = (id: string) => {
 
     if (data) {
       dispatch(deleteSubject(id));
+      toast.danger(t("subjects.toast.delete", { name: subject?.name }));
+    } else {
+      toast.danger(
+        t("subjects.toast.deleteError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
     }
   };
 
   return {
+    t,
     loading,
     error,
+    router,
+    subject,
     statusText,
     labelTheme,
     handleDelete,

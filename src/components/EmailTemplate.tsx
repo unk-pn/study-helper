@@ -21,7 +21,7 @@ export function EmailTemplate({ type, code }: EmailTemplateProps) {
       </h1>
       {isArr && <p>{texts[type][1]}</p>}
 
-      <p>Действителен в течении 15 минут.</p>
+      <p>Действителен в течении 15 минут</p>
     </div>
   );
 }

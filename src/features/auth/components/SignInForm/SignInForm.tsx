@@ -6,10 +6,11 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import { useSignInForm } from "../../hooks/useSignInForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { useTranslation } from "react-i18next";
+
 
 export const SignInForm = () => {
   const {
+    t,
     email,
     setEmail,
     password,
@@ -18,7 +19,6 @@ export const SignInForm = () => {
     setShowPassword,
     handleSubmit,
   } = useSignInForm();
-  const { t } = useTranslation();
 
   const note = (
     <Link href="/auth/forgotPassword" className={clsx(c.link, c.note)}>

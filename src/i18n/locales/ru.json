@@ -1,5 +1,9 @@
 {
   "utils": {
+    "toast": {
+      "errorDescription": "Код ошибки {{ code }}",
+      "unknownError": "Неизвестная ошибка"
+    },
     "edit": "Изменить",
     "delete": "Удалить",
     "save": "Сохранить",
@@ -13,6 +17,16 @@
     "item3": "О нас"
   },
   "auth": {
+    "toast": {
+      "signIn": "Успешный вход как {{ email }}",
+      "signInError": "Ошибка входа",
+      "signUpError": "Ошибка регистрации",
+      "codeError": "Ошибка кода подтверждения",
+      "signUpResError": "Верификация успешна, но вход не выполнен. Пожалуйста, войдите вручную",
+      "userNotFound": "Пользователь не найден",
+      "passwordResetSuccess": "Пароль изменен",
+      "passwordResetSuccessDescription": "Пароль для аккаунта {{ email }} успешно изменен"
+    },
     "signIn": "Войти",
     "signOut": "Выйти",
     "signUp": "Создать аккаунт",
@@ -40,6 +54,16 @@
     "title": "Что хотите изучать сегодня?"
   },
   "subjects": {
+    "toast": {
+      "errorDescription": "Код ошибки {{ code }}",
+      "create": "Предмет \"{{ name }}\" добавлен",
+      "createError": "Ошибка создания предмета",
+      "createWarning": "Введите название предмета",
+      "update": "Предмет \"{{ name }}\" обновлен",
+      "updateError": "Ошибка обновления предмета",
+      "delete": "Предмет \"{{ name }}\" удален",
+      "deleteError": "Ошибка удаления предмета"
+    },
     "status": {
       "inProgress": "В процессе",
       "passed": "Сдан",

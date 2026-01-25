@@ -26,7 +26,9 @@ export const useApi = <T = unknown>(
 ): useApiResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(
+    options.refetchOnMount !== false,
+  );
   const [statusCode, setStatusCode] = useState<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const { refetchOnMount, refetchInterval } = options;
@@ -57,15 +59,19 @@ export const useApi = <T = unknown>(
 
         const res = await fetch(url, fetchOptions);
         setStatusCode(res.status);
+
         if (!res.ok) throw new Error(`HTTP status ${res.status}`);
 
         let data;
-
         if (options.responseType === "blob") {
           data = await res.blob();
         } else if (options.responseType === "text") {
           data = await res.text();
         } else {
+          const contentType = res.headers.get("content-type");
+          if (!contentType?.includes("application/json"))
+            throw new Error(`Expected JSON, got ${contentType || "unknown"}`);
+
           data = await res.json();
         }
 

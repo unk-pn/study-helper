@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db";
 import { sendEmail } from "@/lib/sendEmail";
 import { NextRequest, NextResponse } from "next/server";
+import i18n from "i18next";
 
 export async function POST(req: NextRequest) {
   try {

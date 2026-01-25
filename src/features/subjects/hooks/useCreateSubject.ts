@@ -5,8 +5,8 @@ import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
 import { FormEvent, useCallback, useRef, useState } from "react";
 import { SubjectType } from "../types/SubjectType";
-import { useToaster } from "@gravity-ui/uikit";
 import { useTranslation } from "react-i18next";
+import { toast } from "@/lib/toast";
 
 export const useCreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -15,22 +15,17 @@ export const useCreateSubject = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const { execute, loading, error } = useApi<SubjectType>("/api/subjects", {
+  const { execute, error, statusCode } = useApi<SubjectType>("/api/subjects", {
     refetchOnMount: false,
   });
   const { t } = useTranslation();
-  const { add } = useToaster();
 
   const handleCreateSubject = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
 
       if (!subjectName.trim()) {
-        add({
-          name: "toast-warning",
-          content: "Subject name is required",
-          theme: "warning",
-        });
+        toast.warning(t("subjects.toast.createWarning"));
         return;
       }
 
@@ -48,25 +43,21 @@ export const useCreateSubject = () => {
           ...data,
           _count: { questions: 0 },
         };
+
         dispatch(addSubject(subjectWithCount));
 
         setSubjectName("");
         setSubjectDate(null);
         setOpen(false);
-        add({
-          name: "toast-success",
-          content: "Subject added successfully",
-          theme: "success",
-        });
+        toast.success(t("subjects.toast.create", { name: subjectName }));
       } else {
-        add({
-          name: "toast-error",
-          content: "Error adding subject",
-          theme: "danger",
-        });
+        toast.danger(
+          t("subjects.toast.createError"),
+          t("utils.toast.errorDescription", { code: statusCode }),
+        );
       }
     },
-    [subjectName, subjectDate, session, execute, dispatch, add],
+    [subjectName, subjectDate, session, execute, dispatch, statusCode, t],
   );
 
   const handleClear = () => {
@@ -91,7 +82,6 @@ export const useCreateSubject = () => {
     setSubjectName,
     subjectDate,
     setSubjectDate,
-    loading,
     error,
     inputRef,
     handleCreateSubject,

@@ -3,8 +3,6 @@ import c from "./Question.module.css";
 import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { useQuestion } from "../../hooks/useQuestion";
 import { Spoiler } from "spoiled";
-import { useAppSelector } from "@/hooks/redux";
-import { useTranslation } from "react-i18next";
 
 interface QuestionProps {
   id: string;
@@ -22,9 +20,7 @@ export const Question = ({
   onEdit,
 }: QuestionProps) => {
   const indx = index !== undefined ? index + 1 : "";
-  const { handleDelete } = useQuestion(id, answer);
-  const theme = useAppSelector((s) => s.settings.theme);
-  const { t } = useTranslation();
+  const { t, theme, handleDelete } = useQuestion(id);
 
   return (
     <Card className={c.question}>

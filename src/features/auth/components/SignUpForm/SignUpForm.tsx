@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 export const SignUpForm = () => {
   const {
+    t,
     name,
     setName,
     email,
@@ -31,7 +32,6 @@ export const SignUpForm = () => {
     handleSubmit,
     handleCodeSubmit,
   } = useSignUpForm();
-  const {t} = useTranslation()
  
   return (
     <Card className={c.card}>

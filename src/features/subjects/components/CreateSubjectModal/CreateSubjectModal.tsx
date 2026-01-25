@@ -13,7 +13,6 @@ export const CreateSubjectModal = () => {
     setSubjectName,
     subjectDate,
     setSubjectDate,
-    loading,
     error,
     inputRef,
     handleCreateSubject,

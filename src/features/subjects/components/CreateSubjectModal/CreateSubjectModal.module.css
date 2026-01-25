@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+.title {
+  line-height: 120%;
+}
+
 .form {
   padding: 16px 24px;
   display: flex;

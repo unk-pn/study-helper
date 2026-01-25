@@ -2,14 +2,14 @@
 
 import c from "./RecoveryForm.module.css";
 import { Button, Card, PinInput, TextInput, Icon } from "@gravity-ui/uikit";
-import clsx from "clsx";
 import Link from "next/link";
 import { useRecoveryForm } from "../../hooks/useRecoveryForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { useTranslation } from "react-i18next";
+import { emailRegex } from "../../hooks/useSignUpForm";
 
 export const RecoveryForm = () => {
   const {
+    t,
     email,
     setEmail,
     code,
@@ -18,6 +18,7 @@ export const RecoveryForm = () => {
     newPasswordConfirm,
     passwordsMatch,
     step,
+    loading,
     showPassword,
     setShowPassword,
     showPasswordConfirm,
@@ -29,7 +30,6 @@ export const RecoveryForm = () => {
     handlePasswordConfirmUpdate,
     setStep,
   } = useRecoveryForm();
-  const { t } = useTranslation();
 
   return (
     <Card className={c.card}>
@@ -39,20 +39,22 @@ export const RecoveryForm = () => {
             <h1 className={c.title}>{t("auth.forgotPasswordTitle")}</h1>
             <p className={c.subtitle}>{t("auth.forgotPasswordDescription")}</p>
             <TextInput
-              className={clsx(c.input, c.email)}
               value={email}
               placeholder="example@gmail.com"
               size="l"
               errorPlacement="inside"
               onUpdate={(val) => setEmail(val)}
+              validationState={
+                email && !emailRegex.test(email) ? "invalid" : undefined
+              }
             />
             <Button
               view="action"
               type="submit"
-              disabled={!email}
+              disabled={!email || !emailRegex.test(email)}
               size="l"
-              className={c.button}
               width="max"
+              loading={loading}
             >
               {t("auth.sendCode")}
             </Button>
@@ -69,20 +71,14 @@ export const RecoveryForm = () => {
             <p className={c.subtitle}>
               {t("auth.enterCodeDescription", { email })}
             </p>
-            <PinInput
-              size="l"
-              value={code}
-              length={6}
-              onUpdate={setCode}
-              className={c.pinInput}
-            />
+            <PinInput size="l" value={code} length={6} onUpdate={setCode} />
             <Button
               disabled={code.length !== 6}
               type="submit"
               view="action"
               size="l"
-              className={c.button}
               width="max"
+              loading={loading}
             >
               {t("auth.verifyCode")}
             </Button>
@@ -97,7 +93,6 @@ export const RecoveryForm = () => {
           <form onSubmit={(e) => handlePasswordSubmit(e)} className={c.form}>
             <h1 className={c.title}>{t("auth.createNewPassword")}</h1>
             <TextInput
-              className={clsx(c.input, c.password)}
               placeholder="••••••••"
               value={newPassword}
               type={!showPassword ? "password" : "text"}
@@ -119,7 +114,6 @@ export const RecoveryForm = () => {
             />
             <>
               <TextInput
-                className={clsx(c.input, c.passwordConfirm)}
                 placeholder="••••••••"
                 value={newPasswordConfirm}
                 type={!showPasswordConfirm ? "password" : "text"}
@@ -150,8 +144,8 @@ export const RecoveryForm = () => {
                 type="submit"
                 view="action"
                 size="l"
-                className={c.button}
                 width="max"
+                loading={loading}
               >
                 {t("auth.resetPassword")}
               </Button>

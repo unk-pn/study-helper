@@ -26,31 +26,21 @@ export const StartSessionModal = ({
       <div className={c.container}>
         <div className={c.info}>
           <div className={c.titleWrapper}>
-            <h1 className={c.title}>{subject.name}</h1>
+            <h1>{subject.name}</h1>
             <p className={c.subtitle}>{t("questions.studySession")}</p>
           </div>
           <div className={c.stats}>
-            <h3 className={c.statsTitle}>{t("questions.numberOfCards")}</h3>
+            <h3>{t("questions.numberOfCards")}</h3>
             <Label>{subject._count.questions}</Label>
           </div>
 
-          <div className={c.instructions}>
-            <h3 className={c.instructionsTitle}>
-              {t("questions.miniInstructions")}
-            </h3>
+          <div>
+            <h3>{t("questions.miniInstructions")}</h3>
             <ul className={c.instructionsList}>
-              <li className={c.instructionsItem}>
-                {t("questions.instructions.instruction1")}
-              </li>
-              <li className={c.instructionsItem}>
-                {t("questions.instructions.instruction2")}
-              </li>
-              <li className={c.instructionsItem}>
-                {t("questions.instructions.instruction3")}
-              </li>
-              <li className={c.instructionsItem}>
-                {t("questions.instructions.instruction4")}
-              </li>
+              <li>{t("questions.instructions.instruction1")}</li>
+              <li>{t("questions.instructions.instruction2")}</li>
+              <li>{t("questions.instructions.instruction3")}</li>
+              <li>{t("questions.instructions.instruction4")}</li>
             </ul>
           </div>
         </div>

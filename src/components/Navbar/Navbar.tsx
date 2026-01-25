@@ -9,7 +9,7 @@ import { Account } from "./Account/Account";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Settings } from "./Settings/Settings";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -17,6 +17,7 @@ export const Navbar = () => {
   const burgerButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const { t } = useTranslation();
+  const { data: session } = useSession();
 
   const navItems = [
     { title: t("nav.item1"), link: "/" },
@@ -117,7 +118,6 @@ export const Navbar = () => {
         className={clsx(c.mobileNav, isMenuOpen && c.mobileNavOpen)}
       >
         <div className={c.mobileNavTop}>
-
           <Account type="mobile" />
           <Divider orientation="horizontal" className={c.divider} />
 
@@ -136,13 +136,19 @@ export const Navbar = () => {
           </ul>
         </div>
         <div className={c.mobileNavBottom}>
-          <Divider orientation="horizontal" className={c.divider}/>
+          <Divider orientation="horizontal" className={c.divider} />
 
           <Settings />
 
-          <Button size="l" onClick={() => signOut()} className={c.signOutButton}>
-            {t("auth.signOut")}
-          </Button>
+          {session && (
+            <Button
+              size="l"
+              onClick={() => signOut()}
+              className={c.signOutButton}
+            >
+              {t("auth.signOut")}
+            </Button>
+          )}
         </div>
       </nav>
     </header>

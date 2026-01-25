@@ -31,7 +31,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const [createSubjectOpen, setCreateSubjectOpen] = useState(false);
   const [startSessionOpen, setStartSessionOpen] = useState(false);
   const { t } = useTranslation();
-  const { data, loading, error, statusCode } = useApi(
+  const { data, loading, statusCode } = useApi(
     `/api/questions?subjectId=${subjectId}`,
   );
 
@@ -56,9 +56,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
     <Card className={c.container} view="filled">
       <div className={c.header}>
         <h1 className={c.title}>{subject?.name}</h1>
-        <Label size="xs" className={c.label}>
-          {formatDate(subject?.examDate)}
-        </Label>
+        <Label size="xs">{formatDate(subject?.examDate)}</Label>
       </div>
 
       <div className={c.buttons}>
@@ -72,9 +70,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         </Button>
       </div>
 
-      <div className={c.questionsList}>
-        <QuestionsList questions={questions} />
-      </div>
+      <QuestionsList questions={questions} />
 
       {questions.length > 0 && (
         <Button
