@@ -25,7 +25,7 @@ export const Question = ({
   return (
     <Card className={c.question}>
       <div className={c.content}>
-        <h2 className={c.index}>
+        <h2>
           {indx}. {name}
         </h2>
         <Spoiler revealOn="click" theme={theme}>

@@ -2,11 +2,7 @@ import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { toast } from "@/lib/toast";
 import { useTranslation } from "react-i18next";
-
-export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const strongPasswordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[.@$!%*?&])[A-Za-z\d.@$!%*?&]{8,}$/;
+import { emailRegex, strongPasswordRegex } from "@/lib/validations";
 
 export const useSignUpForm = () => {
   const [name, setName] = useState<string>("");
@@ -20,11 +16,13 @@ export const useSignUpForm = () => {
   const [passwordStrong, setPasswordStrong] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -52,11 +50,15 @@ export const useSignUpForm = () => {
         t("auth.toast.signUpError"),
         t("utils.toast.errorDescription", { code: "CHANGE ME" }),
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleCodeSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
     try {
       const res = await fetch("/api/verify-code", {
         method: "POST",
@@ -95,6 +97,8 @@ export const useSignUpForm = () => {
     } catch (error) {
       console.log(error);
       alert("error checking code");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -134,6 +138,7 @@ export const useSignUpForm = () => {
     setShowPassword,
     showPasswordConfirm,
     setShowPasswordConfirm,
+    loading,
     handleSubmit,
     handleCodeSubmit,
   };

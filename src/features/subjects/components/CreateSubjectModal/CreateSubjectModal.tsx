@@ -13,6 +13,7 @@ export const CreateSubjectModal = () => {
     setSubjectName,
     subjectDate,
     setSubjectDate,
+    loading,
     error,
     inputRef,
     handleCreateSubject,
@@ -62,6 +63,7 @@ export const CreateSubjectModal = () => {
             view="action"
             type="submit"
             disabled={!subjectName}
+            loading={loading}
           >
             {t("utils.add")}
           </Button>

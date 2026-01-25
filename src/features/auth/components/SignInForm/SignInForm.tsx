@@ -6,7 +6,7 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import { useSignInForm } from "../../hooks/useSignInForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-
+import { emailRegex } from "@/lib/validations";
 
 export const SignInForm = () => {
   const {
@@ -17,6 +17,7 @@ export const SignInForm = () => {
     setPassword,
     showPassword,
     setShowPassword,
+    loading,
     handleSubmit,
   } = useSignInForm();
 
@@ -29,16 +30,17 @@ export const SignInForm = () => {
   return (
     <Card className={c.card}>
       <form onSubmit={handleSubmit} className={c.form}>
-        <h1 className={c.title}>{t("auth.signIn")}</h1>
+        <h1>{t("auth.signIn")}</h1>
         <TextInput
-          className={clsx(c.input, c.email)}
           value={email}
           onUpdate={(val) => setEmail(val)}
           placeholder="example@gmail.com"
           size="l"
+          validationState={
+            email && !emailRegex.test(email) ? "invalid" : undefined
+          }
         />
         <TextInput
-          className={clsx(c.input, c.password)}
           placeholder="••••••••"
           value={password}
           onUpdate={(val) => setPassword(val)}
@@ -62,13 +64,13 @@ export const SignInForm = () => {
           type="submit"
           view="action"
           size="l"
-          className={c.button}
           width="max"
           disabled={!email || !password}
+          loading={loading}
         >
           {t("auth.signIn")}
         </Button>
-        <p className={c.text}>
+        <p>
           {t("auth.noAccount")}
           <Link href="/auth/signUp" className={c.link}>
             {t("auth.noAccountLink")}

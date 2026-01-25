@@ -2,7 +2,7 @@
   "utils": {
     "toast": {
       "errorDescription": "Error status {{ code }}",
-      "unknownError": "Неизвестная ошибка"
+      "unknownError": "Unknown error"
     },
     "edit": "Edit",
     "delete": "Delete",
@@ -81,6 +81,15 @@
     "creatingSubject": "Creating subject"
   },
   "questions": {
+    "toast": {
+      "create": "Question added",
+      "createError": "Error creating question",
+      "createWarning": "Question and answer are required",
+      "update": "Question updated",
+      "updateError": "Error updating question",
+      "delete": "Question deleted",
+      "deleteError": "Error deleting question"
+    },
     "studySession": "Study session",
     "numberOfCards": "Number of cards",
     "miniInstructions": "Mini instructions",

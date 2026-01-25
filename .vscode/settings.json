@@ -1,4 +1,5 @@
 {
+  "eslint.runtime": "node",
   "prisma.pinToPrisma6": true,
   "workbench.editor.customLabels.patterns": {
     "**/app/**/{page,layout,index}.{ts,tsx}": "(${dirname})/${filename}.${extname}",

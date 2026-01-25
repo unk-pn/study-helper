@@ -6,6 +6,7 @@ import { updateQuestion } from "@/store/slices/questionsSlice";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
 import { QuestionType } from "../../types/QuestionType";
+import { toast } from "@/lib/toast";
 
 interface EditQuestionModalProps {
   id: string;
@@ -20,9 +21,12 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   const [name, setName] = useState(question?.name || "");
   const [answer, setAnswer] = useState(question?.answer || "");
   const { t } = useTranslation();
-  const { execute, loading, error } = useApi<QuestionType>("/api/questions/", {
-    refetchOnMount: false,
-  });
+  const { execute, loading, statusCode } = useApi<QuestionType>(
+    "/api/questions",
+    {
+      refetchOnMount: false,
+    },
+  );
 
   const handleSave = async () => {
     const data = await execute({
@@ -36,7 +40,13 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
 
     if (data) {
       dispatch(updateQuestion(data));
+      toast.success(t("questions.toast.update"));
       onClose();
+    } else {
+      toast.danger(
+        t("questions.toast.updateError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
     }
   };
 
@@ -63,7 +73,7 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
         />
 
         <div className={c.buttons}>
-          <Button onClick={handleSave} view="action">
+          <Button onClick={handleSave} view="action" loading={loading}>
             {t("utils.save")}
           </Button>
           <Button onClick={() => onClose()}>{t("utils.cancel")}</Button>

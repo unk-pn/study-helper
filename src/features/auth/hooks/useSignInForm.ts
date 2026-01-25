@@ -7,6 +7,7 @@ export const useSignInForm = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -25,6 +26,8 @@ export const useSignInForm = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
     try {
       const res = await signIn("credentials", {
         email: email.trim(),
@@ -44,6 +47,8 @@ export const useSignInForm = () => {
       console.log(error);
       if (error instanceof Error)
         toast.danger(t("auth.toast.signInError"), error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,6 +60,7 @@ export const useSignInForm = () => {
     setPassword,
     showPassword,
     setShowPassword,
+    loading,
     handleSubmit,
   };
 };

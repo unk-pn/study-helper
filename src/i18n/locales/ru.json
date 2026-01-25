@@ -81,6 +81,15 @@
     "creatingSubject": "Создание предмета"
   },
   "questions": {
+    "toast": {
+      "create": "Вопрос добавлен",
+      "createError": "Ошибка создания вопроса",
+      "createWarning": "Вопрос и ответ обязательны",
+      "update": "Вопрос обновлен",
+      "updateError": "Ошибка обновления вопроса",
+      "delete": "Вопрос удален",
+      "deleteError": "Ошибка удаления вопроса"
+    },
     "studySession": "Учебная сессия",
     "numberOfCards": "Количество карточек",
     "miniInstructions": "Краткие инструкции",

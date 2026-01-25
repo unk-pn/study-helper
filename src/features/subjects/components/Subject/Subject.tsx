@@ -18,8 +18,6 @@ interface SubjectProps {
 export const Subject = ({ id, onEdit }: SubjectProps) => {
   const {
     t,
-    loading,
-    error,
     router,
     subject,
     statusText,

@@ -1,7 +1,6 @@
 import { EmailTemplate } from "@/components";
 import { EmailTemplateProps } from "@/components/EmailTemplate";
 import { Resend } from "resend";
-import i18n from "i18next";
 import { createElement } from "react";
 
 const resend = new Resend(process.env.RESEND_API_KEY);

@@ -14,7 +14,7 @@ export const SubjectsList = () => {
   const subjects = useAppSelector((s) => s.subjects.subjects);
   const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
   const { t } = useTranslation();
-  const { data, loading, error } = useApi("/api/subjects");
+  const { data, loading } = useApi("/api/subjects");
 
   useEffect(() => {
     if (data && Array.isArray(data)) {

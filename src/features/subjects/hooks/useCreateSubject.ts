@@ -15,7 +15,7 @@ export const useCreateSubject = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const { execute, error, statusCode } = useApi<SubjectType>("/api/subjects", {
+  const { execute, loading, error, statusCode } = useApi<SubjectType>("/api/subjects", {
     refetchOnMount: false,
   });
   const { t } = useTranslation();
@@ -83,6 +83,7 @@ export const useCreateSubject = () => {
     subjectDate,
     setSubjectDate,
     error,
+    loading,
     inputRef,
     handleCreateSubject,
     handleOpenModal,

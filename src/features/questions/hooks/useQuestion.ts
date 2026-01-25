@@ -4,15 +4,19 @@ import { deleteQuestion } from "@/store/slices/questionsSlice";
 import { useEffect, useRef, useState } from "react";
 import { QuestionType } from "../types/QuestionType";
 import { useTranslation } from "react-i18next";
+import { toast } from "@/lib/toast";
 
 export const useQuestion = (id: string) => {
   const [openInput, setOpenInput] = useState<boolean>(false);
   const [answerVal, setAnswerVal] = useState<string>("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const dispatch = useAppDispatch();
-  const { execute, loading, error } = useApi<QuestionType>("/api/questions", {
-    refetchOnMount: false,
-  });
+  const { execute, loading, error, statusCode } = useApi<QuestionType>(
+    "/api/questions",
+    {
+      refetchOnMount: false,
+    },
+  );
   const theme = useAppSelector((s) => s.settings.theme);
   const { t } = useTranslation();
 
@@ -36,6 +40,12 @@ export const useQuestion = (id: string) => {
 
     if (data) {
       dispatch(deleteQuestion(id));
+      toast.success(t("questions.toast.delete"));
+    } else {
+      toast.danger(
+        t("questions.toast.deleteError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
     }
   };
 

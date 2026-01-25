@@ -16,14 +16,13 @@ export const CreateQuestionModal = ({
 }: CreateQuestionModalProps) => {
   const {
     t,
+    loading,
     questions,
     handleAddQuestion,
     handleUpdateQuestion,
     handleDeleteQuestion,
     handleSave,
     hasEmptyQuestions,
-    loading,
-    error,
   } = useCreateQuestionModal(subjectId, onClose);
 
   return (
@@ -58,6 +57,7 @@ export const CreateQuestionModal = ({
             view="action"
             onClick={handleSave}
             disabled={hasEmptyQuestions}
+            loading={loading}
           >
             {t("utils.save")}
           </Button>

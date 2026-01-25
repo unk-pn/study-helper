@@ -5,7 +5,7 @@ import { Button, Card, PinInput, TextInput, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
 import { useRecoveryForm } from "../../hooks/useRecoveryForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { emailRegex } from "../../hooks/useSignUpForm";
+import { emailRegex } from "@/lib/validations";
 
 export const RecoveryForm = () => {
   const {

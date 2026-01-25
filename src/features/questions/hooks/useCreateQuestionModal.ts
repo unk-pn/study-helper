@@ -3,6 +3,7 @@ import { useApi } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
 import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice";
 import { useState } from "react";
+import { toast } from "@/lib/toast";
 
 interface QuestionInputType {
   id: string;
@@ -20,7 +21,7 @@ export const useCreateQuestionModal = (
   const dispatch = useAppDispatch();
   const reduxQuestions = useAppSelector((q) => q.questions.questions);
   const { t } = useTranslation();
-  const { execute, loading, error } = useApi("/api/questions", {
+  const { execute, loading, error, statusCode } = useApi("/api/questions", {
     refetchOnMount: false,
   });
 
@@ -35,14 +36,14 @@ export const useCreateQuestionModal = (
     id: string,
     value: Omit<QuestionInputType, "id">,
   ) => {
-    setQuestions(questions.map((q) => (q.id === id ? { ...q, ...value } : q)));
+    setQuestions(questions.map((question) => (question.id === id ? { ...question, ...value } : question)));
   };
 
   const handleDeleteQuestion = (id: string) => {
-    setQuestions(questions.filter((q) => q.id !== id));
+    setQuestions(questions.filter((question) => question.id !== id));
   };
 
-  const hasEmptyQuestions = questions.some((q) => !q.name.trim());
+  const hasEmptyQuestions = questions.some((question) => !question.name.trim());
 
   const handleSave = async () => {
     const data = await execute({
@@ -59,7 +60,13 @@ export const useCreateQuestionModal = (
 
     if (data && Array.isArray(data)) {
       dispatch(setReduxQuestions([...reduxQuestions, ...data]));
+      toast.success(t("questions.toast.create"))
       onClose();
+    } else {
+      toast.danger(
+        t("questions.toast.createError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
     }
   };
 
