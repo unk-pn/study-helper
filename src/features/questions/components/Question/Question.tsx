@@ -10,6 +10,7 @@ interface QuestionProps {
   answer: string | null;
   index?: number;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export const Question = ({
@@ -18,6 +19,7 @@ export const Question = ({
   answer,
   index,
   onEdit,
+  onDelete,
 }: QuestionProps) => {
   const indx = index !== undefined ? index + 1 : "";
   const { t, theme, handleDelete } = useQuestion(id);
@@ -40,7 +42,7 @@ export const Question = ({
             iconStart: <PencilToLine />,
           },
           {
-            action: () => handleDelete(),
+            action: () => onDelete?.(),
             text: t("utils.delete"),
             theme: "danger",
             iconStart: <TrashBin />,

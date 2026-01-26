@@ -46,23 +46,6 @@ export const useSubject = (id: string) => {
     }
   };
 
-  const handleDelete = async () => {
-    const data = await execute({
-      method: "DELETE",
-      body: { id },
-    });
-
-    if (data) {
-      dispatch(deleteSubject(id));
-      toast.danger(t("subjects.toast.delete", { name: subject?.name }));
-    } else {
-      toast.danger(
-        t("subjects.toast.deleteError"),
-        t("utils.toast.errorDescription", { code: statusCode }),
-      );
-    }
-  };
-
   return {
     t,
     loading,
@@ -71,6 +54,5 @@ export const useSubject = (id: string) => {
     subject,
     statusText,
     labelTheme,
-    handleDelete,
   };
 };

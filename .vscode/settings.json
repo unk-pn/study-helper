@@ -1,5 +1,4 @@
 {
-  "eslint.runtime": "node",
   "prisma.pinToPrisma6": true,
   "workbench.editor.customLabels.patterns": {
     "**/app/**/{page,layout,index}.{ts,tsx}": "(${dirname})/${filename}.${extname}",
@@ -14,5 +13,9 @@
     "**/node_modules/**": true,
     "**/.next/**": true
   },
-  "cSpell.words": ["Dont", "languagedetector", "persistor"]
+  "cSpell.words": ["Dont", "languagedetector", "persistor"],
+
+  "window.titleBarStyle": "native",
+  "workbench.editor.wrapTabs": true,
+  "editor.minimap.enabled": false
 }

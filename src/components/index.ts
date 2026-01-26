@@ -1,4 +1,5 @@
 export { Navbar } from "./Navbar/Navbar";
+export { ConfirmDialog } from './ConfirmDialog/ConfirmDialog';
 export { EmailTemplate } from "./EmailTemplate";
 export { Loader } from "./Loader/Loader";
 export { Providers } from "./Providers/Providers";

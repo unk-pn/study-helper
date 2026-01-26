@@ -11,6 +11,13 @@
     "add": "Add",
     "start": "Start"
   },
+  "dialog": {
+    "deleteSubject": "Delete subject «{{name}}»?",
+    "deleteSubjectWarning": "All questions of this subject ({{count}}) will also be deleted",
+    "deleteQuestion": "Delete question?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
   "nav": {
     "item1": "Home",
     "item2": "Subjects",

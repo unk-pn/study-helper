@@ -37,6 +37,7 @@ export const CreateSubjectModal = () => {
         onTransitionInComplete={() => {
           inputRef.current?.focus();
         }}
+        disableBodyScrollLock={false}
       >
         <form className={c.form} onSubmit={(e) => handleCreateSubject(e)}>
           <h1 className={c.modalTitle}>{t("subjects.creatingSubject")}</h1>

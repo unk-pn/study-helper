@@ -8,22 +8,12 @@ import { useSubject } from "../../hooks/useSubject";
 
 interface SubjectProps {
   id: string;
-  name: string;
-  status: string;
-  examDate: string;
-  questions: number;
   onEdit?: () => void;
+  onDelete?: () => void;
 }
 
-export const Subject = ({ id, onEdit }: SubjectProps) => {
-  const {
-    t,
-    router,
-    subject,
-    statusText,
-    labelTheme,
-    handleDelete,
-  } = useSubject(id);
+export const Subject = ({ id, onEdit, onDelete }: SubjectProps) => {
+  const { t, router, subject, statusText, labelTheme } = useSubject(id);
 
   if (!subject) return null;
 
@@ -61,7 +51,7 @@ export const Subject = ({ id, onEdit }: SubjectProps) => {
                 iconStart: <PencilToLine />,
               },
               {
-                action: () => handleDelete(),
+                action: () => onDelete?.(),
                 text: t("utils.delete"),
                 theme: "danger",
                 iconStart: <TrashBin />,
