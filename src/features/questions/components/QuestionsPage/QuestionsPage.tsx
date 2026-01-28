@@ -70,7 +70,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         </Button>
       </div>
 
-      <QuestionsList questions={questions} />
+      <QuestionsList questions={questions} subjectId={subjectId}/>
 
       {questions.length > 0 && (
         <Button

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice";
 import { useState } from "react";
 import { toast } from "@/lib/toast";
+import { changeSubjectQuestionCount } from "@/store/slices/subjectsSlice";
 
 interface QuestionInputType {
   id: string;
@@ -36,7 +37,11 @@ export const useCreateQuestionModal = (
     id: string,
     value: Omit<QuestionInputType, "id">,
   ) => {
-    setQuestions(questions.map((question) => (question.id === id ? { ...question, ...value } : question)));
+    setQuestions(
+      questions.map((question) =>
+        question.id === id ? { ...question, ...value } : question,
+      ),
+    );
   };
 
   const handleDeleteQuestion = (id: string) => {
@@ -60,7 +65,10 @@ export const useCreateQuestionModal = (
 
     if (data && Array.isArray(data)) {
       dispatch(setReduxQuestions([...reduxQuestions, ...data]));
-      toast.success(t("questions.toast.create"))
+      dispatch(
+        changeSubjectQuestionCount({ subjectId, count: questions.length }),
+      );
+      toast.success(t("questions.toast.create"));
       onClose();
     } else {
       toast.danger(
@@ -80,5 +88,5 @@ export const useCreateQuestionModal = (
     hasEmptyQuestions,
     loading,
     error,
-  }
+  };
 };

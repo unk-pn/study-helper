@@ -33,3 +33,9 @@ html {
 body {
   padding-top: 70px;
 }
+
+@media (max-width: 790px) {
+  body {
+    padding-top: 58px;
+  }
+}

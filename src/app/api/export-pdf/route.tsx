@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(stream as unknown as BodyInit, {
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename: ${subject.name}.pdf`,
+        "Content-Disposition": `attachment; filename*=UTF-8''${encodeURIComponent(subject.name)}.pdf`,
       },
     });
   } catch (error) {

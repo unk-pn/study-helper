@@ -1,16 +1,28 @@
 import { QuestionType } from "@/features/questions/types/QuestionType";
-import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+import {
+  Document,
+  Font,
+  Page,
+  StyleSheet,
+  Text,
+  View,
+} from "@react-pdf/renderer";
 
 interface QuestionsPDFProps {
   questions: QuestionType[];
   subjectName: string;
 }
 
+Font.register({
+  family: "Roboto",
+  src: "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
+});
+
 const styles = StyleSheet.create({
   page: {
     padding: 30,
     fontSize: 12,
-    fontFamily: "Helvetica",
+    fontFamily: "Roboto",
   },
   title: {
     fontSize: 24,

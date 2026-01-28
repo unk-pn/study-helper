@@ -22,7 +22,7 @@ export const StartSessionModal = ({
   if (!subject) return null;
 
   return (
-    <Modal open={true}>
+    <Modal open={true} disableEscapeKeyDown={false} disableOutsideClick={false}>
       <div className={c.container}>
         <div className={c.info}>
           <div className={c.titleWrapper}>

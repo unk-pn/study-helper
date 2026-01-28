@@ -26,7 +26,7 @@ export const Subject = ({ id, onEdit, onDelete }: SubjectProps) => {
         onClick={() => router.push(`/subjects/${id}`)}
       >
         <div className={c.info}>
-          <Text variant="header-2">{subject.name}</Text>
+          <h2 className={c.header}>{subject.name}</h2>
           <Text>
             {subject._count.questions} {t("subjects.questions")}
           </Text>

@@ -10,21 +10,26 @@ import { toast } from "@/lib/toast";
 import { deleteQuestion } from "@/store/slices/questionsSlice";
 import { t } from "i18next";
 import { ConfirmDialog } from "@/components";
+import { changeSubjectQuestionCount } from "@/store/slices/subjectsSlice";
 
 interface QuestionsListProps {
   questions: QuestionType[];
+  subjectId: string;
 }
 
-export const QuestionsList = ({ questions }: QuestionsListProps) => {
+export const QuestionsList = ({ questions, subjectId }: QuestionsListProps) => {
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(
     null,
   );
   const [deletingQuestionId, setDeletingQuestionId] = useState<string | null>(
     null,
   );
-  const { execute, loading, statusCode } = useApi<QuestionType>("/api/questions", {
-    refetchOnMount: false,
-  });
+  const { execute, loading, statusCode } = useApi<QuestionType>(
+    "/api/questions",
+    {
+      refetchOnMount: false,
+    },
+  );
   const dispatch = useAppDispatch();
 
   const deletingQuestion = questions.find((q) => q.id === deletingQuestionId);
@@ -38,6 +43,7 @@ export const QuestionsList = ({ questions }: QuestionsListProps) => {
 
       if (data) {
         dispatch(deleteQuestion(deletingQuestion.id));
+        dispatch(changeSubjectQuestionCount({ subjectId, count: -1 }));
         toast.success(t("questions.toast.delete"));
       } else {
         toast.danger(

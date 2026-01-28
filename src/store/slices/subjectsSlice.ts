@@ -31,6 +31,16 @@ const subjectsSlice = createSlice({
         state.subjects[index] = action.payload;
       }
     },
+    changeSubjectQuestionCount: (
+      state,
+      action: PayloadAction<{ subjectId: string; count: number }>,
+    ) => {
+      const subjectIndex = state.subjects.findIndex(
+        (s) => s.id === action.payload.subjectId,
+      );
+      if (subjectIndex !== -1)
+        state.subjects[subjectIndex]._count.questions += action.payload.count;
+    },
     deleteSubject: (state, action: PayloadAction<string>) => {
       state.subjects = state.subjects.filter((s) => s.id !== action.payload);
     },
@@ -48,6 +58,7 @@ export const {
   setSubjects,
   addSubject,
   updateSubject,
+  changeSubjectQuestionCount,
   deleteSubject,
   setLoading,
   setError,
