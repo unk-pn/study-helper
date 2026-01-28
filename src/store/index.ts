@@ -9,7 +9,7 @@ const persistConfig = {
   whitelist: ["settings", "subjects"],
 };
 
-const RootReducer = combineReducers({
+export const RootReducer = combineReducers({
   settings: settingsReducer,
   subjects: subjectsReducer,
   questions: questionsReducer,
@@ -31,3 +31,10 @@ export type AppDispatch = AppStore["dispatch"];
 
 export const store = setupStore();
 export const persistor = persistStore(store);
+
+export const createTestStore = (initialState = {}) => {
+  return configureStore({
+    reducer: RootReducer,
+    preloadedState: initialState,
+  });
+};

@@ -24,12 +24,12 @@ export const Settings = () => {
     <div className={c.settings}>
       <div className={c.settingsItem}>
         <Icon data={Sun} />
-        <Switch checked={theme === "dark"} onChange={handleThemeChange} />
+        <Switch checked={theme === "dark"} onChange={handleThemeChange} id={"theme-switch"}/>
         <Icon data={Moon} />
       </div>
       <div className={c.settingsItem}>
         <p>Ru</p>
-        <Switch checked={language === "en"} onChange={handleLanguageChange} />
+        <Switch checked={language === "en"} onChange={handleLanguageChange} id={"language-switch"}/>
         <p>En</p>
       </div>
     </div>
