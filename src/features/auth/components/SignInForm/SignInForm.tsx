@@ -65,7 +65,7 @@ export const SignInForm = () => {
           view="action"
           size="l"
           width="max"
-          disabled={!email || !password}
+          disabled={!email || !emailRegex.test(email) || !password}
           loading={loading}
         >
           {t("auth.signIn")}

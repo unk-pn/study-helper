@@ -6,32 +6,32 @@ import { Icon, Switch } from "@gravity-ui/uikit";
 import { Moon, Sun } from "@gravity-ui/icons";
 
 export const Settings = () => {
-    const theme = useAppSelector((s) => s.settings.theme);
-    const language = useAppSelector((s) => s.settings.language);
-    const { i18n } = useTranslation();
+  const theme = useAppSelector((s) => s.settings.theme);
+  const language = useAppSelector((s) => s.settings.language);
+  const { i18n } = useTranslation();
 
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-    const handleThemeChange = () =>
-      dispatch(setTheme(theme === "dark" ? "light" : "dark"));
+  const handleThemeChange = () =>
+    dispatch(setTheme(theme === "dark" ? "light" : "dark"));
 
-    const handleLanguageChange = () => {
-      const newLang = language === "en" ? "ru" : "en";
-      dispatch(setLanguage(newLang));
-      i18n.changeLanguage(newLang);
-    };
+  const handleLanguageChange = () => {
+    const newLang = language === "en" ? "ru" : "en";
+    dispatch(setLanguage(newLang));
+    i18n.changeLanguage(newLang);
+  };
   return (
-    <div className={c.settings}>
+    <div className={c.settings} aria-label="settings">
       <div className={c.settingsItem}>
         <Icon data={Sun} />
-        <Switch checked={theme === "dark"} onChange={handleThemeChange} id={"theme-switch"}/>
+        <Switch checked={theme === "dark"} onChange={handleThemeChange} />
         <Icon data={Moon} />
       </div>
       <div className={c.settingsItem}>
         <p>Ru</p>
-        <Switch checked={language === "en"} onChange={handleLanguageChange} id={"language-switch"}/>
+        <Switch checked={language === "en"} onChange={handleLanguageChange} />
         <p>En</p>
       </div>
     </div>
   );
-}
+};
