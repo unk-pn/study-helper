@@ -36,7 +36,6 @@ export const useSignInForm = () => {
       });
 
       if (res?.error) {
-        console.log(res?.error);
         toast.danger(t("auth.toast.signInError"), res.error);
         return;
       }
