@@ -122,7 +122,8 @@
     "backToQuestions": "Вернуться к вопросам",
     "sessionEnded": "Сессия закончена!",
     "alreadyKnow": "Уже выучили: ",
-    "dontKnowYet": "Еще не выучили: "
+    "dontKnowYet": "Еще не выучили: ",
+    "noAnswer": "Нет ответа"
   },
   "about": {},
   "pdf": {

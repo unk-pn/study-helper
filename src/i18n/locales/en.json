@@ -122,7 +122,8 @@
     "backToQuestions": "Back to Questions",
     "sessionEnded": "Session ended!",
     "alreadyKnow": "Already know: ",
-    "dontKnowYet": "Don’t know yet: "
+    "dontKnowYet": "Don’t know yet: ",
+    "noAnswer": "No answer"
   },
   "about": {},
   "pdf": {
