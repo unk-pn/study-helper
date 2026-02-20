@@ -1,8 +1,8 @@
-import { SubjectType } from "@/features/subjects/types/SubjectType";
+import { Subject } from "@/lib/schemas";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SubjectsState {
-  subjects: SubjectType[];
+  subjects: Subject[];
   loading: boolean;
   error: string | null;
 }
@@ -17,15 +17,15 @@ const subjectsSlice = createSlice({
   name: "subjects",
   initialState,
   reducers: {
-    setSubjects: (state, action: PayloadAction<SubjectType[]>) => {
+    setSubjects: (state, action: PayloadAction<Subject[]>) => {
       state.subjects = action.payload;
       state.loading = false;
       state.error = null;
     },
-    addSubject: (state, action: PayloadAction<SubjectType>) => {
+    addSubject: (state, action: PayloadAction<Subject>) => {
       state.subjects.unshift(action.payload);
     },
-    updateSubject: (state, action: PayloadAction<SubjectType>) => {
+    updateSubject: (state, action: PayloadAction<Subject>) => {
       const index = state.subjects.findIndex((s) => s.id === action.payload.id);
       if (index !== -1) {
         state.subjects[index] = action.payload;

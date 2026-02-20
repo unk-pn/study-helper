@@ -11,8 +11,17 @@
   "typescript.tsserver.maxTsServerMemory": 4096,
   "search.exclude": {
     "**/node_modules/**": true,
-    "**/.next/**": true
+    "**/.next/**": true,
+    "**/.yarn": true,
+    "**/.pnp.*": true
   },
-  "cSpell.words": ["Dont", "languagedetector", "persistor"],
-  "editor.minimap.enabled": false
+  "cSpell.words": [
+    "Dont",
+    "languagedetector",
+    "persistor"
+  ],
+  "editor.minimap.enabled": false,
+  "eslint.nodePath": ".yarn/sdks",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

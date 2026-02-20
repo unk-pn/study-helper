@@ -4,9 +4,10 @@ import { addSubject } from "@/store/slices/subjectsSlice";
 import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
 import { FormEvent, useCallback, useRef, useState } from "react";
-import { SubjectType } from "../types/SubjectType";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/lib/toast";
+import { Subject } from "@prisma/client";
+import { subjectSchema } from "@/lib/schemas";
 
 export const useCreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -15,7 +16,8 @@ export const useCreateSubject = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const { execute, loading, error, statusCode } = useApi<SubjectType>("/api/subjects", {
+  const { execute, loading, error, statusCode } = useApi<Subject>("/api/subjects", {
+    requestSchema: subjectSchema,
     refetchOnMount: false,
   });
   const { t } = useTranslation();

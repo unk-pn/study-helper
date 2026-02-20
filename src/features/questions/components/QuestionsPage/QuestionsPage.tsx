@@ -16,6 +16,7 @@ import { formatDate } from "../../../../lib/formatDate";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
+import { questionArraySchema } from "@/lib/schemas";
 
 interface QuestionsPageProps {
   subjectId: string;
@@ -33,6 +34,9 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   const { t } = useTranslation();
   const { data, loading, statusCode } = useApi(
     `/api/questions?subjectId=${subjectId}`,
+    {
+      responseSchema: questionArraySchema,
+    },
   );
 
   useEffect(() => {
@@ -43,7 +47,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
   }, [router, statusCode]);
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
+    if (data) {
       dispatch(setQuestions(data));
     }
   }, [dispatch, data]);
@@ -70,7 +74,7 @@ export const QuestionsPage = ({ subjectId }: QuestionsPageProps) => {
         </Button>
       </div>
 
-      <QuestionsList questions={questions} subjectId={subjectId}/>
+      <QuestionsList questions={questions} subjectId={subjectId} />
 
       {questions.length > 0 && (
         <Button

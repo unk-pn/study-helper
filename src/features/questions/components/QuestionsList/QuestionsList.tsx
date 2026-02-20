@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { QuestionType } from "../../types/QuestionType";
 import c from "./QuestionsList.module.css";
 import { EditQuestionModal, Question } from "..";
 import { useApi } from "@/hooks/useApi";
@@ -11,6 +10,7 @@ import { deleteQuestion } from "@/store/slices/questionsSlice";
 import { t } from "i18next";
 import { ConfirmDialog } from "@/components";
 import { changeSubjectQuestionCount } from "@/store/slices/subjectsSlice";
+import { Question as QuestionType } from "@/lib/schemas" 
 
 interface QuestionsListProps {
   questions: QuestionType[];

@@ -9,6 +9,7 @@ import { ConfirmDialog, Loader } from "@/components";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
 import { toast } from "@/lib/toast";
+import { subjectArraySchema } from "@/lib/schemas";
 
 export const SubjectsList = () => {
   const dispatch = useAppDispatch();
@@ -18,10 +19,12 @@ export const SubjectsList = () => {
     null,
   );
   const { t } = useTranslation();
-  const { execute, data, loading, statusCode } = useApi("/api/subjects");
+  const { execute, data, loading, statusCode } = useApi("/api/subjects", {
+    responseSchema: subjectArraySchema,
+  });
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
+    if (data) {
       dispatch(setSubjects(data));
     }
   }, [data, dispatch]);

@@ -1,8 +1,8 @@
+import { Question } from "@/lib/schemas";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { QuestionType } from "../../features/questions/types/QuestionType";
 
 interface QuestionState {
-  questions: QuestionType[];
+  questions: Question[];
   loading: boolean;
   error: string | null;
 }
@@ -17,17 +17,17 @@ const questionsSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    setQuestions: (state, action: PayloadAction<QuestionType[]>) => {
+    setQuestions: (state, action: PayloadAction<Question[]>) => {
       state.questions = action.payload;
       state.loading = false;
       state.error = null;
     },
-    addQuestion: (state, action: PayloadAction<QuestionType>) => {
+    addQuestion: (state, action: PayloadAction<Question>) => {
       state.questions.unshift(action.payload);
     },
-    updateQuestion: (state, action: PayloadAction<QuestionType>) => {
+    updateQuestion: (state, action: PayloadAction<Question>) => {
       const index = state.questions.findIndex(
-        (s) => s.id === action.payload.id
+        (s) => s.id === action.payload.id,
       );
 
       if (index !== -1) {

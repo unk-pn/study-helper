@@ -15,7 +15,6 @@ interface QuestionProps {
 }
 
 export const Question = ({
-  id,
   name,
   answer,
   index,

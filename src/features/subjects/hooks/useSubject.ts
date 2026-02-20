@@ -1,7 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useAppSelector } from "@/hooks/redux";
 import { useApi } from "@/hooks/useApi";
-import { toast } from "@/lib/toast";
-import { deleteSubject } from "@/store/slices/subjectsSlice";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
@@ -15,10 +13,9 @@ export const useSubject = (id: string) => {
   const subject = useAppSelector((s) =>
     s.subjects.subjects.find((subj) => subj.id === id),
   );
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const { t } = useTranslation();
-  const { execute, loading, error, statusCode } = useApi("/api/subjects");
+  const { loading, error } = useApi("/api/subjects");
 
   const statusText = (text: string) => {
     switch (text) {

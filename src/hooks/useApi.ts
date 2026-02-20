@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ZodType } from "zod";
 
 interface ApiOptions<T = unknown> {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -6,7 +7,9 @@ interface ApiOptions<T = unknown> {
   headers?: Record<string, string>;
 }
 
-interface useApiOptions {
+interface useApiOptions<TResponse = unknown, TRequest = unknown> {
+  responseSchema?: ZodType<TResponse>;
+  requestSchema?: ZodType<TRequest>;
   refetchOnMount?: boolean;
   refetchInterval?: number;
   responseType?: "json" | "text" | "blob";
@@ -20,18 +23,21 @@ interface useApiResult<T> {
   statusCode: number | null;
 }
 
-export const useApi = <T = unknown>(
+export const useApi = <TResponse = unknown, TRequest = unknown>(
   url: string,
-  options: useApiOptions & { method?: ApiOptions["method"] } = {},
-): useApiResult<T> => {
-  const [data, setData] = useState<T | null>(null);
+  options: useApiOptions<TResponse, TRequest> & {
+    method?: ApiOptions["method"];
+  } = {},
+): useApiResult<TResponse> => {
+  const [data, setData] = useState<TResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(
     options.refetchOnMount !== false,
   );
   const [statusCode, setStatusCode] = useState<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
-  const { refetchOnMount, refetchInterval } = options;
+  const { responseSchema, requestSchema, refetchOnMount, refetchInterval } =
+    options;
 
   const execute = useCallback(
     async <B>(opts: Partial<ApiOptions<B>>) => {
@@ -52,9 +58,19 @@ export const useApi = <T = unknown>(
             ...headers,
           },
         };
-        // if (method !== "GET" && method !== "DELETE" && body !== undefined) {
         if (method !== "GET" && body !== undefined) {
-          fetchOptions.body = JSON.stringify(body);
+          if (requestSchema) {
+            const res = await requestSchema.safeParseAsync(body);
+            if (!res.success) {
+              const errors = res.error.issues
+                .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+                .join("; ");
+              throw new Error(`Request validation failed: ${errors}`);
+            }
+            fetchOptions.body = JSON.stringify(res.data);
+          } else {
+            fetchOptions.body = JSON.stringify(body);
+          }
         }
 
         const res = await fetch(url, fetchOptions);
@@ -75,7 +91,22 @@ export const useApi = <T = unknown>(
           data = await res.json();
         }
 
-        setData(data as T);
+        if (
+          responseSchema &&
+          options.responseType !== "blob" &&
+          options.responseType !== "text"
+        ) {
+          const res = await responseSchema.safeParseAsync(data);
+          if (!res.success) {
+            const errors = res.error.issues
+              .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
+              .join("; ");
+            throw new Error(`Response validation failed: ${errors}`);
+          }
+          data = res.data;
+        }
+
+        setData(data);
         return data;
       } catch (error) {
         if (error instanceof DOMException && error.name === "AbortError")
@@ -86,7 +117,7 @@ export const useApi = <T = unknown>(
         if (!controller.signal.aborted) setLoading(false);
       }
     },
-    [url, options.responseType],
+    [url, options.responseType, responseSchema, requestSchema],
   );
 
   useEffect(() => () => abortControllerRef.current?.abort(), []);

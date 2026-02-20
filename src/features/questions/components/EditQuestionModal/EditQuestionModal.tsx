@@ -5,8 +5,8 @@ import { useState } from "react";
 import { updateQuestion } from "@/store/slices/questionsSlice";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
-import { QuestionType } from "../../types/QuestionType";
 import { toast } from "@/lib/toast";
+import { Question } from "@/lib/schemas";
 
 interface EditQuestionModalProps {
   id: string;
@@ -21,7 +21,7 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   const [name, setName] = useState(question?.name || "");
   const [answer, setAnswer] = useState(question?.answer || "");
   const { t } = useTranslation();
-  const { execute, loading, statusCode } = useApi<QuestionType>(
+  const { execute, loading, statusCode } = useApi<Question>(
     "/api/questions",
     {
       refetchOnMount: false,

@@ -1,4 +1,4 @@
-import { QuestionType } from "@/features/questions/types/QuestionType";
+import { Question } from "@/lib/schemas";
 import {
   Document,
   Font,
@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 
 interface QuestionsPDFProps {
-  questions: QuestionType[];
+  questions: Question[];
   subjectName: string;
 }
 

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { Card } from "../types/Card";
 import { randomArray } from "@/lib/randomArray";
 import { useApi } from "@/hooks/useApi";
+import { Card, cardArraySchema } from "@/lib/schemas";
 
 export const useCardsPage = (id: string) => {
   const [cards, setCards] = useState<Card[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState<number | null>(null);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState<number>(0);
-  const { data, loading, error } = useApi(`/api/questions?subjectId=${id}`);
+  const { data, loading, error } = useApi(`/api/questions?subjectId=${id}`, {
+    responseSchema: cardArraySchema,
+  });
 
   useEffect(() => {
-    if (data && Array.isArray(data)) {
+    if (data) {
       const shuffledCards: Card[] = randomArray(data);
       setCards(shuffledCards);
       if (shuffledCards.length > 0) {

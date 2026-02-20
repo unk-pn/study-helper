@@ -5,6 +5,7 @@ import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice
 import { useState } from "react";
 import { toast } from "@/lib/toast";
 import { changeSubjectQuestionCount } from "@/store/slices/subjectsSlice";
+import { questionArraySchema } from "@/lib/schemas";
 
 interface QuestionInputType {
   id: string;
@@ -23,6 +24,7 @@ export const useCreateQuestionModal = (
   const reduxQuestions = useAppSelector((q) => q.questions.questions);
   const { t } = useTranslation();
   const { execute, loading, error, statusCode } = useApi("/api/questions", {
+    responseSchema: questionArraySchema,
     refetchOnMount: false,
   });
 
@@ -63,7 +65,7 @@ export const useCreateQuestionModal = (
       },
     });
 
-    if (data && Array.isArray(data)) {
+    if (data) {
       dispatch(setReduxQuestions([...reduxQuestions, ...data]));
       dispatch(
         changeSubjectQuestionCount({ subjectId, count: questions.length }),
