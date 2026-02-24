@@ -6,3 +6,6 @@ export { Providers } from "./Providers/Providers";
 export { ReduxProvider } from "./Providers/ReduxProvider";
 export { ThemeWrapper } from "./Providers/ThemeWrapper";
 export { QuestionsPDF } from "./QuestionsPDF";
+
+export { FormTextInput } from "./FormFields/FormTextInput";
+export { FormDatePicker } from "./FormFields/FormDatePicker";

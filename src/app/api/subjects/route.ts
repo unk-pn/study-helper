@@ -146,9 +146,6 @@ export async function PATCH(req: NextRequest) {
 
       if (!isNaN(tempDate.getTime())) {
         parsedDate = tempDate;
-        console.log("Parsed date:", parsedDate);
-      } else {
-        console.log("Invalid date format:", date);
       }
     }
 

@@ -1,71 +1,59 @@
 import { useAppDispatch } from "@/hooks/redux";
 import { useApi } from "@/hooks/useApi";
 import { addSubject } from "@/store/slices/subjectsSlice";
-import { DateTime } from "@gravity-ui/date-utils";
 import { useSession } from "next-auth/react";
-import { FormEvent, useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "@/lib/toast";
 import { Subject } from "@prisma/client";
-import { subjectSchema } from "@/lib/schemas";
+import { useForm } from "react-hook-form";
+import { CreateSubjectData, createSubjectSchema } from "@/lib/formSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useCreateSubject = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [subjectName, setSubjectName] = useState<string>("");
-  const [subjectDate, setSubjectDate] = useState<DateTime | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  const { execute, loading, error, statusCode } = useApi<Subject>("/api/subjects", {
-    requestSchema: subjectSchema,
+  const { execute, statusCode } = useApi<Subject>("/api/subjects", {
     refetchOnMount: false,
   });
   const { t } = useTranslation();
+  const form = useForm<CreateSubjectData>({
+    resolver: zodResolver(createSubjectSchema),
+    defaultValues: { name: "", date: null },
+  });
 
-  const handleCreateSubject = useCallback(
-    async (e: FormEvent) => {
-      e.preventDefault();
+  const handleCreateSubject = form.handleSubmit(async (zData) => {
+    const body = {
+      name: zData.name.trim(),
+      date: zData.date ? zData.date.format("YYYY-MM-DD") : null,
+      userId: session?.user.id,
+    };
 
-      if (!subjectName.trim()) {
-        toast.warning(t("subjects.toast.createWarning"));
-        return;
-      }
+    const data = await execute({
+      method: "POST",
+      body: body,
+    });
 
-      const data = await execute({
-        method: "POST",
-        body: {
-          name: subjectName.trim(),
-          date: subjectDate?.format("YYYY-MM-DD"),
-          userId: session?.user.id,
-        },
-      });
+    if (data) {
+      const subjectWithCount = {
+        ...data,
+        _count: { questions: 0 },
+      };
 
-      if (data) {
-        const subjectWithCount = {
-          ...data,
-          _count: { questions: 0 },
-        };
+      dispatch(addSubject(subjectWithCount));
 
-        dispatch(addSubject(subjectWithCount));
-
-        setSubjectName("");
-        setSubjectDate(null);
-        setOpen(false);
-        toast.success(t("subjects.toast.create", { name: subjectName }));
-      } else {
-        toast.danger(
-          t("subjects.toast.createError"),
-          t("utils.toast.errorDescription", { code: statusCode }),
-        );
-      }
-    },
-    [subjectName, subjectDate, session, execute, dispatch, statusCode, t],
-  );
-
-  const handleClear = () => {
-    setSubjectName("");
-    setSubjectDate(null);
-  };
+      form.reset();
+      setOpen(false);
+      toast.success(t("subjects.toast.create", { name: zData.name }));
+    } else {
+      toast.danger(
+        t("subjects.toast.createError"),
+        t("utils.toast.errorDescription", { code: statusCode }),
+      );
+    }
+  });
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -73,19 +61,14 @@ export const useCreateSubject = () => {
 
   const handleCloseModal = () => {
     setOpen(false);
-    handleClear();
+    form.reset();
   };
 
   return {
     t,
     open,
     setOpen,
-    subjectName,
-    setSubjectName,
-    subjectDate,
-    setSubjectDate,
-    error,
-    loading,
+    form,
     inputRef,
     handleCreateSubject,
     handleOpenModal,

@@ -38,7 +38,7 @@ export const SubjectsList = () => {
         body: { id: deletingSubject?.id },
       });
 
-      if (data) {
+      if (statusCode === 200) {
         dispatch(deleteSubject(deletingSubject.id));
         toast.danger(
           t("subjects.toast.delete", { name: deletingSubject?.name }),

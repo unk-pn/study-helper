@@ -1,20 +1,15 @@
 "use client";
 
-import { Button, TextInput, Modal } from "@gravity-ui/uikit";
-import { DatePicker } from "@gravity-ui/date-components";
+import { Button, Modal } from "@gravity-ui/uikit";
 import { useCreateSubject } from "../../hooks/useCreateSubject";
 import c from "./CreateSubjectModal.module.css";
+import { FormDatePicker, FormTextInput } from "@/components";
 
 export const CreateSubjectModal = () => {
   const {
     t,
     open,
-    subjectName,
-    setSubjectName,
-    subjectDate,
-    setSubjectDate,
-    loading,
-    error,
+    form,
     inputRef,
     handleCreateSubject,
     handleOpenModal,
@@ -39,32 +34,31 @@ export const CreateSubjectModal = () => {
         }}
         disableBodyScrollLock={false}
       >
-        <form className={c.form} onSubmit={(e) => handleCreateSubject(e)}>
+        <form className={c.form} onSubmit={handleCreateSubject}>
           <h1 className={c.modalTitle}>{t("subjects.creatingSubject")}</h1>
-          <TextInput
+          <FormTextInput
+            name="name"
+            control={form.control}
             size="l"
             placeholder={t("subjects.subjectName")}
-            value={subjectName}
-            onChange={(e) => setSubjectName(e.target.value)}
-            validationState={error ? "invalid" : undefined}
             controlRef={inputRef}
             className={c.input}
             hasClear
           />
-          <DatePicker
+          <FormDatePicker
+            name="date"
+            control={form.control}
             size="l"
-            value={subjectDate}
-            onUpdate={setSubjectDate}
             format={"DD.MM.YYYY"}
-            className={c.input}
             placeholder={t("subjects.date")}
+            className={c.input}
           />
           <Button
             width="max"
             view="action"
             type="submit"
-            disabled={!subjectName}
-            loading={loading}
+            disabled={!form.formState.isValid}
+            loading={form.formState.isSubmitting}
           >
             {t("utils.add")}
           </Button>

@@ -1,14 +1,19 @@
 import { toast } from "@/lib/toast";
 import { signIn } from "next-auth/react";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInFormData, signInFormSchema } from "@/lib/formSchemas";
 
 export const useSignInForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
+
+  const form = useForm<SignInFormData>({
+    resolver: zodResolver(signInFormSchema),
+    defaultValues: { email: "", password: "" },
+  });
 
   useEffect(() => {
     const oldEmail = localStorage.getItem("passwordChanged");
@@ -24,14 +29,11 @@ export const useSignInForm = () => {
     }
   }, [t]);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    setLoading(true);
+  const handleSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await signIn("credentials", {
-        email: email.trim(),
-        password: password.trim(),
+        email: data.email.trim(),
+        password: data.password.trim(),
         redirect: false,
       });
 
@@ -40,26 +42,20 @@ export const useSignInForm = () => {
         return;
       }
 
-      localStorage.setItem("justLoggedIn", email);
+      localStorage.setItem("justLoggedIn", data.email);
       window.location.href = "/";
     } catch (error) {
       console.log(error);
       if (error instanceof Error)
         toast.danger(t("auth.toast.signInError"), error.message);
-    } finally {
-      setLoading(false);
     }
-  };
+  });
 
   return {
     t,
-    email,
-    setEmail,
-    password,
-    setPassword,
+    form,
     showPassword,
     setShowPassword,
-    loading,
     handleSubmit,
   };
 };

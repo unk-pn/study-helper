@@ -1,23 +1,19 @@
 "use client";
 
 import c from "./SignInForm.module.css";
-import { Button, Card, Icon, TextInput } from "@gravity-ui/uikit";
+import { Button, Card, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
 import { clsx } from "clsx";
 import { useSignInForm } from "../../hooks/useSignInForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
-import { emailRegex } from "@/lib/validations";
+import { FormTextInput } from "@/components";
 
 export const SignInForm = () => {
   const {
     t,
-    email,
-    setEmail,
-    password,
-    setPassword,
+    form,
     showPassword,
     setShowPassword,
-    loading,
     handleSubmit,
   } = useSignInForm();
 
@@ -31,20 +27,17 @@ export const SignInForm = () => {
     <Card className={c.card}>
       <form onSubmit={handleSubmit} className={c.form}>
         <h1>{t("auth.signIn")}</h1>
-        <TextInput
-          value={email}
-          onUpdate={(val) => setEmail(val)}
+        <FormTextInput
+          name="email"
+          control={form.control}
           placeholder="example@gmail.com"
           size="l"
-          validationState={
-            email && !emailRegex.test(email) ? "invalid" : undefined
-          }
         />
-        <TextInput
-          placeholder="••••••••"
-          value={password}
-          onUpdate={(val) => setPassword(val)}
+        <FormTextInput
+          name="password"
+          control={form.control}
           type={!showPassword ? "password" : "text"}
+          placeholder="••••••••"
           size="l"
           note={note}
           endContent={
@@ -65,8 +58,8 @@ export const SignInForm = () => {
           view="action"
           size="l"
           width="max"
-          disabled={!email || !emailRegex.test(email) || !password}
-          loading={loading}
+          disabled={!form.formState.isValid}
+          loading={form.formState.isSubmitting}
         >
           {t("auth.signIn")}
         </Button>
