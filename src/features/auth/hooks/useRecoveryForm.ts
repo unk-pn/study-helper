@@ -1,50 +1,55 @@
+import { RecoveryFormData, recoveryFormSchema } from "@/lib/formSchemas";
 import { toast } from "@/lib/toast";
-import { FormEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 export const useRecoveryForm = () => {
-  const [email, setEmail] = useState<string>("");
-  const [code, setCode] = useState<string[]>([]);
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [newPasswordConfirm, setNewPasswordConfirm] = useState<string>("");
-  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [loading, setLoading] = useState<boolean>(false);
   const { t } = useTranslation();
 
-  const handleEmailSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const form = useForm<RecoveryFormData>({
+    resolver: zodResolver(recoveryFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      code: [],
+      password: "",
+      passwordConfirm: "",
+    },
+  });
 
-    setLoading(true);
+  const handleEmailSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await fetch("/api/change-password/request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: data.email.trim() }),
       });
       const body = await res.json();
       if (!res.ok) {
         console.log(body.error);
-        toast.danger(body.error === "User not found" ? t("auth.toast.userNotFound") : t("utils.toast.unknownError"), body.error);
+        toast.danger(
+          body.error === "User not found"
+            ? t("auth.toast.userNotFound")
+            : t("utils.toast.unknownError"),
+          body.error,
+        );
         return;
       }
 
       setStep(2);
     } catch (error) {
       console.log("error sending recovery code: ", error);
-    } finally {
-      setLoading(false);
     }
-  };
+  });
 
-  const handleCodeSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    setLoading(true);
+  const handleCodeSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await fetch("/api/change-password/verify-code", {
         method: "POST",
@@ -52,8 +57,8 @@ export const useRecoveryForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email.trim(),
-          code: code.join(""),
+          email: data.email.trim(),
+          code: data.code.join(""),
         }),
       });
       const body = await res.json();
@@ -69,15 +74,10 @@ export const useRecoveryForm = () => {
       console.log("error checking code code: ", error);
       if (error instanceof Error)
         toast.danger(t("auth.toast.codeError"), error.message);
-    } finally {
-      setLoading(false);
     }
-  };
+  });
 
-  const handlePasswordSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    setLoading(true);
+  const handlePasswordSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await fetch("/api/change-password/confirm", {
         method: "POST",
@@ -85,9 +85,9 @@ export const useRecoveryForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email.trim(),
-          code: code.join(""),
-          password: newPassword.trim(),
+          email: data.email.trim(),
+          code: data.code.join(""),
+          password: data.password.trim(),
         }),
       });
       const body = await res.json();
@@ -96,39 +96,18 @@ export const useRecoveryForm = () => {
         return;
       }
 
-      localStorage.setItem("passwordChanged", email);
+      localStorage.setItem("passwordChanged", data.email);
 
       window.location.href = "/auth/signIn";
     } catch (error) {
       console.log("error resetting password: ", error);
-    } finally {
-      setLoading(false);
     }
-  };
-
-  const handlePasswordUpdate = (pass: string) => {
-    setNewPassword(pass);
-    setPasswordsMatch(
-      !pass || !newPasswordConfirm || pass === newPasswordConfirm,
-    );
-  };
-
-  const handlePasswordConfirmUpdate = (pass: string) => {
-    setNewPasswordConfirm(pass);
-    setPasswordsMatch(!pass || !newPassword || pass === newPassword);
-  };
+  })
 
   return {
     t,
-    email,
-    setEmail,
-    code,
-    setCode,
-    newPassword,
-    newPasswordConfirm,
-    passwordsMatch,
+    form,
     step,
-    loading,
     showPassword,
     setShowPassword,
     showPasswordConfirm,
@@ -136,8 +115,6 @@ export const useRecoveryForm = () => {
     handleEmailSubmit,
     handleCodeSubmit,
     handlePasswordSubmit,
-    handlePasswordUpdate,
-    handlePasswordConfirmUpdate,
     setStep,
   };
 };

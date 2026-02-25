@@ -1,6 +1,6 @@
 "use client";
 
-import { TextInput, TextInputProps } from "@gravity-ui/uikit";
+import { TextArea, TextAreaProps } from "@gravity-ui/uikit";
 import {
   Control,
   Controller,
@@ -10,27 +10,27 @@ import {
 } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-type FormTextInputProps<T extends FieldValues> = {
+type FormTextAreaProps<T extends FieldValues> = {
   name: FieldPath<T> | string;
   control: Control<T>;
 } & Omit<
-  TextInputProps,
+  TextAreaProps,
   "value" | "onUpdate" | "validationState" | "errorMessage"
 >;
 
-export const FormTextInput = <T extends FieldValues>({
+export const FormTextArea = <T extends FieldValues>({
   name,
   control,
-  ...textInputProps
-}: FormTextInputProps<T>) => {
+  ...textAreaProps
+}: FormTextAreaProps<T>) => {
   const { t } = useTranslation();
   return (
     <Controller
       name={name as Path<T>}
       control={control}
       render={({ field, fieldState }) => (
-        <TextInput
-          {...textInputProps}
+        <TextArea
+          {...textAreaProps}
           value={field.value || ""}
           onUpdate={field.onChange}
           onBlur={field.onBlur}

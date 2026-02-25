@@ -41,6 +41,7 @@
     "noAccount": "Don't have an account? ",
     "haveAccount": "Already have an account? ",
     "noAccountLink": "Create it!",
+    "nameRequired": "Name is required",
     "name": "Name",
     "incorrectEmail": "Invalid email",
     "notStrongPassword": "Password must contain: at least 8 characters, uppercase and lowercase letters, numbers, and special symbols (.@$!%*?&)",

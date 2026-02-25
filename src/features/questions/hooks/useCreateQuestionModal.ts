@@ -2,62 +2,41 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { useApi } from "@/hooks/useApi";
 import { useTranslation } from "react-i18next";
 import { setQuestions as setReduxQuestions } from "@/store/slices/questionsSlice";
-import { useState } from "react";
 import { toast } from "@/lib/toast";
 import { changeSubjectQuestionCount } from "@/store/slices/subjectsSlice";
-import { questionArraySchema } from "@/lib/schemas";
-
-interface QuestionInputType {
-  id: string;
-  name: string;
-  answer: string;
-}
+import { useFieldArray, useForm } from "react-hook-form";
+import { CreateQuestionData, createQuestionSchema } from "@/lib/formSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useCreateQuestionModal = (
   subjectId: string,
   onClose: () => void,
 ) => {
-  const [questions, setQuestions] = useState<QuestionInputType[]>([
-    { id: crypto.randomUUID(), name: "", answer: "" },
-  ]);
   const dispatch = useAppDispatch();
   const reduxQuestions = useAppSelector((q) => q.questions.questions);
   const { t } = useTranslation();
-  const { execute, loading, error, statusCode } = useApi("/api/questions", {
-    responseSchema: questionArraySchema,
+  const { execute, statusCode } = useApi("/api/questions", {
     refetchOnMount: false,
   });
 
+  const form = useForm<CreateQuestionData>({
+    resolver: zodResolver(createQuestionSchema),
+    defaultValues: { questions: [{ name: "", answer: "" }] },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "questions",
+  });
+
   const handleAddQuestion = () => {
-    setQuestions([
-      ...questions,
-      { id: crypto.randomUUID(), name: "", answer: "" },
-    ]);
+    append({ name: "", answer: "" });
   };
 
-  const handleUpdateQuestion = (
-    id: string,
-    value: Omit<QuestionInputType, "id">,
-  ) => {
-    setQuestions(
-      questions.map((question) =>
-        question.id === id ? { ...question, ...value } : question,
-      ),
-    );
-  };
-
-  const handleDeleteQuestion = (id: string) => {
-    setQuestions(questions.filter((question) => question.id !== id));
-  };
-
-  const hasEmptyQuestions = questions.some((question) => !question.name.trim());
-
-  const handleSave = async () => {
-    const data = await execute({
+  const handleSave = form.handleSubmit(async (data) => {
+    const res = await execute({
       method: "POST",
       body: {
-        questions: questions.map((q) => ({
-          ...q,
+        questions: data.questions.map((q) => ({
           name: q.name.trim(),
           answer: q.answer.trim(),
         })),
@@ -65,10 +44,10 @@ export const useCreateQuestionModal = (
       },
     });
 
-    if (data) {
-      dispatch(setReduxQuestions([...reduxQuestions, ...data]));
+    if (res && Array.isArray(res)) {
+      dispatch(setReduxQuestions([...reduxQuestions, ...res]));
       dispatch(
-        changeSubjectQuestionCount({ subjectId, count: questions.length }),
+        changeSubjectQuestionCount({ subjectId, count: data.questions.length }),
       );
       toast.success(t("questions.toast.create"));
       onClose();
@@ -78,17 +57,15 @@ export const useCreateQuestionModal = (
         t("utils.toast.errorDescription", { code: statusCode }),
       );
     }
-  };
+  });
 
   return {
     t,
-    questions,
+    form,
+    fields,
+    remove,
     handleAddQuestion,
-    handleUpdateQuestion,
-    handleDeleteQuestion,
     handleSave,
-    hasEmptyQuestions,
-    loading,
-    error,
+    loading: form.formState.isSubmitting,
   };
 };

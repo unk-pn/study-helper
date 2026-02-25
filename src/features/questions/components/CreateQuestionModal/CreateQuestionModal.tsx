@@ -16,13 +16,12 @@ export const CreateQuestionModal = ({
 }: CreateQuestionModalProps) => {
   const {
     t,
-    loading,
-    questions,
+    form,
+    fields,
+    remove,
     handleAddQuestion,
-    handleUpdateQuestion,
-    handleDeleteQuestion,
     handleSave,
-    hasEmptyQuestions,
+    loading,
   } = useCreateQuestionModal(subjectId, onClose);
 
   return (
@@ -31,19 +30,12 @@ export const CreateQuestionModal = ({
         <h1 className={c.title}>{t("questions.createQuestion")}</h1>
 
         <div className={c.questionsList}>
-          {questions.map((q, index) => (
+          {fields.map((field, index) => (
             <QuestionInput
-              key={q.id}
-              index={index + 1}
-              name={q.name}
-              answer={q.answer}
-              onNameUpdate={(name) =>
-                handleUpdateQuestion(q.id, { name: name, answer: q.answer })
-              }
-              onAnswerUpdate={(answer) =>
-                handleUpdateQuestion(q.id, { name: q.name, answer: answer })
-              }
-              onDelete={() => handleDeleteQuestion(q.id)}
+              key={field.id}
+              control={form.control}
+              index={index}
+              onDelete={() => remove(index)}
             />
           ))}
         </div>
@@ -56,7 +48,7 @@ export const CreateQuestionModal = ({
           <Button
             view="action"
             onClick={handleSave}
-            disabled={hasEmptyQuestions}
+            disabled={!form.formState.isValid}
             loading={loading}
           >
             {t("utils.save")}

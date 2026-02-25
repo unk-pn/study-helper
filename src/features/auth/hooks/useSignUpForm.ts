@@ -1,28 +1,29 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { toast } from "@/lib/toast";
 import { useTranslation } from "react-i18next";
-import { emailRegex, strongPasswordRegex } from "@/lib/validations";
+import { useForm } from "react-hook-form";
+import { SignUpFormData, signUpFormSchema } from "@/lib/formSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const useSignUpForm = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordConfirm, setPasswordConfirm] = useState<string>("");
-  const [code, setCode] = useState<string[]>([]);
   const [codeSended, setCodeSended] = useState<boolean>(false);
-  const [emailValid, setEmailValid] = useState<boolean | null>(null);
-  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
-  const [passwordStrong, setPasswordStrong] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      code: [],
+    },
+  });
 
-    setLoading(true);
+  const handleSubmit = form.handleSubmit(async (zData) => {
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -30,9 +31,9 @@ export const useSignUpForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          password: password.trim(),
+          name: zData.name.trim(),
+          email: zData.email.trim(),
+          password: zData.password.trim(),
         }),
       });
 
@@ -44,21 +45,12 @@ export const useSignUpForm = () => {
       }
 
       setCodeSended(true);
-    } catch (error) {
-      console.log(error);
-      toast.danger(
-        t("auth.toast.signUpError"),
-        t("utils.toast.errorDescription", { code: "CHANGE ME" }),
-      );
-    } finally {
-      setLoading(false);
+    } catch {
+      toast.danger(t("auth.toast.signUpError"));
     }
-  };
+  });
 
-  const handleCodeSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    setLoading(true);
+  const handleCodeSubmit = form.handleSubmit(async (zData) => {
     try {
       const res = await fetch("/api/verify-code", {
         method: "POST",
@@ -66,8 +58,8 @@ export const useSignUpForm = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email.trim(),
-          code: code.join(""),
+          email: zData.email.trim(),
+          code: zData.code.join(""),
         }),
       });
 
@@ -80,8 +72,8 @@ export const useSignUpForm = () => {
       }
 
       const signInRes = await signIn("credentials", {
-        email: email.trim(),
-        password: password.trim(),
+        email: zData.email.trim(),
+        password: zData.password.trim(),
         redirect: false,
       });
 
@@ -94,52 +86,30 @@ export const useSignUpForm = () => {
       }
 
       window.location.href = "/";
-    } catch (error) {
-      console.log(error);
-      alert("error checking code");
-    } finally {
-      setLoading(false);
+    } catch {
+      toast.danger(t("auth.toast.codeError"));
     }
-  };
+  });
 
-  const handleEmailUpdate = (str: string) => {
-    setEmail(str);
-    setEmailValid(!str || emailRegex.test(str));
-  };
+  const isStep1Valid =
+    !form.formState.errors.name &&
+    !form.formState.errors.email &&
+    !form.formState.errors.password &&
+    !form.formState.errors.passwordConfirm;
 
-  const handlePasswordUpdate = (pass: string) => {
-    setPassword(pass);
-    setPasswordStrong(!pass || strongPasswordRegex.test(pass));
-    setPasswordsMatch(!pass || !passwordConfirm || pass === passwordConfirm);
-  };
-
-  const handlePasswordConfirmUpdate = (pass: string) => {
-    setPasswordConfirm(pass);
-    setPasswordsMatch(!pass || !password || pass === password);
-  };
+  const isStep2Valid = form.watch("code").length === 6;
 
   return {
     t,
-    name,
-    setName,
-    email,
-    handleEmailUpdate,
-    password,
-    handlePasswordUpdate,
-    passwordConfirm,
-    handlePasswordConfirmUpdate,
-    code,
-    setCode,
+    form,
     codeSended,
-    emailValid,
-    passwordsMatch,
-    passwordStrong,
     showPassword,
     setShowPassword,
     showPasswordConfirm,
     setShowPasswordConfirm,
-    loading,
     handleSubmit,
     handleCodeSubmit,
+    isStep1Valid,
+    isStep2Valid,
   };
 };

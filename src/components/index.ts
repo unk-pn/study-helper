@@ -9,3 +9,5 @@ export { QuestionsPDF } from "./QuestionsPDF";
 
 export { FormTextInput } from "./FormFields/FormTextInput";
 export { FormDatePicker } from "./FormFields/FormDatePicker";
+export { FormTextArea } from "./FormFields/FormTextArea";
+export { FormPinInput } from "./FormFields/FormPinInput";

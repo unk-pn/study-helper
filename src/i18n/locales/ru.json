@@ -40,6 +40,7 @@
     "forgot": "Забыли пароль?",
     "noAccount": "Нет аккаунта? ",
     "noAccountLink": "Создайте его!",
+    "nameRequired": "Имя обязательно",
     "haveAccount": "Уже есть аккаунт? ",
     "name": "Имя",
     "incorrectEmail": "Некорректный email",

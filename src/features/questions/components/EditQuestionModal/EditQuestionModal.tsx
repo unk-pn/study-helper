@@ -1,12 +1,15 @@
-import { Button, Modal, TextArea, TextInput } from "@gravity-ui/uikit";
+import { Button, Modal } from "@gravity-ui/uikit";
 import c from "./EditQuestionModal.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { useState } from "react";
 import { updateQuestion } from "@/store/slices/questionsSlice";
 import { useTranslation } from "react-i18next";
 import { useApi } from "@/hooks/useApi";
 import { toast } from "@/lib/toast";
 import { Question } from "@/lib/schemas";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EditQuestionData, editQuestionSchema } from "@/lib/formSchemas";
+import { FormTextArea, FormTextInput } from "@/components";
 
 interface EditQuestionModalProps {
   id: string;
@@ -18,28 +21,31 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
   const question = useAppSelector((s) =>
     s.questions.questions.find((q) => q.id === id),
   );
-  const [name, setName] = useState(question?.name || "");
-  const [answer, setAnswer] = useState(question?.answer || "");
   const { t } = useTranslation();
-  const { execute, loading, statusCode } = useApi<Question>(
-    "/api/questions",
-    {
-      refetchOnMount: false,
-    },
-  );
+  const { execute, statusCode } = useApi<Question>("/api/questions", {
+    refetchOnMount: false,
+  });
 
-  const handleSave = async () => {
-    const data = await execute({
+  const form = useForm<EditQuestionData>({
+    resolver: zodResolver(editQuestionSchema),
+    defaultValues: {
+      name: question?.name || "",
+      answer: question?.answer || "",
+    },
+  });
+
+  const handleSave = form.handleSubmit(async (data) => {
+    const res = await execute({
       method: "PATCH",
       body: {
         id,
-        name: name.trim(),
-        answer: answer.trim(),
+        name: data.name.trim(),
+        answer: data.answer.trim(),
       },
     });
 
-    if (data) {
-      dispatch(updateQuestion(data));
+    if (res) {
+      dispatch(updateQuestion(res));
       toast.success(t("questions.toast.update"));
       onClose();
     } else {
@@ -48,32 +54,34 @@ export const EditQuestionModal = ({ id, onClose }: EditQuestionModalProps) => {
         t("utils.toast.errorDescription", { code: statusCode }),
       );
     }
-  };
+  });
 
   return (
     <Modal open={true} onClose={onClose} disableBodyScrollLock={true}>
-      <div className={c.editForm} onClick={(e) => e.stopPropagation()}>
+      <div className={c.editForm}>
         <h1 className={c.title}>{t("questions.editingQuestion")}</h1>
-        <TextInput
+        <FormTextInput
+          name={"name"}
+          control={form.control}
           size="m"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
           className={c.textInput}
           placeholder={t("questions.question")}
-          hasClear
         />
-        <TextArea
+        <FormTextArea
+          name={"answer"}
+          control={form.control}
           size="m"
-          value={answer}
           minRows={3}
-          onChange={(e) => setAnswer(e.target.value)}
           className={c.input}
           placeholder={t("questions.answer")}
-          hasClear
         />
 
         <div className={c.buttons}>
-          <Button onClick={handleSave} view="action" loading={loading}>
+          <Button
+            onClick={handleSave}
+            view="action"
+            loading={form.formState.isSubmitting}
+          >
             {t("utils.save")}
           </Button>
           <Button onClick={() => onClose()}>{t("utils.cancel")}</Button>

@@ -1,35 +1,25 @@
 "use client";
 
 import c from "./SignUpForm.module.css";
-import { Button, Card, Icon, PinInput, TextInput } from "@gravity-ui/uikit";
+import { Button, Card, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
 import { useSignUpForm } from "../../hooks/useSignUpForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
+import { FormTextInput, FormPinInput } from "@/components";
 
 export const SignUpForm = () => {
   const {
     t,
-    name,
-    setName,
-    email,
-    handleEmailUpdate,
-    password,
-    handlePasswordUpdate,
-    passwordConfirm,
-    handlePasswordConfirmUpdate,
-    code,
-    setCode,
+    form,
     codeSended,
-    emailValid,
-    passwordsMatch,
-    passwordStrong,
     showPassword,
     setShowPassword,
     showPasswordConfirm,
     setShowPasswordConfirm,
-    loading,
     handleSubmit,
     handleCodeSubmit,
+    isStep1Valid,
+    isStep2Valid
   } = useSignUpForm();
 
   return (
@@ -37,35 +27,27 @@ export const SignUpForm = () => {
       {!codeSended ? (
         <form onSubmit={handleSubmit} className={c.form}>
           <h1>{t("auth.signUp")}</h1>
-          <TextInput
-            value={name}
-            onUpdate={(val) => setName(val)}
+          <FormTextInput
+            name="name"
+            control={form.control}
             placeholder={t("auth.name")}
             size="l"
           />
 
-          <TextInput
-            value={email}
+          <FormTextInput
+            name="email"
+            control={form.control}
             placeholder="example@gmail.com"
             size="l"
             errorPlacement="inside"
-            onUpdate={(val) => handleEmailUpdate(val)}
-            validationState={emailValid === false ? "invalid" : undefined}
-            errorMessage={
-              emailValid === false ? t("auth.incorrectEmail") : undefined
-            }
           />
-          <TextInput
+          <FormTextInput
+            name="password"
+            control={form.control}
             placeholder="••••••••"
-            value={password}
             type={!showPassword ? "password" : "text"}
             size="l"
-            onUpdate={(val) => handlePasswordUpdate(val)}
-            validationState={!passwordStrong ? "invalid" : undefined}
             errorPlacement="inside"
-            errorMessage={
-              !passwordStrong ? t("auth.notStrongPassword") : undefined
-            }
             endContent={
               <Button
                 onClick={() => setShowPassword(!showPassword)}
@@ -79,17 +61,13 @@ export const SignUpForm = () => {
               </Button>
             }
           />
-          <TextInput
+          <FormTextInput
+            name="passwordConfirm"
+            control={form.control}
             placeholder="••••••••"
-            value={passwordConfirm}
             type={!showPasswordConfirm ? "password" : "text"}
             size="l"
             errorPlacement="inside"
-            onUpdate={(val) => handlePasswordConfirmUpdate(val)}
-            validationState={!passwordsMatch ? "invalid" : undefined}
-            errorMessage={
-              !passwordsMatch ? t("auth.passwordsDontMatch") : undefined
-            }
             endContent={
               <Button
                 onClick={() => setShowPasswordConfirm(!showPasswordConfirm)}
@@ -108,14 +86,8 @@ export const SignUpForm = () => {
             view="action"
             size="l"
             width="max"
-            disabled={
-              !emailValid ||
-              !passwordsMatch ||
-              !passwordStrong ||
-              !name.trim() ||
-              !password.trim()
-            }
-            loading={loading}
+            disabled={!isStep1Valid}
+            loading={form.formState.isSubmitting}
           >
             {t("auth.signUp")}
           </Button>
@@ -129,8 +101,19 @@ export const SignUpForm = () => {
       ) : (
         <form onSubmit={handleCodeSubmit} className={c.form}>
           <h1>{t("auth.verifyCodeTitle")}</h1>
-          <PinInput size="l" value={code} length={6} onUpdate={setCode} />
-          <Button type="submit" view="action" size="l" loading={loading}>
+          <FormPinInput
+            name="code"
+            control={form.control}
+            size="l"
+            length={6}
+          />
+          <Button
+            type="submit"
+            view="action"
+            size="l"
+            loading={form.formState.isSubmitting}
+            disabled={!isStep2Valid}
+          >
             {t("auth.verifyCode")}
           </Button>
         </form>
