@@ -6,8 +6,8 @@ import { Navbar } from "@/components/Navbar/Navbar";
 import { Providers } from "@/components/Providers/Providers";
 
 export const metadata: Metadata = {
-  title: "Empty Next Project",
-  description: "Empty Next Project",
+  title: "Study Helper",
+  description: "Study Helper Application",
 };
 
 export default function RootLayout({

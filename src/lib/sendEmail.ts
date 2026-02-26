@@ -4,16 +4,17 @@ import { Resend } from "resend";
 import { createElement } from "react";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const email = process.env.RESEND_MAIL;
 
 export const sendEmail = async (
   type: EmailTemplateProps["type"],
   to: string,
   code: string,
 ) => {
+  const fromEmail = process.env.RESEND_MAIL || "onboarding@resend.dev";
+
   try {
     const { data, error } = await resend.emails.send({
-      from: `unk <mail@${email}>`,
+      from: fromEmail,
       to,
       subject: "Код подтверждения",
       react: createElement(EmailTemplate, { type, code }),
