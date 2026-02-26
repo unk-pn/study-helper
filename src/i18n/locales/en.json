@@ -61,6 +61,21 @@
   "home": {
     "title": "What do you want to learn today?"
   },
+  "guest": {
+    "badge": "✨ Free Forever",
+    "title": "Learn Smarter, Not Harder",
+    "subtitle": "Master any subject with interactive flashcards and smart study tools",
+    "getStarted": "Get Started for Free",
+    "learnMore": "Learn More",
+    "featuresTitle": "Everything you need to ace your exams",
+    "featuresDescription": "Simple and effective tools for organizing your learning and memorizing material",
+    "feature1Title": "Create Subjects",
+    "feature1Description": "Organize your learning material by creating custom subjects with the ability to set exam dates",
+    "feature2Title": "Add Questions",
+    "feature2Description": "Build your question bank with detailed answers and explanations for better understanding",
+    "feature3Title": "Study & Master",
+    "feature3Description": "Use interactive flashcards for effective memorization and track your progress"
+  },
   "subjects": {
     "toast": {
       "errorDescription": "Error status {{ code }}",
@@ -126,7 +141,32 @@
     "dontKnowYet": "Don’t know yet: ",
     "noAnswer": "No answer"
   },
-  "about": {},
+  "about": {
+    "title": "About Study Helper",
+    "mission": "Study Helper is a platform for effective exam preparation. We help students structure their knowledge, memorize material, and successfully pass exams through a convenient flashcard system and organized learning process.",
+    "whyCreated": "The app was created to make learning more systematic and productive, providing simple tools for working with large amounts of information.",
+    "featuresTitle": "Key Features",
+    "feature1Title": "Subject Organization",
+    "feature1Description": "Create and manage subjects, track exam dates and preparation status (in progress, passed, failed).",
+    "feature2Title": "Question Bank",
+    "feature2Description": "Add unlimited questions with detailed answers for each subject.",
+    "feature3Title": "Interactive Learning",
+    "feature3Description": "Use flashcards for effective memorization with a self-assessment system.",
+    "feature4Title": "PDF Export",
+    "feature4Description": "Export questions to PDF format for offline study and printing.",
+    "feature5Title": "Data Security",
+    "feature5Description": "All your data is protected. Access to materials only after authentication.",
+    "feature6Title": "Multilingual",
+    "feature6Description": "Full support for Russian and English interface languages.",
+    "techStackTitle": "Technology Stack",
+    "techStack": "The application is built on technology stack: Next.js 16, React 19, TypeScript, PostgreSQL, Prisma ORM, NextAuth for secure authentication, and Gravity UI Kit for the interface.",
+    "teamTitle": "Team",
+    "developer": "Developer",
+    "designer": "Designer",
+    "openSourceTitle": "Open Source",
+    "openSourceDescription": "Study Helper is an open-source project. You can explore the code, suggest improvements, or use it for learning.",
+    "version": "Version"
+  },
   "pdf": {
     "name": "{{ name }} questions"
   }

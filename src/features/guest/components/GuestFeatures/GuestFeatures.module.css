@@ -1,40 +1,95 @@
-.card {
-  border-radius: 12px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-.cardTitle {
-  font-size: var(--fs-h6);
-}
-
-.cardDescription {
-  font-size: var(--fs-p);
-  color: #6b7280;
-}
-
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 36px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 64px;
 }
 
 .title {
-  font-size: var(--fs-h2);
-  line-height: 120%;
-  text-align: center;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--g-color-text-primary);
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--g-color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.card {
+  padding: 40px 32px;
+  border-radius: 16px;
+  background: var(--g-color-base-background);
+  border: 2px solid var(--g-color-line-generic);
+  text-align: center;
+}
+
+.iconWrapper {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--g-color-base-simple-hover);
+  border-radius: 20px;
+}
+
+.icon {
+  font-size: 40px;
+}
+
+.cardTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--g-color-text-primary);
+}
+
+.cardDescription {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--g-color-text-secondary);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 60px 20px;
+  }
+
+  .header {
+    margin-bottom: 48px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .card {
+    padding: 32px 24px;
+  }
 }

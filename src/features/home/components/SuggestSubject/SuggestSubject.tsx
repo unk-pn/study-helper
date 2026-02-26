@@ -14,7 +14,7 @@ type SubjectType = {
 export const SuggestSubject = () => {
   const { t } = useTranslation();
 
-  const subjects = useAppSelector(s => s.subjects.subjects)
+  const subjects = useAppSelector((s) => s.subjects.subjects);
 
   const [curr, setCurr] = useState<SubjectType>(subjects[0]);
 
@@ -33,10 +33,10 @@ export const SuggestSubject = () => {
   }, [subjects]);
 
   return (
-    <div>
-      <h1>{t("home.title")}</h1>
+    <div className={c.wrapper}>
+      <h1 className={c.title}>{t("home.title")}</h1>
 
-      <h2>
+      <h2 className={c.sticker}>
         {curr && (
           <Link href={`/subjects/${curr.id}`} className={c.link}>
             {curr.name}

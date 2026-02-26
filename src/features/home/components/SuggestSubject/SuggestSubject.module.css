@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  gap: 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(24px, 4vw, 50px);
+}
+
+.sticker {
+  background-color: var(--g-color-base-brand);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
