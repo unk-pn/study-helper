@@ -10,7 +10,7 @@ export const sendEmail = async (
   to: string,
   code: string,
 ) => {
-  const fromEmail = process.env.RESEND_MAIL || "onboarding@resend.dev";
+  const fromEmail = `mail@${process.env.RESEND_MAIL}` || "onboarding@resend.dev";
 
   try {
     const { data, error } = await resend.emails.send({
