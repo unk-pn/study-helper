@@ -3,7 +3,7 @@
 import { Button, Modal } from "@gravity-ui/uikit";
 import c from "./CreateQuestionModal.module.css";
 import { QuestionInput } from "./QuestionInput/QuestionInput";
-import { useCreateQuestionModal } from "../../hooks/useCreateQuestionModal";
+import { useCreateQuestionModal } from "./useCreateQuestionModal";
 
 interface CreateQuestionModalProps {
   subjectId: string;

@@ -3,7 +3,7 @@
 import c from "./SignUpForm.module.css";
 import { Button, Card, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
-import { useSignUpForm } from "../../hooks/useSignUpForm";
+import { useSignUpForm } from "./useSignUpForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { FormTextInput, FormPinInput } from "@/components";
 

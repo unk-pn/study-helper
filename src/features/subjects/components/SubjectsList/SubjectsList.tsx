@@ -33,7 +33,7 @@ export const SubjectsList = () => {
 
   const handleDelete = async () => {
     if (deletingSubject) {
-      const data = await execute({
+      await execute({
         method: "DELETE",
         body: { id: deletingSubject?.id },
       });

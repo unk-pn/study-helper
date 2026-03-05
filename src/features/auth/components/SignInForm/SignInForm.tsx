@@ -4,7 +4,7 @@ import c from "./SignInForm.module.css";
 import { Button, Card, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
 import { clsx } from "clsx";
-import { useSignInForm } from "../../hooks/useSignInForm";
+import { useSignInForm } from "./useSignInForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { FormTextInput } from "@/components";
 

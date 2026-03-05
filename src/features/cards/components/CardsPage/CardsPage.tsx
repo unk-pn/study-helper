@@ -3,7 +3,7 @@
 import c from "./CardsPage.module.css";
 import { Card, Nav } from "@/features/cards/components";
 import { Card as GCard, Button, Label } from "@gravity-ui/uikit";
-import { useCardsPage } from "../../hooks/useCardsPage";
+import { useCardsPage } from "./useCardsPage";
 import { Loader } from "@/components";
 import { useAppSelector } from "@/hooks/redux";
 import { CircleProgress } from "./CircleProgress/CircleProgress";

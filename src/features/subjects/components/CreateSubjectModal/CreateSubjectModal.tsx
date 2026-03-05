@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Modal } from "@gravity-ui/uikit";
-import { useCreateSubject } from "../../hooks/useCreateSubject";
+import { useCreateSubject } from "./useCreateSubject";
 import c from "./CreateSubjectModal.module.css";
 import { FormDatePicker, FormTextInput } from "@/components";
 

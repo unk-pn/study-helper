@@ -4,7 +4,7 @@ import c from "./Subject.module.css";
 import { Card, Text, DropdownMenu, Label } from "@gravity-ui/uikit";
 import { PencilToLine, TrashBin } from "@gravity-ui/icons";
 import { formatDate } from "@/lib/formatDate";
-import { useSubject } from "../../hooks/useSubject";
+import { useSubject } from "./useSubject";
 
 interface SubjectProps {
   id: string;

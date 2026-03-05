@@ -2,7 +2,7 @@
 
 import { Button, Modal, SegmentedRadioGroup } from "@gravity-ui/uikit";
 import c from "./EditSubjectModal.module.css";
-import { SubjectStatus } from "../../hooks/useSubject";
+import { SubjectStatus } from "../Subject/useSubject";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { updateSubject } from "@/store/slices/subjectsSlice";
 import { useTranslation } from "react-i18next";
@@ -64,10 +64,7 @@ export const EditSubjectModal = ({ id, onClose }: EditSubjectModalProps) => {
 
   return (
     <Modal open={true} onClose={onClose}>
-      <form
-        className={c.editForm}
-        onSubmit={onSubmit}
-      >
+      <form className={c.editForm} onSubmit={onSubmit}>
         <h1 className={c.title}>{t("subjects.editSubject")}</h1>
 
         <FormTextInput

@@ -3,7 +3,7 @@
 import c from "./RecoveryForm.module.css";
 import { Button, Card, Icon } from "@gravity-ui/uikit";
 import Link from "next/link";
-import { useRecoveryForm } from "../../hooks/useRecoveryForm";
+import { useRecoveryForm } from "./useRecoveryForm";
 import { Eye, EyeSlash } from "@gravity-ui/icons";
 import { FormPinInput, FormTextInput } from "@/components";
 
